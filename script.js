@@ -441,13 +441,13 @@
             .then(() => {
                 // Clear saved form data
                 clearSavedFormData();
-                // Redirect to thank you page
-                window.location.href = '/thank-you.html';
+                // Redirect to success page
+                window.location.href = '/success.html';
             })
             .catch(error => {
                 console.error('Notion integration error:', error);
                 // Still redirect, but optionally show a warning
-                window.location.href = '/thank-you.html';
+                window.location.href = '/success.html';
             });
         })
         .catch(error => {
