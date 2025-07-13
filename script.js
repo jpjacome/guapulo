@@ -397,49 +397,25 @@
         
         // Show loading state
         setButtonLoading(submitButton, true);
-        
-        // Get form data
+        // Prepare form data
         const formData = new FormData(elements.rsvpForm);
-        const data = Object.fromEntries(formData);
-        
-        // Initialize EmailJS for user confirmation
-        emailjs.init('kgZlrpJKfDpOhLkvX');
-        
-        // Send confirmation email to user via EmailJS
-        const userParams = {
-            to_name: data.name || '',
-            to_email: data.email || '',
-            event_name: 'Parrillazo Guapulense 2025',
-            event_date: 'Viernes, 18 de julio de 2025',
-            event_time: '7:00 PM',
-            event_location: 'Barrio Guápulo, Quito',
-            attendance: data.attendance || '',
-            plus_one: data.plus_one || 'no',
-            guest_name: data.guest_name || '',
-            host_email: 'jpjacome@yahoo.com'
-        };
-        
-        // Send user confirmation via EmailJS AND submit to Netlify Forms
-        Promise.all([
-            // EmailJS for user confirmation
-            emailjs.send('service_skzxxs6', 'template_5mp33rb', userParams),
-            
-            // Netlify Forms for owner notification
-            fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(formData).toString()
-            })
-        ])
+        // Add additional data
+        formData.append('timestamp', new Date().toISOString());
+        formData.append('event', 'Parrillazo Guapulense');
+        // Submit to Netlify
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+        })
         .then(() => {
-            console.log('✅ User confirmation sent via EmailJS, owner notification sent via Netlify!');
             // Clear saved form data
             clearSavedFormData();
             // Redirect to success page
             window.location.href = '/success.html';
         })
         .catch(error => {
-            console.error('❌ Form submission failed:', error);
+            console.error('Form submission error:', error);
             showFormError('Hubo un error al enviar el formulario. Por favor intenta nuevamente.');
             setButtonLoading(submitButton, false);
         });
