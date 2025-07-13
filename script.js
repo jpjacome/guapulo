@@ -17,12 +17,7 @@
     // State Management
     const state = {
         isLoading: true,
-        formData: {},
-        rsvpStats: {
-            attending: 0,
-            notAttending: 0,
-            pending: 0
-        }
+        formData: {}
     };
 
     // DOM Elements
@@ -30,8 +25,7 @@
         loadingScreen: null,
         navbar: null,
         countdownElements: {},
-        rsvpForm: null,
-        rsvpStatsContainer: null
+        rsvpForm: null
     };
 
     // Initialize Application
@@ -71,7 +65,6 @@
         elements.loadingScreen = document.querySelector('.loading-screen');
         elements.navbar = document.querySelector('.navbar');
         elements.rsvpForm = document.querySelector('#rsvp-form');
-        elements.rsvpStatsContainer = document.querySelector('.rsvp-stats');
         
         // Countdown elements
         elements.countdownElements = {
@@ -100,13 +93,6 @@
         const emailInput = elements.rsvpForm.querySelector('input[type="email"]');
         if (emailInput) {
             emailInput.addEventListener('blur', function(e) {
-                validateField(e.target);
-            });
-        }
-        // Only validate phone on blur
-        const phoneInput = elements.rsvpForm.querySelector('input[name="phone"]');
-        if (phoneInput) {
-            phoneInput.addEventListener('blur', function(e) {
                 validateField(e.target);
             });
         }
@@ -292,8 +278,6 @@
         // Initialize form validation
         initializeFormValidation();
         
-        // Load RSVP statistics
-        loadRSVPStats();
     }
 
     function handleFormInput(event) {
@@ -309,8 +293,8 @@
         // Auto-save form data
         saveFormData();
         
-        // Real-time validation for non-email and non-phone fields only
-        if (type !== 'email' && name !== 'phone') {
+        // Real-time validation for non-email fields only
+        if (type !== 'email') {
             validateField(event.target);
         }
     }
@@ -360,16 +344,6 @@
                 errorMessage = 'Por favor ingresa un email válido.';
             }
         }
-        
-        // Phone validation
-        if (fieldName === 'phone' && value) {
-            const phoneRegex = /^[\+]?[0-9\s\-\(\)]+$/;
-            if (!phoneRegex.test(value) || value.replace(/\D/g, '').length < 10) {
-                isValid = false;
-                errorMessage = 'Por favor ingresa un número de teléfono válido.';
-            }
-        }
-        
         // Display validation result
         displayFieldValidation(field, isValid, errorMessage);
         
@@ -535,43 +509,7 @@
     }
 
     // RSVP Statistics
-    function loadRSVPStats() {
-        // In a real implementation, this would fetch from an API
-        // For now, we'll simulate with random data
-        state.rsvpStats = {
-            attending: Math.floor(Math.random() * 50) + 25,
-            notAttending: Math.floor(Math.random() * 10) + 5,
-            pending: Math.floor(Math.random() * 15) + 10
-        };
-        
-        updateRSVPStatsDisplay();
-    }
 
-    function updateRSVPStatsDisplay() {
-        if (!elements.rsvpStatsContainer) return;
-        
-        const total = state.rsvpStats.attending + state.rsvpStats.notAttending + state.rsvpStats.pending;
-        
-        elements.rsvpStatsContainer.innerHTML = `
-            <h4>📊 Estado de Confirmaciones</h4>
-            <div class="stat-item">
-                <span class="stat-label">Confirmados</span>
-                <span class="stat-value">${state.rsvpStats.attending}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">No asisten</span>
-                <span class="stat-value">${state.rsvpStats.notAttending}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Pendientes</span>
-                <span class="stat-value">${state.rsvpStats.pending}</span>
-            </div>
-            <div class="stat-item" style="border-top: 1px solid var(--color-border); padding-top: 0.5rem; margin-top: 0.5rem;">
-                <span class="stat-label"><strong>Total</strong></span>
-                <span class="stat-value"><strong>${total}</strong></span>
-            </div>
-        `;
-    }
 
     // Animation Management
     function initializeAnimations() {
@@ -720,7 +658,6 @@
     // Expose public API for debugging
     window.RSVPWebsite = {
         state,
-        updateRSVPStats: updateRSVPStatsDisplay,
         validateForm,
         version: '1.0.0'
     };

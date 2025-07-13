@@ -37,311 +37,116 @@
     <div id="loading-screen" class="loading-screen">
         <div class="loading-content">
             <div class="loading-logo">🤖🔥</div>
-            <div class="loading-text">Loading Parrillazo Guapulense...</div>
+            <div class="loading-text">Loading...</div>
             <div class="loading-bar">
                 <div class="loading-progress"></div>
             </div>
         </div>
     </div>
+    
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <span data-event="name">Parrillazo Guapulense</span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#details" class="nav-link">Details</a></li>
-                <li><a href="#rsvp" class="nav-link">RSVP</a></li>
-            </ul>
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
+    <!-- Hero Section with RSVP -->
+    <section id="home" class="hero hero-flex">
         <div class="hero-background">
-            <!-- Pixel art style background -->
-            <div class="pixel-background"></div>
-            <video class="hero-video" autoplay muted loop poster="./assets/imgs/hero-poster.jpg">
-                <source src="./assets/videos/hero-background.mp4" type="video/mp4">
+            <video class="hero-video" autoplay muted loop poster="./assets/imgs/hero-poster.jpg" id="hero-bg-video">
+                <source src="./assets/vid1.mp4" type="video/mp4">
             </video>
         </div>
-        <div class="hero-content">
-            <div class="hero-text">
+        <div class="hero-content hero-flex-content">
+            <div class="hero-left">
                 <h1 class="hero-title">
-                    <span data-event="name">Parrillazo Guapulense</span>
-                    <span class="emoji-accent">🤖🔥</span>
+                    <span data-event="name">PARRILLAZO GUAPULENSE</span>
                 </h1>
-                <p class="hero-subtitle" data-content="welcome">
-                    EJEMPLO DE TEXTO
-                </p>
                 <div class="hero-details">
                     <div class="detail-item">
-                        <span class="detail-icon">📅</span>
-                        <span data-event="formatted-date">Friday, July 18, 2025</span>
+                        <span data-event="formatted-date">VIERNES 18/07</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-icon">🕔</span>
                         <span data-event="time">5:00 pm</span>
                     </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">📍</span>
-                        <span data-event="location">Guapulo</span>
-                    </div>
                 </div>
-                <div class="hero-cta">
-                    <a href="#rsvp" class="btn btn-primary">RSVP Now</a>
-                    <a href="#about" class="btn btn-secondary">Learn More</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Countdown Timer -->
-        <div class="countdown-container">
-            <h3>Event Countdown</h3>
-            <div id="countdown" class="countdown">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="countdown-days">0</span>
-                    <span class="countdown-label">Days</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="countdown-hours">0</span>
-                    <span class="countdown-label">Hours</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="countdown-minutes">0</span>
-                    <span class="countdown-label">Minutes</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="countdown-seconds">0</span>
-                    <span class="countdown-label">Seconds</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">About the Event</h2>
-                <div class="section-decoration">🤖</div>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Welcome to <span data-event="name">Parrillazo Guapulense</span></h3>
-                    <p data-content="description">EJEMPLO DE DESCRIPCION</p>
-                    
-                    <div class="event-highlights">
-                        <div class="highlight-item">
-                            <span class="highlight-icon">🍖</span>
-                            <div>
-                                <h4>Amazing BBQ</h4>
-                                <p>Delicious grilled specialties</p>
-                            </div>
+                <!-- Countdown Timer -->
+                <div class="countdown-container">
+                    <h3>Countdown</h3>
+                    <div id="countdown" class="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-days">0</span>
+                            <span class="countdown-label">DIAS</span>
                         </div>
-                        <div class="highlight-item">
-                            <span class="highlight-icon">🎵</span>
-                            <div>
-                                <h4>Robot DJ</h4>
-                                <p>Electronic beats and good vibes</p>
-                            </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-hours">0</span>
+                            <span class="countdown-label">HORAS</span>
                         </div>
-                        <div class="highlight-item">
-                            <span class="highlight-icon">🌆</span>
-                            <div>
-                                <h4>City Views</h4>
-                                <p>Beautiful mountain and city lights</p>
-                            </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-minutes">0</span>
+                            <span class="countdown-label">MINUTOS</span>
                         </div>
-                    </div>
-                </div>
-                <div class="about-visual">
-                    <div class="pixel-art-container">
-                        <!-- Pixel art representation -->
-                        <div class="pixel-scene">
-                            <div class="pixel-robot cooking"></div>
-                            <div class="pixel-grill"></div>
-                            <div class="pixel-cat"></div>
-                            <div class="pixel-mountains"></div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-seconds">0</span>
+                            <span class="countdown-label">SEGUNDOS</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Event Details Section -->
-    <section id="details" class="details section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Event Details</h2>
-                <div class="section-decoration">📋</div>
-            </div>
-            <div class="details-grid">
-                <div class="detail-card">
-                    <div class="card-icon">📅</div>
-                    <h3>Date & Time</h3>
-                    <p><strong data-event="formatted-date">Friday, July 18, 2025</strong></p>
-                    <p data-event="time">5:00 pm</p>
-                </div>
-                
-                <div class="detail-card">
-                    <div class="card-icon">📍</div>
-                    <h3>Location</h3>
-                    <p data-event="location">Guapulo</p>
-                </div>
-                
-                <div class="detail-card">
-                    <div class="card-icon">👤</div>
-                    <h3>Host</h3>
-                    <p data-event="hosts">JP</p>
-                </div>
-                
-                <div class="detail-card">
-                    <div class="card-icon">🎁</div>
-                    <h3>What to Bring</h3>
-                    <p data-content="gifts">BYOB & DRUGS</p>
-                </div>
-                
-                <div class="detail-card">
-                    <div class="card-icon">⏰</div>
-                    <h3>RSVP Deadline</h3>
-                    <p data-event="formatted-deadline">Wednesday, July 16, 2025</p>
-                </div>
-                
-                <div class="detail-card">
-                    <div class="card-icon">📝</div>
-                    <h3>Special Notes</h3>
-                    <p data-content="instructions">n/a</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- RSVP Section -->
-    <section id="rsvp" class="rsvp section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">RSVP</h2>
-                <div class="section-decoration">✉️</div>
-                <p class="section-subtitle">Please confirm your attendance by <span data-event="formatted-deadline">Wednesday, July 16, 2025</span></p>
-            </div>
-            
-            <div class="rsvp-container">
+            <div class="hero-right">
                 <form class="rsvp-form" id="rsvp-form" name="rsvp" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
                     <!-- Hidden subject field for better email handling -->
                     <input type="hidden" name="subject" value="Nueva RSVP - Parrillazo Guapulense 2025" />
-                    
                     <!-- Honeypot field for spam protection -->
                     <p style="display: none;">
                         <label>Don't fill this out if you're human: <input name="bot-field" /></label>
                     </p>
-                    
                     <div class="form-group">
-                        <label for="name">Full Name *</label>
+                        <label for="name">NOMBRE *</label>
                         <input type="text" id="name" name="name" required>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="email">Email Address *</label>
+                        <label for="email">EMAIL *</label>
                         <input type="email" id="email" name="email" required>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">TELEFONO</label>
+                            <input type="tel" id="phone" name="phone" style="font-size:clamp(0.9rem,4vw,1rem);">
+                        </div>
+                        <div class="form-group">
+                            <label for="plus_one">+1 GUEST?</label>
+                            <select id="plus_one" name="plus_one" style="font-size:clamp(0.9rem,4vw,1rem);">
+                                <option value="no">SOLO YO</option>
+                                <option value="yes">SI, LLEVO AMIGO/S</option>
+                            </select>
+                        </div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="attendance">Will you attend? *</label>
-                        <select id="attendance" name="attendance" required>
-                            <option value="">Please select...</option>
-                            <option value="yes">Yes, I'll be there! 🤖</option>
-                            <option value="no">Sorry, can't make it 😔</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="plus_one">Plus One Guest?</label>
-                        <select id="plus_one" name="plus_one">
-                            <option value="no">Just me</option>
-                            <option value="yes">Yes, bringing a guest</option>
-                        </select>
-                    </div>
-                    
                     <div class="form-group" id="guest-name-group" style="display: none;">
                         <label for="guest_name">Guest Name</label>
-                        <input type="text" id="guest_name" name="guest_name">
+                        <input type="text" id="guest_name" name="guest_name" style="font-size:clamp(0.9rem,4vw,1rem);">
                     </div>
-                    
                     <div class="form-group">
-                        <label for="custom_question">Extra question example</label>
-                        <textarea id="custom_question" name="custom_question" rows="3"></textarea>
+                        <label for="message">MENSAJE ADICIONAL</label>
+                        <textarea id="message" name="message" rows="1" placeholder="Escribe algo..." style="font-size:clamp(0.9rem,4vw,1rem);"></textarea>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Additional Message</label>
-                        <textarea id="message" name="message" rows="4" placeholder="Any questions or special requests?"></textarea>
-                    </div>
-                    
                     <button type="submit" class="btn btn-primary btn-large">
-                        <span class="btn-text">Send RSVP</span>
-                        <span class="btn-loading">Sending...</span>
+                        <span class="btn-text">CONFIRMAR</span>
+                        <span class="btn-loading">ENVIANDO...</span>
                     </button>
                 </form>
-                
-                <div class="rsvp-info">
-                    <h3>Need Help?</h3>
-                    <p>Questions about the event? Contact <span data-event="hosts">JP</span> directly:</p>
-                    <a href="mailto:jpjacome@yahoo.com" class="contact-link">jpjacome@yahoo.com</a>
-                    
-                    <div class="rsvp-stats">
-                        <h4>Event Status</h4>
-                        <div class="stat-item">
-                            <span class="stat-label">Expected Guests:</span>
-                            <span class="stat-value">15</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">RSVP Deadline:</span>
-                            <span class="stat-value" data-event="formatted-deadline">Wednesday, July 16, 2025</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
+    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span data-event="name">Parrillazo Guapulense</span>
-                    <span class="footer-emoji">🤖🔥</span>
-                </div>
-                <div class="footer-details">
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#details">Details</a>
-                    <a href="#rsvp">RSVP</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Parrillazo Guapulense. Created with ❤️ and 🤖</p>
-            </div>
-        </div>
-    </footer>
+    
 
     <!-- Scripts -->
     <script src="script.js"></script>
+    <script>
+    // Set hero video playback rate to 0.6x
+    document.addEventListener('DOMContentLoaded', function() {
+        var video = document.getElementById('hero-bg-video');
+        if (video) {
+            video.playbackRate = 0.6;
+        }
+    });
+    </script>
 </body>
 </html>
