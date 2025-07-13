@@ -2,7 +2,7 @@
 # Email templates managed via _data/content.json
 
 [build]
-  command = "node build-netlify-config.js"
+  command = ""
   publish = "."
   environment = { NODE_VERSION = "18" }
 
