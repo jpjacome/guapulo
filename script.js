@@ -92,8 +92,11 @@
         
         // Form events
         if (elements.rsvpForm) {
+            console.log('✅ RSVP Form found, attaching event listeners');
             elements.rsvpForm.addEventListener('submit', handleFormSubmit);
             elements.rsvpForm.addEventListener('input', handleFormInput);
+        } else {
+            console.error('❌ RSVP Form not found!');
         }
 
         // Keyboard navigation
@@ -296,6 +299,7 @@
     }
 
     function handleFormSubmit(event) {
+        console.log('🔄 Form submit intercepted by JavaScript');
         event.preventDefault();
         
         if (!validateForm()) {
