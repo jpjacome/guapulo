@@ -33,31 +33,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-logo">🤖🔥</div>
-            <div class="loading-text">Loading...</div>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-        </div>
-    </div>
     
 
     <!-- Hero Section with RSVP -->
     <section id="home" class="hero hero-flex">
         <div class="hero-background">
-            <video class="hero-video" autoplay muted loop poster="./assets/imgs/hero-poster.jpg" id="hero-bg-video">
+            <video class="hero-video fade1" autoplay muted loop poster="./assets/imgs/hero-poster.jpg" id="hero-bg-video">
                 <source src="./assets/vid1.mp4" type="video/mp4">
             </video>
         </div>
         <div class="hero-content hero-flex-content">
             <div class="hero-left">
-                <h1 class="hero-title">
+                <h1 class="hero-title fade1">
                     <span data-event="name">PARRILLAZO GUAPULENSE</span>
                 </h1>
-                <div class="hero-details">
+                <div class="hero-details fade2">
                     <div class="detail-item">
                         <span data-event="formatted-date">VIERNES 18/07</span>
                     </div>
@@ -66,9 +56,9 @@
                     </div>
                 </div>
                 <!-- Countdown Timer -->
-                <div class="countdown-container">
-                    <h3>Countdown</h3>
-                    <div id="countdown" class="countdown">
+                <div class="countdown-container fade2">
+                    <h3 class="fade2">Countdown</h3>
+                    <div id="countdown" class="countdown fade2">
                         <div class="countdown-item">
                             <span class="countdown-number" id="countdown-days">0</span>
                             <span class="countdown-label">DIAS</span>
@@ -89,7 +79,7 @@
                 </div>
             </div>
             <div class="hero-right">
-                <form class="rsvp-form" id="rsvp-form" name="rsvp" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+                <form class="rsvp-form fade3" id="rsvp-form" name="rsvp" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
                     <!-- Hidden subject field for better email handling -->
                     <input type="hidden" name="subject" value="Nueva RSVP - Parrillazo Guapulense 2025" />
                     <!-- Honeypot field for spam protection -->

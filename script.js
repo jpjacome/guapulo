@@ -38,6 +38,25 @@
         } else {
             initializeApp();
         }
+    
+    // Add fade-in classes to elements with fade1, fade2, fade3 with JS delay
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            document.querySelectorAll('.fade1').forEach(function(el) {
+                el.classList.add('fade-in-1');
+            });
+        },1000);
+        setTimeout(function() {
+            document.querySelectorAll('.fade2').forEach(function(el) {
+                el.classList.add('fade-in-2');
+            });
+        }, 2000);
+        setTimeout(function() {
+            document.querySelectorAll('.fade3').forEach(function(el) {
+                el.classList.add('fade-in-3');
+            });
+        }, 3000);
+    });
     }
 
     function initializeApp() {
@@ -52,11 +71,30 @@
         initializeNavigation();
         initializeCountdown();
         initializeRSVPForm();
-        initializeAnimations();
-        initializePixelEffects();
-        
+        // Initialize components
+        initializeNavigation();
+        initializeCountdown();
+        initializeRSVPForm();
+        // All animation-related JS except fade-in logic has been removed
+
+        // Fade-in sequence for hero elements
+        setTimeout(() => {
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) heroTitle.classList.add('fade-in-1');
+        }, 400);
+        setTimeout(() => {
+            const heroDetails = document.querySelector('.hero-details');
+            if (heroDetails) heroDetails.classList.add('fade-in-2');
+            const countdown = document.querySelector('.countdown-container');
+            if (countdown) countdown.classList.add('fade-in-2');
+        }, 1200);
+        setTimeout(() => {
+            const rsvpForm = document.querySelector('.rsvp-form');
+            if (rsvpForm) rsvpForm.classList.add('fade-in-3');
+        }, 2000);
+
         // Hide loading screen after everything is ready
-        setTimeout(hideLoadingScreen, 2000);
+        setTimeout(hideLoadingScreen, 2200);
         
         console.log('✅ Website initialization complete!');
     }
@@ -77,8 +115,6 @@
 
     function setupEventListeners() {
         // Window events
-        window.addEventListener('scroll', handleScroll);
-        window.addEventListener('resize', handleResize);
         
         // Navigation events
         document.addEventListener('click', handleNavClick);
@@ -542,115 +578,7 @@
     // RSVP Statistics
 
 
-    // Animation Management
-    function initializeAnimations() {
-        // Intersection Observer for scroll-triggered animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver(handleIntersection, observerOptions);
-        
-        // Observe animatable elements
-        document.querySelectorAll('.detail-card, .highlight-item, .section-header').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-    }
-
-    function handleIntersection(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const element = entry.target;
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }
-        });
-    }
-
-    function animateOnLoad() {
-        // Animate hero elements
-        const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .hero-details, .hero-cta');
-        heroElements.forEach((el, index) => {
-            el.style.animationDelay = `${index * 0.2}s`;
-        });
-    }
-
-    function handleScrollAnimations() {
-        // Add scroll-based animations here if needed
-        const scrolled = window.scrollY;
-        const rate = scrolled * -0.5;
-        
-        // Parallax effect for hero background
-        const heroBackground = document.querySelector('.pixel-background');
-        if (heroBackground) {
-            heroBackground.style.transform = `translateY(${rate}px)`;
-        }
-    }
-
-    // Pixel Art Effects
-    function initializePixelEffects() {
-        createFloatingPixels();
-        animatePixelElements();
-    }
-
-    function createFloatingPixels() {
-        const pixelContainer = document.querySelector('.pixel-background');
-        if (!pixelContainer) return;
-        
-        // Add additional floating pixel elements
-        for (let i = 0; i < 20; i++) {
-            const pixel = document.createElement('div');
-            pixel.style.cssText = `
-                position: absolute;
-                width: 4px;
-                height: 4px;
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 1px;
-                animation: pixelFloat ${10 + Math.random() * 20}s linear infinite;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
-                animation-delay: ${Math.random() * 10}s;
-            `;
-            pixelContainer.appendChild(pixel);
-        }
-    }
-
-    function animatePixelElements() {
-        // Animate pixel art elements in the about section
-        const pixelElements = document.querySelectorAll('.pixel-robot, .pixel-cat, .pixel-grill');
-        
-        pixelElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                element.style.transform = 'scale(1.1)';
-                element.style.transition = 'transform 0.3s ease';
-            });
-            
-            element.addEventListener('mouseleave', () => {
-                element.style.transform = 'scale(1)';
-            });
-        });
-    }
-
-    // Utility Functions
-    function handleResize() {
-        // Handle responsive adjustments
-        updateCountdownLayout();
-    }
-
-    function updateCountdownLayout() {
-        const countdown = document.querySelector('.countdown');
-        if (!countdown) return;
-        
-        if (window.innerWidth < 480) {
-            countdown.style.flexWrap = 'wrap';
-        } else {
-            countdown.style.flexWrap = 'nowrap';
-        }
-    }
+    // All animation-related JS except fade-in logic has been removed
 
     function handleKeyDown(event) {
         // Keyboard accessibility
