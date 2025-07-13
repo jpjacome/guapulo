@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "php -S localhost:3000",
     "start": "php -S localhost:3000",
-    "build": "echo 'Static site - no build needed'",
-    "deploy": "git add . && git commit -m 'Update content' && git push origin main",
+    "build": "node build-netlify-config.js",
+    "build:emails": "node build-netlify-config.js",
+    "deploy": "npm run build && git add . && git commit -m 'Update content and email templates' && git push origin main",
     "serve": "npx serve -s . -l 3000"
   },
   "keywords": [

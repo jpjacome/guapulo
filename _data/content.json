@@ -18,5 +18,47 @@
     "photo_gallery": false,
     "multilingual": false
   },
-  "notification_email": "jpjacome@yahoo.com"
+  "notification_email": "jpjacome@yahoo.com",
+  "email_templates": {
+    "auto_reply": {
+      "subject": "✅ RSVP Confirmado - Parrillazo Guapulense 2025",
+      "greeting": "¡Hola {{name}}!",
+      "confirmation_message": "¡Genial! Tu confirmación para el Parrillazo Guapulense 2025 ha sido recibida exitosamente.",
+      "event_details": {
+        "title": "📅 DETALLES DEL EVENTO:",
+        "date": "• Fecha: Viernes, 18 de julio de 2025",
+        "time": "• Hora: 7:00 PM",
+        "location": "• Lugar: Barrio Guápulo, Quito",
+        "reminder": "• Recordatorio: BYOB (Trae tu propia bebida)"
+      },
+      "confirmation_details": {
+        "title": "🤖 TU CONFIRMACIÓN:",
+        "attendance": "• Asistencia: {{attendance}}",
+        "plus_one": "{{#plus_one}}• Acompañante: {{plus_one}}{{/plus_one}}",
+        "guest_name": "{{#guest_name}}• Nombre del acompañante: {{guest_name}}{{/guest_name}}"
+      },
+      "closing_message": "¡Te esperamos para una noche increíble de parrilla, buena música y excelente compañía!",
+      "contact_info": {
+        "message": "Si tienes alguna pregunta, no dudes en contactar a JP directamente:",
+        "email": "📧 jpjacome@yahoo.com"
+      },
+      "farewell": "¡Nos vemos en Guápulo! 🔥🤖",
+      "signature": "Parrillazo Guapulense 2025"
+    },
+    "owner_notification": {
+      "subject": "Nueva confirmación RSVP - Parrillazo Guapulense 2025",
+      "intro": "Nueva confirmación recibida para el Parrillazo Guapulense 2025:",
+      "fields": {
+        "name": "Nombre: {{name}}",
+        "email": "Email: {{email}}",
+        "phone": "Teléfono: {{phone}}",
+        "attendance": "Asistencia: {{attendance}}",
+        "plus_one": "Acompañante: {{plus_one}}",
+        "guest_name": "{{#guest_name}}Nombre del acompañante: {{guest_name}}{{/guest_name}}",
+        "custom_question": "{{#custom_question}}Pregunta adicional: {{custom_question}}{{/custom_question}}",
+        "message": "{{#message}}Mensaje adicional: {{message}}{{/message}}"
+      },
+      "timestamp": "Fecha de envío: {{created_at}}"
+    }
+  }
 }
