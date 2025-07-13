@@ -122,20 +122,26 @@
         // Form events
         if (elements.rsvpForm) {
             console.log('✅ RSVP Form found, attaching event listeners');
-        elements.rsvpForm.addEventListener('submit', handleFormSubmit);
-        elements.rsvpForm.addEventListener('input', handleFormInput);
-        elements.rsvpForm.addEventListener('change', handleFormInput);
-
-        // Validate all fields on blur for best UX
-        elements.rsvpForm.querySelectorAll('input, textarea, select').forEach(function(input) {
-            input.addEventListener('blur', function(e) {
-                validateField(e.target);
+            elements.rsvpForm.addEventListener('submit', handleFormSubmit);
+            elements.rsvpForm.addEventListener('input', function(event) {
+                if (event.target.name !== 'phone') {
+                    handleFormInput(event);
+                }
             });
-        });
-        } else {
-            console.error('❌ RSVP Form not found!');
+            elements.rsvpForm.addEventListener('change', function(event) {
+                if (event.target.name !== 'phone') {
+                    handleFormInput(event);
+                }
+            });
+            // Validate all fields on blur for best UX except phone
+            elements.rsvpForm.querySelectorAll('input, textarea, select').forEach(function(input) {
+                if (input.name !== 'phone') {
+                    input.addEventListener('blur', function(e) {
+                        validateField(e.target);
+                    });
+                }
+            });
         }
-
         // Keyboard navigation
         document.addEventListener('keydown', handleKeyDown);
     }
@@ -276,35 +282,10 @@
         Object.keys(timeUnits).forEach(unit => {
             const element = elements.countdownElements[unit];
             if (element) {
-                const newValue = String(timeUnits[unit]).padStart(2, '0');
-                if (element.textContent !== newValue) {
-                    element.textContent = newValue;
-                    animateCountdownChange(element);
-                }
+                element.textContent = timeUnits[unit];
             }
         });
     }
-
-    function animateCountdownChange(element) {
-        element.style.transform = 'scale(1.1)';
-        element.style.transition = 'transform 0.2s ease';
-        
-        setTimeout(() => {
-            element.style.transform = 'scale(1)';
-        }, 200);
-    }
-
-    function displayEventStarted() {
-        const countdownContainer = document.querySelector('.countdown-container');
-        if (countdownContainer) {
-            countdownContainer.innerHTML = `
-                <h3>🎉 ¡El evento ha comenzado!</h3>
-                <p>¡Esperamos que estés disfrutando del Parrillazo Guapulense!</p>
-            `;
-        }
-    }
-
-    // RSVP Form Management
     function initializeRSVPForm() {
         if (!elements.rsvpForm) return;
         
@@ -380,17 +361,7 @@
             }
         }
 
-        // Phone validation (optional, but if present must be at least 6 digits and only numbers)
-        if (fieldName === 'phone' && value) {
-            const digits = value.replace(/\D/g, '');
-            if (digits.length < 6) {
-                isValid = false;
-                errorMessage = 'El teléfono debe tener al menos 6 números.';
-            } else if (!/^\d+$/.test(digits)) {
-                isValid = false;
-                errorMessage = 'Solo números permitidos en el teléfono.';
-            }
-        }
+        // No phone validation, phone is optional and never shows error messages
 
         // Name validation (required, min length 2, only letters and spaces)
         if (fieldName === 'name' && value) {
