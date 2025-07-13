@@ -1,192 +1,36 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡RSVP Confirmado! - Parrillazo Guapulense 2025</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Confirmación enviada - Parrillazo Guapulense</title>
+    <meta name="description" content="Confirmación enviada para el Parrillazo Guapulense">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Confirmación enviada - Parrillazo Guapulense">
+    <meta property="og:description" content="Tu confirmación ha sido enviada exitosamente">
+    <meta property="og:image" content="/assets/imgs/og-thank-you.jpg">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Confirmación enviada - Parrillazo Guapulense">
+    <meta property="twitter:description" content="Tu confirmación ha sido enviada exitosamente">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/imgs/1b.png">
+    <link rel="apple-touch-icon" href="./assets/imgs/1b.png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <div class="logo-container">
-                <h1 class="logo">
-                    <span class="logo-text">Guápulo</span>
-                    <span class="logo-pixel">🤖</span>
-                </h1>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <section class="success-section">
-                <div class="success-container">
-                    <div class="success-icon">
-                        <span class="pixel-check">✅</span>
-                    </div>
-                    
-                    <h2 class="success-title">¡RSVP Confirmado!</h2>
-                    
-                    <div class="success-message">
-                        <p><strong>¡Genial! Tu confirmación ha sido recibida.</strong></p>
-                        <p>Te esperamos en el <strong>Parrillazo Guapulense 2025</strong></p>
-                        
-                        <div class="event-reminder">
-                            <h3>📅 Detalles del Evento</h3>
-                            <p><strong>Fecha:</strong> Viernes, 18 de julio de 2025</p>
-                            <p><strong>Hora:</strong> 7:00 PM</p>
-                            <p><strong>Lugar:</strong> Barrio Guápulo, Quito</p>
-                            <p><strong>Recordatorio:</strong> BYOB (Trae tu propia bebida)</p>
-                        </div>
-                        
-                        <div class="next-steps">
-                            <h3>🤖 Próximos Pasos</h3>
-                            <ul>
-                                <li>Recibirás un email de confirmación en unos minutos</li>
-                                <li>JP también recibirá tu confirmación y te contactará si es necesario</li>
-                                <li>Si tienes preguntas urgentes, contacta a JP: <a href="mailto:jpjacome@yahoo.com">jpjacome@yahoo.com</a></li>
-                                <li>¡Prepárate para una noche increíble!</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <a href="/" class="btn btn-primary">
-                            <span class="btn-text">← Volver al Inicio</span>
-                        </a>
-                        
-                        <a href="mailto:jpjacome@yahoo.com?subject=Pregunta sobre Parrillazo Guapulense 2025" class="btn btn-secondary">
-                            <span class="btn-text">Contactar al Host</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </main>
-        
-        <footer class="footer">
-            <div class="footer-content">
-                <p>&copy; 2025 Parrillazo Guapulense. Hecho con ❤️ y código 🤖</p>
-            </div>
-        </footer>
+<body style="margin:0;">
+    <div style="min-height:100vh;background:black;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;">
+        <div style="max-width:400px;width:100%;margin:auto;text-align:center;padding:2.5rem 1.5rem;">
+            <div style="font-size:3rem;margin-bottom:2rem;color:#D0FF00;">✅</div>
+            <h1 style="color:#D0FF00;font-size:2rem;font-weight:700;margin-bottom:1.5rem;">¡Confirmación enviada!</h1>
+            <p style="color:#D0FF00;font-size:1.1rem;margin-bottom:2.5rem;">Gracias por confirmar.<br>Nos vemos pronto.</p>
+            <a href="/" style="display:inline-block;padding:0.75rem 2rem;font-size:1rem;font-weight:600;background:#D0FF00;color:black;border-radius:8px;text-decoration:none;transition:background 0.2s;">Volver al formulario</a>
+        </div>
     </div>
-
-    <style>
-        .success-section {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 0;
-        }
-
-        .success-container {
-            max-width: 600px;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .pixel-check {
-            animation: bounce 0.6s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 60%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            80% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .success-title {
-            font-size: 2.5rem;
-            color: var(--primary-color, #00ff88);
-            margin-bottom: 2rem;
-            font-family: 'JetBrains Mono', monospace;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-
-        .success-message {
-            margin-bottom: 2rem;
-            text-align: left;
-        }
-
-        .success-message p {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .event-reminder,
-        .next-steps {
-            background: rgba(0, 255, 136, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 1px solid rgba(0, 255, 136, 0.2);
-        }
-
-        .event-reminder h3,
-        .next-steps h3 {
-            color: var(--primary-color, #00ff88);
-            margin-bottom: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .next-steps ul {
-            text-align: left;
-            padding-left: 1.5rem;
-        }
-
-        .next-steps li {
-            margin-bottom: 0.5rem;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid var(--primary-color, #00ff88);
-            color: var(--primary-color, #00ff88);
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary-color, #00ff88);
-            color: var(--bg-color, #0a0a0a);
-        }
-
-        @media (max-width: 600px) {
-            .success-container {
-                margin: 1rem;
-                padding: 2rem 1rem;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .success-title {
-                font-size: 2rem;
-            }
-        }
-    </style>
 </body>
 </html>
