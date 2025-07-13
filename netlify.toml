@@ -1,10 +1,17 @@
 # Netlify Configuration for Parrillazo Guapulense RSVP Website
-# Simplified - using EmailJS for all email functionality
+# Hybrid approach: Netlify Forms for owner notifications, EmailJS for user confirmations
 
 [build]
   command = ""
   publish = "."
   environment = { NODE_VERSION = "18" }
+
+[forms]
+  enabled = true
+
+# Form notifications managed via Netlify UI
+# Go to: Site settings > Forms > Form notifications
+# Add notification to: jpjacome@yahoo.com
 
 # Headers for security and performance
 [[headers]]

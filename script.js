@@ -398,58 +398,44 @@
         const formData = new FormData(elements.rsvpForm);
         const data = Object.fromEntries(formData);
         
-        // Initialize EmailJS
+        // Initialize EmailJS for user confirmation
         emailjs.init('kgZlrpJKfDpOhLkvX');
         
-        // Prepare parameters for both emails
-        const sharedParams = {
+        // Send confirmation email to user via EmailJS
+        const userParams = {
+            to_name: data.name || '',
+            to_email: data.email || '',
             event_name: 'Parrillazo Guapulense 2025',
-            event_date: 'Friday, July 18, 2025',
-            event_time: '6:00 PM',
-            event_location: 'Guápulo',
-            name: data.name || '',
-            email: data.email || '',
-            phone: data.phone || '',
+            event_date: 'Viernes, 18 de julio de 2025',
+            event_time: '7:00 PM',
+            event_location: 'Barrio Guápulo, Quito',
             attendance: data.attendance || '',
             plus_one: data.plus_one || 'no',
             guest_name: data.guest_name || '',
-            custom_question: data.custom_question || '',
-            message: data.message || '',
-            timestamp: new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' })
+            host_email: 'jpjacome@yahoo.com'
         };
         
-        // Send notification to owner (you)
-        const ownerParams = {
-            ...sharedParams,
-            to_name: 'JP',
-            to_email: 'jpjacome@yahoo.com',
-            subject: `Nueva RSVP: ${data.name} - ${data.attendance}`,
-            is_notification: 'true'
-        };
-        
-        // Send auto-reply to form submitter
-        const userParams = {
-            ...sharedParams,
-            to_name: data.name,
-            to_email: data.email,
-            subject: 'Confirmación RSVP - Parrillazo Guapulense 2025',
-            is_notification: 'false'
-        };
-        
-        // Send both emails simultaneously
+        // Send user confirmation via EmailJS AND submit to Netlify Forms
         Promise.all([
-            emailjs.send('service_skzxxs6', 'template_5mp33rb', ownerParams),
-            emailjs.send('service_skzxxs6', 'template_5mp33rb', userParams)
+            // EmailJS for user confirmation
+            emailjs.send('service_skzxxs6', 'template_5mp33rb', userParams),
+            
+            // Netlify Forms for owner notification
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(formData).toString()
+            })
         ])
         .then(() => {
-            console.log('✅ Both emails sent successfully!');
+            console.log('✅ User confirmation sent via EmailJS, owner notification sent via Netlify!');
             // Clear saved form data
             clearSavedFormData();
             // Redirect to success page
             window.location.href = '/success.html';
         })
         .catch(error => {
-            console.error('❌ Email sending failed:', error);
+            console.error('❌ Form submission failed:', error);
             showFormError('Hubo un error al enviar el formulario. Por favor intenta nuevamente.');
             setButtonLoading(submitButton, false);
         });
