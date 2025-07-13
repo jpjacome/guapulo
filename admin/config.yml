@@ -1,8 +1,9 @@
-# Netlify CMS (Stable) Configuration
+# Netlify CMS with Auth0 Extension Configuration
 # Content Management System for Parrillazo Guapulense RSVP Website
 
 backend:
-  name: git-gateway
+  name: github
+  repo: jpjacome/guapulo
   branch: main
 
 # Media storage

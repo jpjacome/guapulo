@@ -7,5 +7,23 @@
 </head>
 <body>
   <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
+  <script>
+    // Netlify CMS with Auth0 extension integration
+    // The Auth0 extension provides authentication automatically
+    
+    // Initialize CMS after DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if Auth0 environment variables are available
+      console.log('Checking for Auth0 configuration...');
+      
+      // The Netlify Auth0 extension should provide these automatically
+      if (typeof window.ENV !== 'undefined' && window.ENV.AUTH0_DOMAIN) {
+        console.log('Auth0 environment detected');
+      }
+      
+      // Initialize CMS - it will use the config.yml settings
+      CMS.init();
+    });
+  </script>
 </body>
 </html>
