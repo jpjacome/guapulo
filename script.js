@@ -95,6 +95,14 @@
             console.log('✅ RSVP Form found, attaching event listeners');
             elements.rsvpForm.addEventListener('submit', handleFormSubmit);
             elements.rsvpForm.addEventListener('input', handleFormInput);
+            
+            // Only validate email on blur
+            const emailInput = elements.rsvpForm.querySelector('input[type="email"]');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function(e) {
+                    validateField(e.target);
+                });
+            }
         } else {
             console.error('❌ RSVP Form not found!');
         }
@@ -294,8 +302,10 @@
         // Auto-save form data
         saveFormData();
         
-        // Real-time validation
-        validateField(event.target);
+        // Real-time validation for non-email fields only
+        if (type !== 'email') {
+            validateField(event.target);
+        }
     }
 
     function handleFormSubmit(event) {
