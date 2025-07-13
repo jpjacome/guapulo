@@ -611,6 +611,20 @@
         }
     });
 
+    // Fix mobile video resize issue due to browser header minimization
+    function setHeroVideoHeight() {
+        var video = document.querySelector('.hero-video');
+        if (video && window.innerWidth <= 768) {
+            video.style.height = window.innerHeight + 'px';
+        } else if (video) {
+            video.style.height = '';
+        }
+    }
+    window.addEventListener('resize', setHeroVideoHeight);
+    window.addEventListener('orientationchange', setHeroVideoHeight);
+    document.addEventListener('DOMContentLoaded', setHeroVideoHeight);
+    setHeroVideoHeight();
+
     // Initialize the application
     init();
 
