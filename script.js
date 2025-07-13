@@ -388,17 +388,39 @@
         // Add additional data
         formData.append('timestamp', new Date().toISOString());
         formData.append('event', 'Parrillazo Guapulense');
-        // Submit to Netlify
+        // Submit to Netlify (for notifications)
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(formData).toString()
         })
         .then(() => {
-            // Clear saved form data
-            clearSavedFormData();
-            // Redirect to success page
-            window.location.href = '/success.html';
+            // Also send RSVP data to Netlify function for Notion
+            const jsonData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                plus_one: formData.get('plus_one'),
+                guest_name: formData.get('guest_name'),
+                message: formData.get('message'),
+                timestamp: formData.get('timestamp')
+            };
+            fetch('/.netlify/functions/rsvp-to-notion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jsonData)
+            })
+            .then(() => {
+                // Clear saved form data
+                clearSavedFormData();
+                // Redirect to success page
+                window.location.href = '/success.html';
+            })
+            .catch(error => {
+                console.error('Notion integration error:', error);
+                // Still redirect, but optionally show a warning
+                window.location.href = '/success.html';
+            });
         })
         .catch(error => {
             console.error('Form submission error:', error);
