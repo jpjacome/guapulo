@@ -335,7 +335,7 @@
             isValid = false;
             errorMessage = 'Este campo es requerido.';
         }
-        
+
         // Email validation
         if (fieldType === 'email' && value) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -344,9 +344,18 @@
                 errorMessage = 'Por favor ingresa un email válido.';
             }
         }
+
+        // Phone validation (optional, but if present must be at least 6 digits)
+        if (fieldName === 'phone' && value) {
+            const digits = value.replace(/\D/g, '');
+            if (digits.length < 6) {
+                isValid = false;
+                errorMessage = 'El teléfono debe tener al menos 6 números.';
+            }
+        }
+
         // Display validation result
         displayFieldValidation(field, isValid, errorMessage);
-        
         return isValid;
     }
 
