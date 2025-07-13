@@ -70,7 +70,7 @@
     function cacheElements() {
         elements.loadingScreen = document.querySelector('.loading-screen');
         elements.navbar = document.querySelector('.navbar');
-        elements.rsvpForm = document.querySelector('#rsvpForm');
+        elements.rsvpForm = document.querySelector('#rsvp-form');
         elements.rsvpStatsContainer = document.querySelector('.rsvp-stats');
         
         // Countdown elements
@@ -394,28 +394,62 @@
         // Show loading state
         setButtonLoading(submitButton, true);
         
-        // Prepare form data
+        // Get form data
         const formData = new FormData(elements.rsvpForm);
+        const data = Object.fromEntries(formData);
         
-        // Add additional data
-        formData.append('timestamp', new Date().toISOString());
-        formData.append('event', 'Parrillazo Guapulense');
+        // Initialize EmailJS
+        emailjs.init('kgZlrpJKfDpOhLkvX');
         
-        // Submit to Netlify
-        fetch('/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(formData).toString()
-        })
+        // Prepare parameters for both emails
+        const sharedParams = {
+            event_name: 'Parrillazo Guapulense 2025',
+            event_date: 'Friday, July 18, 2025',
+            event_time: '6:00 PM',
+            event_location: 'Guápulo',
+            name: data.name || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            attendance: data.attendance || '',
+            plus_one: data.plus_one || 'no',
+            guest_name: data.guest_name || '',
+            custom_question: data.custom_question || '',
+            message: data.message || '',
+            timestamp: new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' })
+        };
+        
+        // Send notification to owner (you)
+        const ownerParams = {
+            ...sharedParams,
+            to_name: 'JP',
+            to_email: 'jpjacome@yahoo.com',
+            subject: `Nueva RSVP: ${data.name} - ${data.attendance}`,
+            is_notification: 'true'
+        };
+        
+        // Send auto-reply to form submitter
+        const userParams = {
+            ...sharedParams,
+            to_name: data.name,
+            to_email: data.email,
+            subject: 'Confirmación RSVP - Parrillazo Guapulense 2025',
+            is_notification: 'false'
+        };
+        
+        // Send both emails simultaneously
+        Promise.all([
+            emailjs.send('service_skzxxs6', 'template_5mp33rb', ownerParams),
+            emailjs.send('service_skzxxs6', 'template_5mp33rb', userParams)
+        ])
         .then(() => {
+            console.log('✅ Both emails sent successfully!');
             // Clear saved form data
             clearSavedFormData();
-            
-            // Redirect to thank you page
-            window.location.href = CONFIG.formEndpoint;
+            // Redirect to success page
+            window.location.href = '/success.html';
         })
         .catch(error => {
-            console.error('Form submission error:', error);
+            console.error('❌ Email sending failed:', error);
             showFormError('Hubo un error al enviar el formulario. Por favor intenta nuevamente.');
             setButtonLoading(submitButton, false);
         });

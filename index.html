@@ -236,10 +236,7 @@
             </div>
             
             <div class="rsvp-container">
-                <form class="rsvp-form" name="rsvp" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/success.html">
-                    <!-- Hidden subject field for better email handling -->
-                    <input type="hidden" name="subject" value="RSVP Confirmación - Parrillazo Guapulense 2025" data-remove-prefix />
-                    
+                <form class="rsvp-form" id="rsvp-form">
                     <!-- Honeypot field for spam protection -->
                     <p style="display: none;">
                         <label>Don't fill this out if you're human: <input name="bot-field" /></label>
@@ -342,6 +339,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

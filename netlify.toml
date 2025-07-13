@@ -1,21 +1,10 @@
 # Netlify Configuration for Parrillazo Guapulense RSVP Website
-# Email templates managed via _data/content.json
+# Simplified - using EmailJS for all email functionality
 
 [build]
   command = ""
   publish = "."
   environment = { NODE_VERSION = "18" }
-
-[functions]
-  directory = "netlify/functions"
-
-[forms]
-  enabled = true
-
-# Form notifications managed via Netlify UI
-# Go to: Site settings > Forms > Form notifications
-# - Owner notification: to jpjacome@yahoo.com  
-# - Auto-reply: to {{email}}
 
 # Headers for security and performance
 [[headers]]
