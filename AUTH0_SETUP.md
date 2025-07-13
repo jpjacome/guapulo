@@ -1,95 +1,55 @@
-# Auth0 Setup Guide for Parrillazo Guapulense CMS
+# Netlify Auth0 Extension Setup Guide
+## Official Integration for Parrillazo Guapulense CMS
 
-## Step 1: Create Auth0 Account
-1. Go to [auth0.com](https://auth0.com) and sign up for a free account
-2. Choose "Personal" for account type
-3. Select your region (closest to your users)
+✅ **You've already installed the Auth0 extension!** Now follow these steps:
 
-## Step 2: Create Auth0 Application
-1. In Auth0 Dashboard, go to **Applications**
-2. Click **"Create Application"**
-3. Name: `Parrillazo Guapulense CMS`
-4. Type: **Single Page Application (SPA)**
-5. Click **Create**
+## Step 1: Connect Your Auth0 Tenant
+1. In your Netlify dashboard, go to your **guapulo** site
+2. Navigate to **Site Settings** → **Access & security** → scroll to **Auth0 extension settings**
+3. Click **"Link an Auth0 tenant"**
+4. Follow the prompts to authorize Netlify to access your Auth0 account
+5. If you don't have an Auth0 account, click **"Sign up with Auth0"**
 
-## Step 3: Configure Application Settings
-In your new application settings:
+## Step 2: Configure Auth0 for Your Site
+1. Under **Site tenants**, click **"Add a tenant"**
+2. Select your Auth0 tenant
+3. Click **"Create new application"** (this creates a Single Page App optimized for Netlify)
+4. Optionally click **"Create new API"** (for backend functions)
+5. Select **"Production"** as the deploy context
+6. Leave the environment variable prefix blank (or choose a preset if needed)
 
-### Allowed Callback URLs:
-```
-https://guapuliza.netlify.app/admin/,
-http://localhost:3000/admin/
-```
+## Step 3: Verify the Setup
+The extension automatically:
+- ✅ Creates Auth0 Single Page Application
+- ✅ Sets up proper callback URLs for your Netlify site
+- ✅ Configures CORS settings
+- ✅ Generates environment variables (`AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, etc.)
+- ✅ Optimizes security settings (RS256, proper scopes)
 
-### Allowed Logout URLs:
-```
-https://guapuliza.netlify.app/,
-http://localhost:3000/
-```
-
-### Allowed Web Origins:
-```
-https://guapuliza.netlify.app,
-http://localhost:3000
-```
-
-### Allowed Origins (CORS):
-```
-https://guapuliza.netlify.app,
-http://localhost:3000
-```
-
-## Step 4: Get Your Credentials
-From the application settings, copy these values:
-- **Domain**: `your-tenant.auth0.com`
-- **Client ID**: `aBcDeFgHiJkLmNoPqRsTuVwXyZ123456`
-
-## Step 5: Create Auth0 API (for backend access)
-1. Go to **APIs** in Auth0 Dashboard
-2. Click **"Create API"**
-3. Name: `Parrillazo CMS API`
-4. Identifier: `https://guapuliza.netlify.app/api`
-5. Signing Algorithm: **RS256**
-6. Click **Create**
-
-## Step 6: Update CMS Configuration
-Replace the placeholders in `/admin/config.yml` and `/admin/index.html`:
-
-```yaml
-# In admin/config.yml
-auth0:
-  domain: YOUR_ACTUAL_DOMAIN.auth0.com
-  client_id: YOUR_ACTUAL_CLIENT_ID
-  audience: https://guapuliza.netlify.app/api
-```
-
-```javascript
-// In admin/index.html
-const auth0Config = {
-  domain: 'YOUR_ACTUAL_DOMAIN.auth0.com',
-  clientId: 'YOUR_ACTUAL_CLIENT_ID',
-  audience: 'https://guapuliza.netlify.app/api'
-};
-```
-
-## Step 7: Test the Setup
-1. Deploy your changes to Netlify
-2. Go to `https://guapuliza.netlify.app/admin/`
+## Step 4: Test Your CMS
+1. Wait for Netlify to redeploy your site (1-2 minutes)
+2. Go to: `https://guapuliza.netlify.app/admin/`
 3. You should be redirected to Auth0 login
-4. Create an account or login
-5. You should be redirected back to the CMS
+4. Create an account or sign in
+5. You'll be redirected back to your CMS
 
-## Benefits of Auth0 over Netlify Identity:
-- ✅ **Active support** and regular updates
-- ✅ **Better security** with modern auth standards
-- ✅ **Social logins** (Google, Facebook, etc.)
-- ✅ **Multi-factor authentication** support
-- ✅ **Better user management** tools
-- ✅ **Free tier** supports up to 7,000 active users
+## What the Extension Handles Automatically:
+- **Application Type**: Single Page Application (SPA)
+- **Callback URLs**: Your Netlify site URLs + `/admin/`
+- **CORS Settings**: Proper origins for your domain
+- **JWT Algorithm**: RS256 (recommended by Auth0)
+- **Environment Variables**: Automatically injected into your builds
+
+## Benefits:
+- ✅ **Zero manual configuration** needed
+- ✅ **Automatic security optimization**
+- ✅ **Local development support**
+- ✅ **Team collaboration** features
+- ✅ **Production-ready** out of the box
 
 ## Troubleshooting:
-- If login fails, check your callback URLs match exactly
-- If CORS errors occur, verify your allowed origins
-- Make sure your Auth0 domain and client ID are correct
+- **CMS won't load**: Check that extension is configured for "Production" deploy context
+- **Auth redirect fails**: Verify your site URL matches the configured domain
+- **Permission denied**: Make sure you're the site owner or have proper team access
 
-Let me know when you've set up Auth0 and I'll help you configure the final details!
+Your CMS should now work seamlessly with Auth0 authentication!
