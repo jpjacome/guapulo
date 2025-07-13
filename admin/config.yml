@@ -1,11 +1,11 @@
-# Netlify CMS with Auth0 Extension Configuration
+# Netlify CMS with GitHub OAuth
 # Content Management System for Parrillazo Guapulense RSVP Website
 
 backend:
   name: github
   repo: jpjacome/guapulo
   branch: main
-
+  
 # Media storage
 media_folder: "assets/imgs"
 public_folder: "/assets/imgs"
