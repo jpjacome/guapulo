@@ -1,5 +1,5 @@
-// Netlify Function to handle form submissions and send auto-reply emails
-// Using EmailJS for free email sending (no SMTP credentials needed)
+// Netlify Function to handle form submissions and send auto-reply emails via EmailJS
+// Receives webhook notifications from Netlify Forms and sends styled confirmation emails
 
 exports.handler = async (event, context) => {
   // Only respond to POST requests (webhook notifications)
@@ -36,73 +36,58 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Build the auto-reply email content
-    const emailBody = `
-¡Hola ${name}!
+    // EmailJS configuration
+    const EMAILJS_SERVICE_ID = 'service_skzxxs6';
+    const EMAILJS_TEMPLATE_ID = 'template_5mp33rb';
+    const EMAILJS_USER_ID = 'kgZlrpJKfDpOhLkvX';
 
-¡Genial! Tu confirmación para el Parrillazo Guapulense 2025 ha sido recibida exitosamente.
+    // Prepare template parameters for EmailJS
+    const templateParams = {
+      to_name: name,
+      to_email: email,
+      attendance: attendance,
+      plus_one: plus_one,
+      guest_name: guest_name || '',
+      // Add any other dynamic content needed
+    };
 
-📅 DETALLES DEL EVENTO:
-• Fecha: Viernes, 18 de julio de 2025
-• Hora: 7:00 PM
-• Lugar: Barrio Guápulo, Quito
-• Recordatorio: BYOB (Trae tu propia bebida)
-
-🤖 TU CONFIRMACIÓN:
-• Asistencia: ${attendance}
-${plus_one === 'yes' ? `• Acompañante: ${plus_one}` : ''}
-${guest_name ? `• Nombre del acompañante: ${guest_name}` : ''}
-
-¡Te esperamos para una noche increíble de parrilla, buena música y excelente compañía!
-
-Si tienes alguna pregunta, no dudes en contactar a JP directamente:
-📧 jpjacome@yahoo.com
-
-¡Nos vemos en Guápulo! 🔥🤖
-
----
-Parrillazo Guapulense 2025
-    `.trim();
-
-    // For now, just log the email that would be sent
-    // You can implement actual email sending using:
-    // 1. EmailJS API
-    // 2. SendGrid API
-    // 3. Mailgun API
-    // 4. Or any other email service
-    
-    console.log(`Would send auto-reply to: ${email}`);
-    console.log('Email content:', emailBody);
-
-    // TODO: Implement actual email sending
-    // Example with fetch to external email service:
-    /*
-    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    // Send email via EmailJS API
+    const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        service_id: 'your_service_id',
-        template_id: 'your_template_id',
-        user_id: 'your_user_id',
-        template_params: {
-          to_email: email,
-          to_name: name,
-          message: emailBody
-        }
+        service_id: EMAILJS_SERVICE_ID,
+        template_id: EMAILJS_TEMPLATE_ID,
+        user_id: EMAILJS_USER_ID,
+        template_params: templateParams
       })
     });
-    */
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ 
-        success: true, 
-        message: `Auto-reply logged for ${email}`,
-        webhook_received: true
-      })
-    };
+    if (emailResponse.ok) {
+      console.log(`Auto-reply email sent successfully to ${email}`);
+      
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ 
+          success: true, 
+          message: `Auto-reply sent to ${email}`,
+          emailjs_response: 'Email sent successfully'
+        })
+      };
+    } else {
+      const errorText = await emailResponse.text();
+      console.error('EmailJS API error:', errorText);
+      
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ 
+          error: 'Failed to send email via EmailJS',
+          details: errorText 
+        })
+      };
+    }
 
   } catch (error) {
     console.error('Error processing form submission:', error);
