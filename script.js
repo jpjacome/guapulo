@@ -323,7 +323,6 @@
             return;
         }
         submitForm();
-// Hybrid form submission: Netlify for owner, EmailJS for user, custom success page
     }
 
     function validateForm() {
