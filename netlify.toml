@@ -114,16 +114,8 @@
 [context.branch-deploy]
   command = ""
 
-# Plugin settings
-[[plugins]]
-  package = "netlify-plugin-sitemap"
-  
-  [plugins.inputs]
-    buildDir = "."
-    exclude = [
-      "/admin/**",
-      "/404.html"
-    ]
+# Sitemap generation (handled automatically by Netlify)
+# No plugins needed for basic static site
 
 # Feature flags
 [dev]
