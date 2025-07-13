@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada - Parrillazo Guapulense 2025</title>
+    <meta name="description" content="La página que buscas no existe">
+    <meta name="robots" content="noindex">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                Parrillazo Guapulense 🤖
+            </a>
+        </div>
+    </nav>
+
+    <!-- 404 Section -->
+    <section class="error-404">
+        <div class="container">
+            <div class="error-content">
+                <!-- 404 Animation -->
+                <div class="error-visual">
+                    <div class="pixel-robot-confused">
+                        🤖
+                    </div>
+                    <div class="error-code">404</div>
+                    <div class="pixel-glitch">
+                        <span>?</span>
+                        <span>!</span>
+                        <span>⚠️</span>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message">
+                    <h1>¡Oops! Página no encontrada</h1>
+                    <p>Parece que el robot-chef se perdió buscando esta página. 🤖💭</p>
+                    <p>La página que estás buscando no existe o ha sido movida.</p>
+                </div>
+
+                <!-- Helpful Links -->
+                <div class="error-actions">
+                    <h3>¿Qué puedes hacer?</h3>
+                    <div class="action-links">
+                        <a href="/" class="btn btn-primary btn-large">
+                            🏠 Ir al Inicio
+                        </a>
+                        <a href="/#rsvp" class="btn btn-secondary btn-large">
+                            📝 Confirmar Asistencia
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event Quick Info -->
+                <div class="event-quick-info">
+                    <h4>📅 Recordatorio del Evento</h4>
+                    <div class="quick-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">🗓️</span>
+                            <span>18 de Julio, 2025</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⏰</span>
+                            <span>6:00 PM</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span>Guápulo, Quito</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="error-contact">
+                    <p>¿Necesitas ayuda? Contacta a JP:</p>
+                    <div class="contact-options">
+                        <a href="mailto:jp@example.com" class="contact-link">
+                            📧 jp@example.com
+                        </a>
+                        <a href="tel:+593999999999" class="contact-link">
+                            📱 +593 99 999 9999
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    Parrillazo Guapulense 2025
+                    <span class="footer-emoji">🤖</span>
+                </div>
+                <div class="footer-details">
+                    <p>18 de Julio, 2025 • 6:00 PM • Guápulo, Quito</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Inicio</a>
+                    <a href="mailto:jp@example.com">Contacto</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Parrillazo Guapulense. Hecho con ❤️ y código pixel art.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 404 Specific Styles -->
+    <style>
+        .error-404 {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-xxl) 0;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-pixel-blue) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-404::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, var(--color-pixel-yellow) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, var(--color-pixel-orange) 1px, transparent 1px);
+            background-size: 50px 50px, 30px 30px;
+            opacity: 0.1;
+            animation: pixelFloat 20s linear infinite;
+        }
+
+        .error-content {
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .error-visual {
+            margin-bottom: var(--spacing-xl);
+            position: relative;
+        }
+
+        .pixel-robot-confused {
+            font-size: 5rem;
+            margin-bottom: var(--spacing-md);
+            animation: robotConfused 3s ease-in-out infinite;
+            display: block;
+        }
+
+        .error-code {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 700;
+            font-family: var(--font-mono);
+            margin-bottom: var(--spacing-md);
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--color-pixel-yellow), var(--color-pixel-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pixel-glitch {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .pixel-glitch span {
+            font-size: 2rem;
+            animation: glitchFloat 2s ease-in-out infinite;
+        }
+
+        .pixel-glitch span:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .pixel-glitch span:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .error-message h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: var(--spacing-md);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .error-message p {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-sm);
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .error-actions {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin: var(--spacing-xl) auto;
+            max-width: 500px;
+        }
+
+        .error-actions h3 {
+            margin-bottom: var(--spacing-lg);
+            color: white;
+        }
+
+        .action-links {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .event-quick-info {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) auto;
+            max-width: 400px;
+        }
+
+        .event-quick-info h4 {
+            margin-bottom: var(--spacing-md);
+            color: white;
+        }
+
+        .quick-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .quick-details .detail-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            justify-content: center;
+        }
+
+        .quick-details .detail-icon {
+            font-size: 1.25rem;
+        }
+
+        .error-contact {
+            margin-top: var(--spacing-lg);
+            opacity: 0.9;
+        }
+
+        .error-contact p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .contact-options {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: var(--radius-md);
+            color: white;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .contact-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes robotConfused {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.05); }
+            50% { transform: rotate(-3deg) scale(0.95); }
+            75% { transform: rotate(3deg) scale(1.02); }
+        }
+
+        @keyframes glitchFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            25% { transform: translateY(-10px) rotate(5deg); opacity: 0.8; }
+            50% { transform: translateY(5px) rotate(-3deg); opacity: 0.6; }
+            75% { transform: translateY(-5px) rotate(2deg); opacity: 0.9; }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .action-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .quick-details {
+                align-items: center;
+            }
+
+            .contact-options {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+
+    <!-- Simple JavaScript for 404 page -->
+    <script>
+        // Track 404 errors
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_not_found', {
+                'event_category': 'error',
+                'event_label': window.location.pathname
+            });
+        }
+
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make robot clickable for fun
+            const robot = document.querySelector('.pixel-robot-confused');
+            if (robot) {
+                robot.addEventListener('click', function() {
+                    robot.style.animation = 'none';
+                    robot.style.transform = 'scale(1.2) rotate(360deg)';
+                    robot.style.transition = 'transform 0.5s ease';
+                    
+                    setTimeout(() => {
+                        robot.style.animation = 'robotConfused 3s ease-in-out infinite';
+                        robot.style.transform = '';
+                    }, 500);
+                });
+            }
+
+            // Animate elements on load
+            const elements = document.querySelectorAll('.error-message, .error-actions, .event-quick-info');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 200 + (index * 200));
+            });
+        });
+    </script>
+</body>
+</html>

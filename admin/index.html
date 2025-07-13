@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager - Parrillazo Guapulense</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // Initialize Netlify Identity
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+
+    // Custom preview templates for the CMS
+    CMS.registerPreviewTemplate("event", createClass({
+      render: function() {
+        const entry = this.props.entry;
+        const eventName = entry.getIn(['data', 'name']) || 'Event Name';
+        const eventDate = entry.getIn(['data', 'date']) || 'Event Date';
+        const eventLocation = entry.getIn(['data', 'location']) || 'Event Location';
+        
+        return h('div', {
+          style: {
+            padding: '20px',
+            fontFamily: 'Inter, sans-serif',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }
+        }, [
+          h('h1', { style: { color: '#2E86AB', marginBottom: '10px' } }, eventName),
+          h('p', { style: { fontSize: '18px', marginBottom: '8px' } }, `📅 ${eventDate}`),
+          h('p', { style: { fontSize: '18px', marginBottom: '8px' } }, `📍 ${eventLocation}`),
+          h('div', { 
+            style: { 
+              background: '#F8F9FA', 
+              padding: '15px', 
+              borderRadius: '8px',
+              marginTop: '20px'
+            } 
+          }, [
+            h('h3', { style: { margin: '0 0 10px 0' } }, 'Preview'),
+            h('p', { style: { margin: 0, fontSize: '14px', color: '#6c757d' } }, 
+              'This is how your event information will appear on the website.')
+          ])
+        ]);
+      }
+    }));
+
+    CMS.registerPreviewTemplate("settings", createClass({
+      render: function() {
+        const entry = this.props.entry;
+        const primaryColor = entry.getIn(['data', 'colors', 'primary']) || '#2E86AB';
+        const secondaryColor = entry.getIn(['data', 'colors', 'secondary']) || '#F8F9FA';
+        
+        return h('div', {
+          style: {
+            padding: '20px',
+            fontFamily: 'Inter, sans-serif',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }
+        }, [
+          h('h1', { style: { color: primaryColor, marginBottom: '20px' } }, 'Design Settings Preview'),
+          h('div', {
+            style: {
+              display: 'flex',
+              gap: '20px',
+              marginBottom: '20px'
+            }
+          }, [
+            h('div', {
+              style: {
+                width: '100px',
+                height: '100px',
+                backgroundColor: primaryColor,
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontWeight: 'bold'
+              }
+            }, 'Primary'),
+            h('div', {
+              style: {
+                width: '100px',
+                height: '100px',
+                backgroundColor: secondaryColor,
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: primaryColor,
+                fontWeight: 'bold',
+                border: `2px solid ${primaryColor}`
+              }
+            }, 'Secondary')
+          ]),
+          h('p', { style: { fontSize: '14px', color: '#6c757d' } }, 
+            'These colors will be applied throughout your event website.')
+        ]);
+      }
+    }));
+
+    // Initialize CMS
+    CMS.init();
+  </script>
+</body>
+</html>

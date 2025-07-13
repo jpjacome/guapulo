@@ -1,0 +1,222 @@
+{
+  "folders": [
+    {
+      "name": "Parrillazo Guapulense RSVP Website",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "*.toml": "toml",
+      "*.yml": "yaml",
+      "*.json": "jsonc"
+    },
+    "emmet.includeLanguages": {
+      "html": "html",
+      "css": "css"
+    },
+    "html.suggest.html5": true,
+    "css.validate": true,
+    "css.lint.duplicateProperties": "warning",
+    "css.lint.vendorPrefix": "warning",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.rulers": [80, 120],
+    "files.exclude": {
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/.git": true,
+      "**/node_modules": true,
+      "**/.netlify": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.netlify": true,
+      "**/dist": true,
+      "**/build": true
+    },
+    "html.format.indentInnerHtml": true,
+    "html.format.wrapLineLength": 80,
+    "css.format.spaceAroundSelectorSeparator": true,
+    "javascript.format.semicolons": "insert",
+    "javascript.preferences.quoteStyle": "single",
+    "json.format.enable": true,
+    "liveServer.settings.port": 3000,
+    "liveServer.settings.CustomBrowser": "chrome",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "liveServer.settings.donotVerifyTags": true,
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "index.html": "style.css, script.js, thank-you.html",
+      "package.json": "package-lock.json, yarn.lock",
+      "netlify.toml": ".env*, _redirects, _headers",
+      "*.html": "$(capture).css, $(capture).js"
+    },
+    "explorer.sortOrder": "type",
+    "breadcrumbs.enabled": true,
+    "editor.minimap.enabled": true,
+    "editor.codeLens": true,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Default Light+",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "extensions.ignoreRecommendations": false
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.live-server",
+      "bradlc.vscode-tailwindcss",
+      "formulahendry.auto-rename-tag",
+      "christian-kohler.path-intellisense",
+      "ms-vscode.vscode-json",
+      "redhat.vscode-yaml",
+      "tamasfe.even-better-toml",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-typescript-next",
+      "pkief.material-icon-theme",
+      "github.vscode-pull-request-github",
+      "ms-vscode.vscode-github-issue-notebooks",
+      "eamodio.gitlens",
+      "streetsidesoftware.code-spell-checker",
+      "wayou.vscode-todo-highlight",
+      "gruntfuggly.todo-tree",
+      "yzhang.markdown-all-in-one",
+      "davidanson.vscode-markdownlint",
+      "ms-vscode.hexeditor",
+      "tombonnike.vscode-status-bar-format-toggle",
+      "alefragnani.Bookmarks",
+      "usernamehw.errorlens",
+      "ms-vscode.vscode-css-peek",
+      "zignd.html-css-class-completion",
+      "pranaygp.vscode-css-peek"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start Local Server",
+        "type": "shell",
+        "command": "php",
+        "args": ["-S", "localhost:3000"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "new",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "isBackground": true,
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}"
+        }
+      },
+      {
+        "label": "Open in Browser",
+        "type": "shell",
+        "command": "start",
+        "args": ["http://localhost:3000"],
+        "windows": {
+          "command": "cmd",
+          "args": ["/c", "start", "http://localhost:3000"]
+        },
+        "group": "test",
+        "presentation": {
+          "echo": false,
+          "reveal": "never",
+          "focus": false
+        }
+      },
+      {
+        "label": "Validate HTML",
+        "type": "shell",
+        "command": "npx",
+        "args": ["html-validate", "*.html"],
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false
+        }
+      },
+      {
+        "label": "Build for Production",
+        "type": "shell",
+        "command": "echo",
+        "args": ["Static site - no build needed"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always"
+        }
+      },
+      {
+        "label": "Deploy to Netlify",
+        "type": "shell",
+        "command": "npx",
+        "args": ["netlify-cli", "deploy", "--prod"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always"
+        },
+        "dependsOrder": "sequence",
+        "dependsOn": ["Build for Production"]
+      },
+      {
+        "label": "Open CMS Admin",
+        "type": "shell",
+        "command": "start",
+        "args": ["http://localhost:3000/admin"],
+        "windows": {
+          "command": "cmd",
+          "args": ["/c", "start", "http://localhost:3000/admin"]
+        },
+        "group": "test",
+        "presentation": {
+          "echo": false,
+          "reveal": "never"
+        }
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Chrome",
+        "request": "launch",
+        "type": "chrome",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}",
+        "userDataDir": "${workspaceFolder}/.chrome-debug"
+      },
+      {
+        "name": "Launch Chrome (Thank You Page)",
+        "request": "launch",
+        "type": "chrome",
+        "url": "http://localhost:3000/thank-you.html",
+        "webRoot": "${workspaceFolder}",
+        "userDataDir": "${workspaceFolder}/.chrome-debug"
+      },
+      {
+        "name": "Launch Chrome (CMS Admin)",
+        "request": "launch",
+        "type": "chrome",
+        "url": "http://localhost:3000/admin",
+        "webRoot": "${workspaceFolder}",
+        "userDataDir": "${workspaceFolder}/.chrome-debug"
+      }
+    ]
+  }
+}

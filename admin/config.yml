@@ -1,0 +1,218 @@
+# Netlify CMS (Decap CMS) Configuration
+# Content Management System for Parrillazo Guapulense RSVP Website
+
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: 'Create {{collection}} "{{slug}}"'
+    update: 'Update {{collection}} "{{slug}}"'
+    delete: 'Delete {{collection}} "{{slug}}"'
+    uploadMedia: 'Upload "{{path}}"'
+    deleteMedia: 'Delete "{{path}}"'
+    openAuthoring: '{{message}}'
+
+# Local development backend
+local_backend: true
+
+# Media storage
+media_folder: "assets/imgs"
+public_folder: "/assets/imgs"
+
+# Site configuration
+site_url: https://jpjacome.github.io/guapulo
+display_url: https://jpjacome.github.io/guapulo
+logo_url: /assets/imgs/logo.png
+
+# Editor configuration
+editor:
+  preview: true
+
+# Collections
+collections:
+  # Event Information
+  - name: "event"
+    label: "Event Information"
+    files:
+      - file: "_data/event.json"
+        label: "Event Details"
+        name: "event-details"
+        fields:
+          - { label: "Event Name", name: "name", widget: "string", hint: "The main title of your event" }
+          - { label: "Event Type", name: "type", widget: "select", options: ["BBQ", "Birthday", "Wedding", "Corporate", "Other"], hint: "Select the type of event" }
+          - { label: "Date", name: "date", widget: "datetime", hint: "When is your event happening?" }
+          - { label: "Time", name: "time", widget: "string", hint: "What time does the event start? (e.g., 6:00 PM)" }
+          - { label: "Location", name: "location", widget: "string", hint: "Where is the event taking place?" }
+          - { label: "Address", name: "address", widget: "text", required: false, hint: "Full address (optional)" }
+          - { label: "Host Name", name: "host", widget: "string", hint: "Who is organizing the event?" }
+          - { label: "Host Email", name: "hostEmail", widget: "string", hint: "Contact email for the host" }
+          - { label: "Host Phone", name: "hostPhone", widget: "string", required: false, hint: "Contact phone (optional)" }
+          - { label: "Description", name: "description", widget: "text", hint: "Brief description of the event" }
+          - { label: "Max Guests", name: "maxGuests", widget: "number", default: 100, hint: "Maximum number of attendees" }
+          - { label: "RSVP Deadline", name: "rsvpDeadline", widget: "datetime", hint: "Last date to RSVP" }
+          - label: "Event Details"
+            name: "details"
+            widget: "object"
+            fields:
+              - { label: "Dress Code", name: "dressCode", widget: "string", required: false }
+              - { label: "Parking Info", name: "parking", widget: "text", required: false }
+              - { label: "Special Instructions", name: "instructions", widget: "text", required: false }
+              - { label: "What to Bring", name: "toBring", widget: "text", required: false }
+
+  # Design Settings
+  - name: "settings"
+    label: "Design Settings"
+    files:
+      - file: "_data/settings.json"
+        label: "Website Settings"
+        name: "website-settings"
+        fields:
+          - label: "Color Scheme"
+            name: "colorScheme"
+            widget: "select"
+            options: 
+              - { label: "Professional Corporate", value: "professional-corporate" }
+              - { label: "Vibrant Celebration", value: "vibrant-celebration" }
+              - { label: "Elegant Classic", value: "elegant-classic" }
+              - { label: "Warm Cozy", value: "warm-cozy" }
+              - { label: "Cool Modern", value: "cool-modern" }
+              - { label: "Custom", value: "custom" }
+          - label: "Custom Colors (if Custom selected)"
+            name: "colors"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Primary Color", name: "primary", widget: "color", required: false }
+              - { label: "Secondary Color", name: "secondary", widget: "color", required: false }
+              - { label: "Accent Color", name: "accent", widget: "color", required: false }
+              - { label: "Text Color", name: "text", widget: "color", required: false }
+              - { label: "Background Color", name: "background", widget: "color", required: false }
+          - label: "Theme"
+            name: "theme"
+            widget: "select"
+            options:
+              - { label: "8-bit Robots", value: "8bit-robots" }
+              - { label: "Minimalist Modern", value: "minimalist-modern" }
+              - { label: "Classic Elegant", value: "classic-elegant" }
+              - { label: "Fun Cartoon", value: "fun-cartoon" }
+              - { label: "Professional Clean", value: "professional-clean" }
+          - { label: "Website Title", name: "title", widget: "string" }
+          - { label: "Meta Description", name: "description", widget: "text" }
+          - { label: "Footer Text", name: "footerText", widget: "string", required: false }
+          - label: "Social Media"
+            name: "social"
+            widget: "object"
+            collapsed: true
+            required: false
+            fields:
+              - { label: "Facebook URL", name: "facebook", widget: "string", required: false }
+              - { label: "Twitter URL", name: "twitter", widget: "string", required: false }
+              - { label: "Instagram URL", name: "instagram", widget: "string", required: false }
+
+  # Content Management
+  - name: "content"
+    label: "Content"
+    files:
+      - file: "_data/content.json"
+        label: "Website Content"
+        name: "website-content"
+        fields:
+          - label: "Hero Section"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Subtitle", name: "subtitle", widget: "text" }
+              - { label: "Call to Action Text", name: "ctaText", widget: "string" }
+          - label: "About Section"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - label: "Highlights"
+                name: "highlights"
+                widget: "list"
+                fields:
+                  - { label: "Icon", name: "icon", widget: "string", hint: "Emoji or icon" }
+                  - { label: "Title", name: "title", widget: "string" }
+                  - { label: "Description", name: "description", widget: "text" }
+          - label: "RSVP Form"
+            name: "rsvp"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - label: "Custom Questions"
+                name: "customQuestions"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Question", name: "question", widget: "string" }
+                  - { label: "Type", name: "type", widget: "select", options: ["text", "textarea", "select", "checkbox"] }
+                  - { label: "Options (for select)", name: "options", widget: "list", required: false, field: { label: "Option", name: "option", widget: "string" } }
+                  - { label: "Required", name: "required", widget: "boolean", default: false }
+              - { label: "Success Message", name: "successMessage", widget: "text" }
+
+  # Image Gallery
+  - name: "gallery"
+    label: "Image Gallery"
+    folder: "assets/imgs/gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Alt Text", name: "alt", widget: "string" }
+
+  # Pages
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "404.html"
+        label: "404 Page"
+        name: "404-page"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Message", name: "message", widget: "text" }
+          - { label: "Button Text", name: "buttonText", widget: "string" }
+
+# Custom widgets and editor components
+editor_components:
+  - label: "Countdown Timer"
+    id: "countdown"
+    fields:
+      - { label: "Event Date", name: "date", widget: "datetime" }
+    pattern: '<div class="countdown" data-date="{{date}}"></div>'
+    
+  - label: "RSVP Button"
+    id: "rsvp-button"
+    fields:
+      - { label: "Button Text", name: "text", widget: "string", default: "RSVP Now" }
+      - { label: "Button Style", name: "style", widget: "select", options: ["primary", "secondary"] }
+    pattern: '<a href="#rsvp" class="btn btn-{{style}}">{{text}}</a>'
+
+  - label: "Event Highlight"
+    id: "highlight"
+    fields:
+      - { label: "Icon", name: "icon", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+    pattern: |
+      <div class="highlight-item">
+        <span class="highlight-icon">{{icon}}</span>
+        <div>
+          <h4>{{title}}</h4>
+          <p>{{description}}</p>
+        </div>
+      </div>
+
+# Workflow for content approval
+publish_mode: editorial_workflow
+
+# Authentication
+auth:
+  providers:
+    - name: netlify
+      label: "Netlify Identity"

@@ -1,0 +1,16 @@
+{
+  "primary_color": "#2E86AB",
+  "secondary_color": "#F8F9FA", 
+  "accent_color": "#343A40",
+  "text_color": "#343A40",
+  "background_color": "#F8F9FA",
+  "hero_type": "video",
+  "hero_description": "8 bit image of robots in a bbq party, robots cooking sausages on a grill, robot dj, robots talking, a very tiny yellow cat sleeping, mountains in the back, city lights, minecraft style, pixel art, geometric, 16 colors, blue color palette",
+  "logo_available": false,
+  "logo_text": "Parrillazo Guapulense",
+  "favicon_enabled": true,
+  "color_scheme_name": "Professional Corporate",
+  "invitation_tone": "casual",
+  "font_primary": "Segoe UI, system-ui, sans-serif",
+  "font_heading": "Segoe UI, system-ui, sans-serif"
+}

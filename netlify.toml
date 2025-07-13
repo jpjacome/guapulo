@@ -1,0 +1,169 @@
+# Netlify Configuration for Parrillazo Guapulense RSVP Website
+# Professional Corporate Theme with 8-bit pixel art elements
+
+[build]
+  # Build command (not needed for static site)
+  command = ""
+  
+  # Publish directory
+  publish = "."
+  
+  # Build environment
+  environment = { NODE_VERSION = "18" }
+
+# Netlify Functions (if needed for future enhancements)
+[functions]
+  directory = "netlify/functions"
+
+# Form handling
+[forms]
+  # Enable Netlify Forms
+  enabled = true
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    
+    # Performance headers
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache static assets
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML files with shorter cache
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Redirects for clean URLs and error handling
+[[redirects]]
+  from = "/rsvp"
+  to = "/#rsvp"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/#about"
+  status = 301
+
+[[redirects]]
+  from = "/details"
+  to = "/#details"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/#rsvp"
+  status = 301
+
+# Error pages
+[[redirects]]
+  from = "/404"
+  to = "/404.html"
+  status = 404
+
+# Form submission redirect
+[[redirects]]
+  from = "/success"
+  to = "/thank-you.html"
+  status = 200
+
+# Edge functions for dynamic content (future enhancement)
+# [[edge_functions]]
+#   function = "rsvp-counter"
+#   path = "/api/rsvp-stats"
+
+# Context-specific settings for different environments
+[context.production]
+  command = ""
+  
+[context.deploy-preview]
+  command = ""
+  
+[context.branch-deploy]
+  command = ""
+
+# Plugin settings
+[[plugins]]
+  package = "netlify-plugin-sitemap"
+  
+  [plugins.inputs]
+    buildDir = "."
+    exclude = [
+      "/admin/**",
+      "/404.html"
+    ]
+
+# Feature flags
+[dev]
+  command = ""
+  port = 3000
+  publish = "."
+  autoLaunch = true
+
+# Analytics and monitoring
+[template.environment]
+  NETLIFY_SITE_NAME = "parrillazo-guapulense"
+  NETLIFY_SITE_URL = "https://jpjacome.github.io/guapulo"
+
+# Prerendering for better SEO
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+# Split testing (future enhancement)
+# [[split_tests]]
+#   path = "/"
+#   branches = [
+#     { branch = "main", weight = 50 },
+#     { branch = "variant-b", weight = 50 }
+#   ]
+
+# Large Media (for high-quality images)
+# [large_media]
+#   enabled = true
+
+# Identity settings (for future CMS authentication)
+# [identity]
+#   enabled = true

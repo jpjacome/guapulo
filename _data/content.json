@@ -1,0 +1,22 @@
+{
+  "welcome_message": "EJEMPLO DE TEXTO",
+  "event_description": "EJEMPLO DE DESCRIPCION",
+  "gift_info": "BYOB & DRUGS",
+  "special_instructions": "n/a",
+  "seo_title": "Parrillazo Guapulense",
+  "seo_description": "Join us for Parrillazo Guapulense - a casual BBQ event in Guapulo on July 18, 2025. RSVP by July 16!",
+  "form_settings": {
+    "dietary_restrictions": false,
+    "plus_one_allowed": true,
+    "phone_required": true,
+    "custom_questions": ["Extra question example"],
+    "spam_protection": false
+  },
+  "features": {
+    "countdown_timer": true,
+    "social_sharing": false,
+    "photo_gallery": false,
+    "multilingual": false
+  },
+  "notification_email": "jpjacome@yahoo.com"
+}
