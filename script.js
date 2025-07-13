@@ -93,8 +93,8 @@
         // Form events
         if (elements.rsvpForm) {
             console.log('✅ RSVP Form found, attaching event listeners');
-            elements.rsvpForm.addEventListener('submit', handleFormSubmit);
-            elements.rsvpForm.addEventListener('input', handleFormInput);
+        elements.rsvpForm.addEventListener('submit', handleFormSubmit);
+        elements.rsvpForm.addEventListener('input', handleFormInput);
             
             // Only validate email on blur
             const emailInput = elements.rsvpForm.querySelector('input[type="email"]');
@@ -311,13 +311,50 @@
     function handleFormSubmit(event) {
         console.log('🔄 Form submit intercepted by JavaScript');
         event.preventDefault();
-        
         if (!validateForm()) {
             showFormError('Por favor corrige los errores antes de enviar.');
             return;
         }
-        
-        submitForm();
+        submitFormHybrid();
+// Hybrid form submission: Netlify for owner, EmailJS for user, custom success page
+function submitFormHybrid() {
+    const submitButton = elements.rsvpForm.querySelector('button[type="submit"]');
+    if (!submitButton) return;
+    setButtonLoading(submitButton, true);
+    const formData = new FormData(elements.rsvpForm);
+    const data = Object.fromEntries(formData);
+    // EmailJS user confirmation
+    emailjs.init('kgZlrpJKfDpOhLkvX');
+    const userParams = {
+        to_name: data.name || '',
+        to_email: data.email || '',
+        event_name: 'Parrillazo Guapulense 2025',
+        event_date: 'Viernes, 18 de julio de 2025',
+        event_time: '7:00 PM',
+        event_location: 'Barrio Guápulo, Quito',
+        attendance: data.attendance || '',
+        plus_one: data.plus_one || 'no',
+        guest_name: data.guest_name || '',
+        host_email: 'jpjacome@yahoo.com'
+    };
+    Promise.all([
+        emailjs.send('service_skzxxs6', 'template_5mp33rb', userParams),
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+        })
+    ])
+    .then(() => {
+        clearSavedFormData();
+        window.location.href = '/success.html';
+    })
+    .catch(error => {
+        console.error('❌ Form submission failed:', error);
+        showFormError('Hubo un error al enviar el formulario. Por favor intenta nuevamente.');
+        setButtonLoading(submitButton, false);
+    });
+}
     }
 
     function validateForm() {
