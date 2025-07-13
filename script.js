@@ -124,14 +124,14 @@
             console.log('✅ RSVP Form found, attaching event listeners');
         elements.rsvpForm.addEventListener('submit', handleFormSubmit);
         elements.rsvpForm.addEventListener('input', handleFormInput);
+        elements.rsvpForm.addEventListener('change', handleFormInput);
 
-        // Only validate email on blur
-        const emailInput = elements.rsvpForm.querySelector('input[type="email"]');
-        if (emailInput) {
-            emailInput.addEventListener('blur', function(e) {
+        // Validate all fields on blur for best UX
+        elements.rsvpForm.querySelectorAll('input, textarea, select').forEach(function(input) {
+            input.addEventListener('blur', function(e) {
                 validateField(e.target);
             });
-        }
+        });
         } else {
             console.error('❌ RSVP Form not found!');
         }
@@ -329,8 +329,8 @@
         // Auto-save form data
         saveFormData();
         
-        // Real-time validation for non-email fields only
-        if (type !== 'email') {
+        // Real-time validation for non-email fields except phone
+        if (type !== 'email' && name !== 'phone') {
             validateField(event.target);
         }
     }
@@ -362,10 +362,9 @@
         const value = field.value.trim();
         const fieldName = field.name;
         const fieldType = field.type;
-        
         let isValid = true;
         let errorMessage = '';
-        
+
         // Required field validation
         if (field.hasAttribute('required') && !value) {
             isValid = false;
@@ -381,12 +380,26 @@
             }
         }
 
-        // Phone validation (optional, but if present must be at least 6 digits)
+        // Phone validation (optional, but if present must be at least 6 digits and only numbers)
         if (fieldName === 'phone' && value) {
             const digits = value.replace(/\D/g, '');
             if (digits.length < 6) {
                 isValid = false;
                 errorMessage = 'El teléfono debe tener al menos 6 números.';
+            } else if (!/^\d+$/.test(digits)) {
+                isValid = false;
+                errorMessage = 'Solo números permitidos en el teléfono.';
+            }
+        }
+
+        // Name validation (required, min length 2, only letters and spaces)
+        if (fieldName === 'name' && value) {
+            if (value.length < 2) {
+                isValid = false;
+                errorMessage = 'El nombre debe tener al menos 2 caracteres.';
+            } else if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(value)) {
+                isValid = false;
+                errorMessage = 'El nombre solo puede contener letras y espacios.';
             }
         }
 
@@ -399,12 +412,11 @@
         const formGroup = field.closest('.form-group');
         if (!formGroup) return;
         
-        // Remove existing error elements
-        const existingError = formGroup.querySelector('.field-error');
-        if (existingError) {
-            existingError.remove();
-        }
-        
+        // Remove all previous error messages for this field
+        formGroup.querySelectorAll('.field-error-message').forEach(function(el) {
+            el.remove();
+        });
+
         // Remove any custom error styling from the field itself
         field.classList.remove('field-valid');
         // Only show error message below the field
@@ -458,13 +470,13 @@
             .then(() => {
                 // Clear saved form data
                 clearSavedFormData();
-                // Redirect to success page
-                window.location.href = '/success.html';
+                // Redirect to thank you page
+                window.location.href = '/thank-you.html';
             })
             .catch(error => {
                 console.error('Notion integration error:', error);
                 // Still redirect, but optionally show a warning
-                window.location.href = '/success.html';
+                window.location.href = '/thank-you.html';
             });
         })
         .catch(error => {
