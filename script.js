@@ -95,14 +95,21 @@
             console.log('✅ RSVP Form found, attaching event listeners');
         elements.rsvpForm.addEventListener('submit', handleFormSubmit);
         elements.rsvpForm.addEventListener('input', handleFormInput);
-            
-            // Only validate email on blur
-            const emailInput = elements.rsvpForm.querySelector('input[type="email"]');
-            if (emailInput) {
-                emailInput.addEventListener('blur', function(e) {
-                    validateField(e.target);
-                });
-            }
+
+        // Only validate email on blur
+        const emailInput = elements.rsvpForm.querySelector('input[type="email"]');
+        if (emailInput) {
+            emailInput.addEventListener('blur', function(e) {
+                validateField(e.target);
+            });
+        }
+        // Only validate phone on blur
+        const phoneInput = elements.rsvpForm.querySelector('input[name="phone"]');
+        if (phoneInput) {
+            phoneInput.addEventListener('blur', function(e) {
+                validateField(e.target);
+            });
+        }
         } else {
             console.error('❌ RSVP Form not found!');
         }
@@ -302,8 +309,8 @@
         // Auto-save form data
         saveFormData();
         
-        // Real-time validation for non-email fields only
-        if (type !== 'email') {
+        // Real-time validation for non-email and non-phone fields only
+        if (type !== 'email' && name !== 'phone') {
             validateField(event.target);
         }
     }
@@ -315,46 +322,8 @@
             showFormError('Por favor corrige los errores antes de enviar.');
             return;
         }
-        submitFormHybrid();
+        submitForm();
 // Hybrid form submission: Netlify for owner, EmailJS for user, custom success page
-function submitFormHybrid() {
-    const submitButton = elements.rsvpForm.querySelector('button[type="submit"]');
-    if (!submitButton) return;
-    setButtonLoading(submitButton, true);
-    const formData = new FormData(elements.rsvpForm);
-    const data = Object.fromEntries(formData);
-    // EmailJS user confirmation
-    emailjs.init('kgZlrpJKfDpOhLkvX');
-    const userParams = {
-        to_name: data.name || '',
-        to_email: data.email || '',
-        event_name: 'Parrillazo Guapulense 2025',
-        event_date: 'Viernes, 18 de julio de 2025',
-        event_time: '7:00 PM',
-        event_location: 'Barrio Guápulo, Quito',
-        attendance: data.attendance || '',
-        plus_one: data.plus_one || 'no',
-        guest_name: data.guest_name || '',
-        host_email: 'jpjacome@yahoo.com'
-    };
-    Promise.all([
-        emailjs.send('service_skzxxs6', 'template_5mp33rb', userParams),
-        fetch('/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(formData).toString()
-        })
-    ])
-    .then(() => {
-        clearSavedFormData();
-        window.location.href = '/success.html';
-    })
-    .catch(error => {
-        console.error('❌ Form submission failed:', error);
-        showFormError('Hubo un error al enviar el formulario. Por favor intenta nuevamente.');
-        setButtonLoading(submitButton, false);
-    });
-}
     }
 
     function validateForm() {
