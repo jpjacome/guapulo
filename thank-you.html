@@ -349,22 +349,6 @@
 
         })();
     </script>
-
-    <!-- Netlify Identity for CMS authentication -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    
-    <!-- Netlify Identity initialization -->
-    <script>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
-    </script>
     
     <!-- Additional CSS for thank you page -->
     <style>

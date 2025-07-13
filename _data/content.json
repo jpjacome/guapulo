@@ -1,10 +1,10 @@
 {
-  "welcome_message": "EJEMPLO DE TEXTO",
-  "event_description": "EJEMPLO DE DESCRIPCION",
-  "gift_info": "BYOB & DRUGS",
-  "special_instructions": "n/a",
-  "seo_title": "Parrillazo Guapulense",
-  "seo_description": "Join us for Parrillazo Guapulense - a casual BBQ event in Guapulo on July 18, 2025. RSVP by July 16!",
+  "welcome_message": "¡Bienvenidos al Parrillazo Guapulense 2025!",
+  "event_description": "Únete a nosotros para una parrillada especial en el hermoso barrio de Guápulo. Disfrutaremos de buena comida, música y compañía en un ambiente relajado y festivo.",
+  "gift_info": "BYOB (Trae tu propia bebida) - Nosotros ponemos la parrilla y la buena vibra",
+  "special_instructions": "Por favor confirma tu asistencia antes del 16 de julio. El evento será al aire libre, trae ropa cómoda.",
+  "seo_title": "Parrillazo Guapulense 2025",
+  "seo_description": "Únete al Parrillazo Guapulense - una parrillada especial en Guápulo el 18 de julio de 2025. ¡Confirma tu asistencia antes del 16 de julio!",
   "form_settings": {
     "dietary_restrictions": false,
     "plus_one_allowed": true,
