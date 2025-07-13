@@ -1,19 +1,9 @@
-# Netlify CMS (Decap CMS) Configuration
+# Netlify CMS (Legacy) Configuration
 # Content Management System for Parrillazo Guapulense RSVP Website
 
 backend:
   name: git-gateway
   branch: main
-  commit_messages:
-    create: 'Create {{collection}} "{{slug}}"'
-    update: 'Update {{collection}} "{{slug}}"'
-    delete: 'Delete {{collection}} "{{slug}}"'
-    uploadMedia: 'Upload "{{path}}"'
-    deleteMedia: 'Delete "{{path}}"'
-    openAuthoring: '{{message}}'
-
-# Local development backend
-local_backend: true
 
 # Media storage
 media_folder: "assets/imgs"
@@ -22,11 +12,10 @@ public_folder: "/assets/imgs"
 # Site configuration
 site_url: https://jpjacome.github.io/guapulo
 display_url: https://jpjacome.github.io/guapulo
-logo_url: /assets/imgs/logo.png
 
 # Editor configuration
 editor:
-  preview: true
+  preview: false
 
 # Collections
 collections:
