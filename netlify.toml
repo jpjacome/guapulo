@@ -32,40 +32,9 @@
   Fecha de envío: {{created_at}}
   """
 
-[[forms.notifications]]
-  form = "rsvp"
-  to = "{{email}}"
-  from = "noreply@guapuliza.netlify.app"
-  subject = "✅ RSVP Confirmado - Parrillazo Guapulense 2025"
-  body = """
-  ¡Hola {{name}}!
-  
-  ¡Genial! Tu confirmación para el Parrillazo Guapulense 2025 ha sido recibida exitosamente.
-  
-  📅 DETALLES DEL EVENTO:
-  • Fecha: Viernes, 18 de julio de 2025
-  • Hora: 7:00 PM
-  • Lugar: Barrio Guápulo, Quito
-  • Recordatorio: BYOB (Trae tu propia bebida)
-  
-  🤖 TU CONFIRMACIÓN:
-  • Asistencia: {{attendance}}
-  {{#plus_one}}• Acompañante: {{plus_one}}{{/plus_one}}
-  {{#guest_name}}• Nombre del acompañante: {{guest_name}}{{/guest_name}}
-  
-  ¡Te esperamos para una noche increíble de parrilla, buena música y excelente compañía!
-  
-  Si tienes alguna pregunta, no dudes en contactar a JP directamente:
-  📧 jpjacome@yahoo.com
-  
-  ¡Nos vemos en Guápulo! 🔥🤖
-  
-  ---
-  Parrillazo Guapulense 2025
-  
-  ---
-  📝 Email content managed via _data/content.json
-  """
+# NOTE: Auto-reply emails to form submitters must be set up via Netlify UI
+# Go to: Site settings > Forms > Form notifications > Add notification
+# This is the only way to send confirmation emails to users who submit forms
 
 # Headers for security and performance
 [[headers]]
