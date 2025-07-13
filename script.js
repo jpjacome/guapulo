@@ -371,12 +371,10 @@
             existingError.remove();
         }
         
-        // Update field styling
-        field.classList.remove('field-valid', 'field-error');
-        
+        // Remove any custom error styling from the field itself
+        field.classList.remove('field-valid');
+        // Only show error message below the field
         if (!isValid) {
-            field.classList.add('field-error');
-            
             // Add error message
             const errorElement = document.createElement('div');
             errorElement.className = 'field-error-message';
@@ -384,7 +382,6 @@
             errorElement.style.color = '#dc3545';
             errorElement.style.fontSize = '0.875rem';
             errorElement.style.marginTop = '0.25rem';
-            
             formGroup.appendChild(errorElement);
         } else if (field.value.trim()) {
             field.classList.add('field-valid');
