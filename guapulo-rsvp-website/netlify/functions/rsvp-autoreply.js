@@ -53,13 +53,22 @@ exports.handler = async (event) => {
       template_id: process.env.EMAILJS_TEMPLATE_ID,
       user_id: process.env.EMAILJS_USER_ID,
       template_params: {
+        // Map to the exact template placeholders provided by the user
+        event_name: data.event_name || 'Parrillazo Guapulense',
+        to_name: name,
+        event_date: data.event_date || '19 de septiembre',
+        event_time: data.event_time || '6:00 pm',
+        event_location: data.event_location || 'Lugar por confirmar',
+        attendance: data.attendance || 'Sí',
+        plus_one: plus_one || 'no',
+        guest_name: guest_name || '',
+        host_email: process.env.EMAIL_HOST || 'jpjacome@yahoo.com',
+        // Backwards-compatible aliases
         name,
         email,
         phone,
-        attendance: data.attendance || 'Sí',
-        plus_one,
-        guest_name,
-        message
+        message,
+        submission_id: data.submission_id || `rsvp_${Date.now()}`
       }
     };
     // If a private key is provided in env, include it in the payload (EmailJS strict mode)
