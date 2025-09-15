@@ -1,6 +1,7 @@
 [build]
   command = ""
   publish = "guapulo-rsvp-website"
+  functions = "guapulo-rsvp-website/netlify/functions"
   environment = { NODE_VERSION = "18" }
 
 [forms]
