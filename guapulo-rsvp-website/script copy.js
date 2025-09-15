@@ -75,8 +75,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// EmailJS configuration
-emailjs.init("kgZlrpJKfDpOhLkvX");
+// EmailJS configuration (guarded): read public user id from <body data-emailjs-user>
+(function(){
+    try {
+        var _b = document && document.body;
+        var _uid = _b && _b.getAttribute && _b.getAttribute('data-emailjs-user');
+        if (_uid && window.emailjs && emailjs.init) {
+            emailjs.init(_uid);
+        }
+    } catch(e) {
+        console.warn('EmailJS init error', e);
+    }
+})();
 
 // Global flag to prevent multiple form handlers
 let formHandlerInitialized = false;
@@ -149,22 +159,35 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.textContent = 'Enviando...';
             submitBtn.disabled = true;
             
-            // Send email using EmailJS
-            emailjs.send('service_skzxxs6', 'template_fv1upvn', data)
-                .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    // Redirect to thank you page
-                    window.location.href = '/thank-you.html';
-                }, function(error) {
-                    console.log('FAILED...', error);
-                    alert('Error al enviar el mensaje. Por favor, intenta de nuevo.');
-                    
-                    // Reset button and flag
+            // Send email using EmailJS (only if service/template are provided via data-attributes)
+            try {
+                var _body = document && document.body;
+                var _svc = _body && _body.getAttribute && _body.getAttribute('data-emailjs-service');
+                var _tmpl = _body && _body.getAttribute && _body.getAttribute('data-emailjs-template');
+                if (_svc && _tmpl && window.emailjs && emailjs.send) {
+                    emailjs.send(_svc, _tmpl, data).then(function(response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                        window.location.href = '/thank-you.html';
+                    }, function(error) {
+                        console.log('FAILED...', error);
+                        alert('Error al enviar el mensaje. Por favor, intenta de nuevo.');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        isSubmitting = false;
+                    });
+                } else {
+                    console.warn('EmailJS client not configured (data-emailjs-service/template missing)');
+                    // Fallback: reset button and flag so submit can be retried
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
                     isSubmitting = false;
-                    console.log('Reset isSubmitting to false due to error');
-                });
+                }
+            } catch (e) {
+                console.warn('EmailJS client send error', e);
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                isSubmitting = false;
+            }
         });
     } else {
         console.log('No RSVP form found on this page');
