@@ -528,13 +528,25 @@
                             plus_one: jsonData.plus_one || '',
                             message: jsonData.message || ''
                         };
-                        // Replace these IDs with your actual EmailJS service and template IDs
-                        emailjs.send('service_l17qp6e', 'template_5mp33rb', emailParams)
-                        .then(function(response) {
-                            console.log('EmailJS client send success', response);
-                        }, function(error) {
-                            console.warn('EmailJS client send failed', error);
-                        });
+                        // Client-side EmailJS send will only run if data attributes are set on <body>:
+                        // data-emailjs-service and data-emailjs-template. This avoids committing IDs.
+                        try {
+                            const body = document && document.body;
+                            const serviceId = body && body.getAttribute && body.getAttribute('data-emailjs-service');
+                            const templateId = body && body.getAttribute && body.getAttribute('data-emailjs-template');
+                            if (serviceId && templateId && window.emailjs && emailjs.send) {
+                                emailjs.send(serviceId, templateId, emailParams)
+                                .then(function(response) {
+                                    console.log('EmailJS client send success', response);
+                                }, function(error) {
+                                    console.warn('EmailJS client send failed', error);
+                                });
+                            } else {
+                                console.warn('EmailJS client-side send not configured (service/template missing)');
+                            }
+                        } catch (e) {
+                            console.warn('EmailJS client send error', e);
+                        }
                     } else {
                         console.warn('emailjs is not available in the browser');
                     }
