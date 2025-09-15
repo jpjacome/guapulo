@@ -1,0 +1,41 @@
+{
+  "name": "parrillazo-guapulense-rsvp",
+  "version": "1.0.0",
+  "description": "Event RSVP website with CMS for Parrillazo Guapulense 2025",
+  "main": "index.html",
+  "scripts": {
+    "dev": "php -S localhost:3000",
+    "start": "php -S localhost:3000",
+    "build": "node build-netlify-config.js",
+    "build:emails": "node build-netlify-config.js",
+    "deploy": "npm run build && git add . && git commit -m 'Update content and email templates' && git push origin main",
+    "serve": "npx serve -s . -l 3000"
+  },
+  "keywords": [
+    "event",
+    "rsvp",
+    "netlify",
+    "cms",
+    "static-site",
+    "bbq",
+    "guapulo"
+  ],
+  "author": "JP Jacome <jpjacome@yahoo.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "html-validate": "^8.7.3",
+    "serve": "^14.2.1"
+  },
+  "dependencies": {
+    "@notionhq/client": "^4.0.1",
+    "nodemailer": "^6.9.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jpjacome/guapulo.git"
+  },
+  "homepage": "https://github.com/jpjacome/guapulo#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

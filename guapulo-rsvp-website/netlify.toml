@@ -1,0 +1,119 @@
+# Netlify Configuration for Parrillazo Guapulense RSVP Website
+# Hybrid approach: Netlify Forms for owner notifications, EmailJS for user confirmations
+
+[build]
+  command = ""
+  publish = "."
+  environment = { NODE_VERSION = "18" }
+
+[forms]
+  enabled = true
+
+# Form notifications managed via Netlify UI
+# Go to: Site settings > Forms > Form notifications
+# Add notification to: jpjacome@yahoo.com
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Redirects
+[[redirects]]
+  from = "/rsvp"
+  to = "/#rsvp"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/#about"
+  status = 301
+
+[[redirects]]
+  from = "/details"
+  to = "/#details"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/#rsvp"
+  status = 301
+
+[[redirects]]
+  from = "/404"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/success"
+  to = "/thank-you.html"
+  status = 200
+
+[context.production]
+  command = ""
+  
+[context.deploy-preview]
+  command = ""
+  
+[context.branch-deploy]
+  command = ""
+
+[dev]
+  command = ""
+  port = 3000
+  publish = "."
+  autoLaunch = true
+
+[template.environment]
+  NETLIFY_SITE_NAME = "parrillazo-guapulense"
+  NETLIFY_SITE_URL = "https://jpjacome.github.io/guapulo"
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true

@@ -1,0 +1,15 @@
+{
+  "name": "Parrillazo Guapulense",
+  "type": "BBQ",
+  "date": "2025-07-18",
+  "formatted_date": "Friday, July 18, 2025",
+  "time": "5:00 pm",
+  "location": "Guapulo",
+  "hosts": "JP",
+  "rsvp_deadline": "2025-07-16",
+  "formatted_deadline": "Wednesday, July 16, 2025",
+  "expected_attendees": 15,
+  "google_maps_enabled": false,
+  "maps_address": "",
+  "countdown_enabled": true
+}

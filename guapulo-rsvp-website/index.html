@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-content="seo-title">Parrillazo Guapulense</title>
+    <meta name="description" content="19 de septiembre, 6pm">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="event">
+    <meta property="og:title" content="Parrillazo Guapulense">
+    <meta property="og:description" content="19 de septiembre, 6pm">
+    <meta property="og:image" content="https://guapuliza.netlify.app/assets/imgs/1.png">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Parrillazo Guapulense">
+    <meta property="twitter:description" content="19 de septiembre, 6pm">
+    <meta property="twitter:image" content="https://guapuliza.netlify.app/assets/imgs/1.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/imgs/1b.png">
+    <link rel="apple-touch-icon" href="./assets/imgs/1b.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Netlify Identity Widget (temporary for registration) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+
+    <!-- Hero Section with RSVP -->
+    <section id="home" class="hero hero-flex">
+        <div class="hero-content hero-flex-content">
+            <div class="hero-left">
+                <h1 class="hero-title fade1">
+                    <span data-event="name">PARRILLAZO GUAPULENSE</span>
+                </h1>
+                <video class="hero-video fade1" autoplay muted loop playsinline poster="./assets/imgs/1.png" id="hero-bg-video">
+                    <source src="./assets/vid2.mp4" type="video/mp4">
+                    <img src="./assets/imgs/1.png" alt="Evento Parrillazo Guapulense" style="width:100%;height:auto;object-fit:cover;" />
+                </video>
+                <div class="hero-details fade2">
+                    <div class="detail-item">
+                        <span data-event="formatted-date">VIERNES 19/09</span>
+                    </div>
+                    <div class="detail-item">
+                        <span data-event="time">6:00 pm</span>
+                    </div>
+                </div>
+                <!-- Countdown Timer -->
+                <div class="countdown-container fade2">
+                    <h3 class="fade2">Countdown</h3>
+                    <div id="countdown" class="countdown fade2">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-days">0</span>
+                            <span class="countdown-label">DIAS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-hours">0</span>
+                            <span class="countdown-label">HORAS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-minutes">0</span>
+                            <span class="countdown-label">MINUTOS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="countdown-seconds">0</span>
+                            <span class="countdown-label">SEGUNDOS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-right">
+                <form class="rsvp-form fade3" id="rsvp-form" name="rsvp" method="POST" action="success.html" data-netlify="true" data-netlify-honeypot="bot-field">
+                    <!-- Hidden subject field for better email handling -->
+                    <input type="hidden" name="subject" value="Nueva RSVP - Parrillazo Guapulense 2025" />
+                    <!-- Honeypot field for spam protection -->
+                    <p style="display: none;">
+                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                    </p>
+                    <div class="form-group">
+                        <label for="name">NOMBRE *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">EMAIL *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">TELEFONO</label>
+                            <input type="tel" id="phone" name="phone" style="font-size:clamp(0.9rem,4vw,1rem);">
+                        </div>
+                        <div class="form-group">
+                            <label for="plus_one">+1 GUEST?</label>
+                            <select id="plus_one" name="plus_one" style="font-size:clamp(0.9rem,4vw,1rem);">
+                                <option value="no">SOLO YO</option>
+                                <option value="yes">SI, LLEVO AMIGO/S</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="guest-name-group" style="display: none;">
+                        <label for="guest_name">Guest Name</label>
+                        <input type="text" id="guest_name" name="guest_name" style="font-size:clamp(0.9rem,4vw,1rem);">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">MENSAJE ADICIONAL</label>
+                        <textarea id="message" name="message" rows="1" placeholder="Escribe algo..." style="font-size:clamp(0.9rem,4vw,1rem);"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <span class="btn-text">CONFIRMAR</span>
+                        <span class="btn-loading">ENVIANDO...</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    </section>
+
+    
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+    // Set hero video playback rate to 0.6x
+    document.addEventListener('DOMContentLoaded', function() {
+        var video = document.getElementById('hero-bg-video');
+        if (video) {
+            video.playbackRate = 0.6;
+        }
+    });
+    </script>
+</body>
+</html>
