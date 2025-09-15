@@ -483,7 +483,6 @@
                 email: formData.get('email'),
                 phone: formData.get('phone'),
                 plus_one: formData.get('plus_one'),
-                guest_name: formData.get('guest_name'),
                 message: formData.get('message'),
                 timestamp: formData.get('timestamp')
             };
@@ -493,31 +492,58 @@
                 body: JSON.stringify(jsonData)
             })
             .then(() => {
-                // Also attempt to trigger the server-side autoreply (EmailJS) so the submitter
-                // receives a confirmation even if Netlify form notifications are not wired.
-                fetch('/.netlify/functions/rsvp-autoreply', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(jsonData)
-                })
-                .then(resp => {
-                    if (!resp.ok) {
-                        console.warn('Autoreply function responded with non-OK status', resp.status);
+                // Clear saved form data
+                clearSavedFormData();
+
+                // Also call server-side auto-reply function so EmailJS can send from backend
+                try {
+                    const serverPayload = {
+                        name: jsonData.name || '',
+                        email: jsonData.email || '',
+                        phone: jsonData.phone || '',
+                        plus_one: jsonData.plus_one || '',
+                        message: jsonData.message || '',
+                        // Provide event metadata pulled from site as defaults
+                        event_name: 'Parrillazo Guapulense',
+                        event_date: '19 de septiembre',
+                        event_time: '6:00 pm',
+                        event_location: 'Guapulo'
+                    };
+                    fetch('/.netlify/functions/rsvp-autoreply', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(serverPayload)
+                    }).then(resp => resp.text().then(t => console.log('Server autoreply response:', resp.status, t))).catch(err => console.warn('Server autoreply error:', err));
+                } catch (err) {
+                    console.error('Error while calling server-side autoreply:', err);
+                }
+
+                // Attempt client-side EmailJS send (browser) as a fallback/primary
+                try {
+                    if (typeof emailjs !== 'undefined' && emailjs.send) {
+                        const emailParams = {
+                            name: jsonData.name || '',
+                            email: jsonData.email || '',
+                            phone: jsonData.phone || '',
+                            plus_one: jsonData.plus_one || '',
+                            message: jsonData.message || ''
+                        };
+                        // Replace these IDs with your actual EmailJS service and template IDs
+                        emailjs.send('service_l17qp6e', 'template_5mp33rb', emailParams)
+                        .then(function(response) {
+                            console.log('EmailJS client send success', response);
+                        }, function(error) {
+                            console.warn('EmailJS client send failed', error);
+                        });
+                    } else {
+                        console.warn('emailjs is not available in the browser');
                     }
-                    return resp.text();
-                })
-                .then(() => {
-                    // Clear saved form data
-                    clearSavedFormData();
-                    // Redirect to success page
-                    window.location.href = '/success.html';
-                })
-                .catch(err => {
-                    console.error('Autoreply function error:', err);
-                    // Proceed to success page regardless of autoreply outcome
-                    clearSavedFormData();
-                    window.location.href = '/success.html';
-                });
+                } catch (err) {
+                    console.error('Error while attempting client-side EmailJS send:', err);
+                }
+
+                // Redirect to success page regardless
+                window.location.href = '/success.html';
             })
             .catch(error => {
                 console.error('Notion integration error:', error);

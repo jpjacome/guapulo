@@ -25,13 +25,12 @@ exports.handler = async (event) => {
     console.log('Received form submission (rsvp-autoreply) headers:', event.headers || {});
     console.log('Received form submission (rsvp-autoreply) body parsed keys:', Object.keys(formData));
 
-    const data = formData.data || formData;
-    const name = data.name || '';
-    const email = data.email || '';
-    const phone = data.phone || '';
-    const plus_one = data.plus_one || '';
-    const guest_name = data.guest_name || '';
-    const message = data.message || '';
+  const data = formData.data || formData;
+  const name = data.name || '';
+  const email = data.email || '';
+  const phone = data.phone || '';
+  const plus_one = data.plus_one || '';
+  const message = data.message || '';
 
     if (!name || !email) {
       console.error('Missing required fields:', { name, email });
@@ -52,23 +51,15 @@ exports.handler = async (event) => {
       service_id: process.env.EMAILJS_SERVICE_ID,
       template_id: process.env.EMAILJS_TEMPLATE_ID,
       user_id: process.env.EMAILJS_USER_ID,
+  // Only include fields that actually exist on the form (name, email, phone, plus_one, message).
+      // Map `name` -> `to_name` for the greeting.
       template_params: {
-        // Map to the exact template placeholders provided by the user
-        event_name: data.event_name || 'Parrillazo Guapulense',
         to_name: name,
-        event_date: data.event_date || '19 de septiembre',
-        event_time: data.event_time || '6:00 pm',
-        event_location: data.event_location || 'Lugar por confirmar',
-        attendance: data.attendance || 'Sí',
-        plus_one: plus_one || 'no',
-        guest_name: guest_name || '',
-        host_email: process.env.EMAIL_HOST || 'jpjacome@yahoo.com',
-        // Backwards-compatible aliases
-        name,
-        email,
-        phone,
-        message,
-        submission_id: data.submission_id || `rsvp_${Date.now()}`
+        name: name,
+        email: email,
+        phone: phone,
+        plus_one: plus_one || '',
+        message: message || ''
       }
     };
     // If a private key is provided in env, include it in the payload (EmailJS strict mode)

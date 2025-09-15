@@ -36,7 +36,6 @@ function buildAutoReplyBody(templates) {
   ${confirmationDetails.title}
   ${confirmationDetails.attendance}
   ${confirmationDetails.plus_one}
-  ${confirmationDetails.guest_name}
   
   ${autoReply.closing_message}
   
@@ -64,7 +63,7 @@ function buildOwnerNotificationBody(templates) {
   ${fields.phone}
   ${fields.attendance}
   ${fields.plus_one}
-  ${fields.guest_name}
+  
   ${fields.custom_question}
   ${fields.message}
   

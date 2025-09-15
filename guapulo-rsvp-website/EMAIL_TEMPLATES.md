@@ -66,7 +66,7 @@ Use these Netlify form variables in your email templates:
 - `{{phone}}` - Phone number
 - `{{attendance}}` - Yes/No attendance
 - `{{plus_one}}` - Plus one selection
-- `{{guest_name}}` - Guest name (if provided)
+<!-- guest_name removed from template -->
 - `{{custom_question}}` - Custom question answer
 - `{{message}}` - Additional message
 - `{{created_at}}` - Submission timestamp

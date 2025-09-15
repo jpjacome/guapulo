@@ -34,8 +34,7 @@
       "confirmation_details": {
         "title": "🤖 TU CONFIRMACIÓN:",
         "attendance": "• Asistencia: {{attendance}}",
-        "plus_one": "{{#plus_one}}• Acompañante: {{plus_one}}{{/plus_one}}",
-        "guest_name": "{{#guest_name}}• Nombre del acompañante: {{guest_name}}{{/guest_name}}"
+  "plus_one": "{{#plus_one}}• Acompañante: {{plus_one}}{{/plus_one}}"
       },
       "closing_message": "¡Te esperamos para una noche increíble de parrilla, buena música y excelente compañía!",
       "contact_info": {
@@ -53,9 +52,8 @@
         "email": "Email: {{email}}",
         "phone": "Teléfono: {{phone}}",
         "attendance": "Asistencia: {{attendance}}",
-        "plus_one": "Acompañante: {{plus_one}}",
-        "guest_name": "{{#guest_name}}Nombre del acompañante: {{guest_name}}{{/guest_name}}",
-        "custom_question": "{{#custom_question}}Pregunta adicional: {{custom_question}}{{/custom_question}}",
+  "plus_one": "Acompañante: {{plus_one}}",
+  "custom_question": "{{#custom_question}}Pregunta adicional: {{custom_question}}{{/custom_question}}",
         "message": "{{#message}}Mensaje adicional: {{message}}{{/message}}"
       },
       "timestamp": "Fecha de envío: {{created_at}}"

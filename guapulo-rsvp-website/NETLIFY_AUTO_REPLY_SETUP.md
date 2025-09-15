@@ -38,7 +38,7 @@
 🤖 TU CONFIRMACIÓN:
 • Asistencia: {{attendance}}
 • Acompañante: {{plus_one}}
-• Nombre del acompañante: {{guest_name}}
+<!-- guest_name removed from form -->
 
 ¡Te esperamos para una noche increíble de parrilla, buena música y excelente compañía!
 
@@ -75,15 +75,14 @@ The form is set up with:
 ## 📬 Available Template Variables
 
 Use these in your auto-reply email template:
-- `{{name}}` - Submitter's name
-- `{{email}}` - Submitter's email
-- `{{phone}}` - Phone number
-- `{{attendance}}` - Yes/No attendance
-- `{{plus_one}}` - Plus one selection
-- `{{guest_name}}` - Guest name (if provided)
-- `{{custom_question}}` - Custom question answer
-- `{{message}}` - Additional message
-
+Use these in your auto-reply email template:
+ - `{{name}}` - Submitter's name
+ - `{{email}}` - Submitter's email
+ - `{{phone}}` - Phone number
+ - `{{attendance}}` - Yes/No attendance
+ - `{{plus_one}}` - Plus one selection
+ - `{{custom_question}}` - Custom question answer
+ - `{{message}}` - Additional message
 ## ⚠️ Important Notes
 
 - Auto-reply setup must be done manually in Netlify UI

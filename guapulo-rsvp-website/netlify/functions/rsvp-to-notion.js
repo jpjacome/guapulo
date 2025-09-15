@@ -22,15 +22,14 @@ exports.handler = async function(event, context) {
   }
 
   // Extract RSVP fields
-  const { name, email, phone, plus_one, guest_name, message } = data;
+  const { name, email, phone, plus_one, message } = data;
 
   try {
     // Build Notion properties
     const notionProps = {
       'Name': { title: [{ text: { content: name || '' } }] },
       'Email': { email: email || '' },
-      'Plus One': { select: { name: plus_one || 'No' } },
-      'Guest Name': { rich_text: [{ text: { content: guest_name || '' } }] },
+  'Plus One': { select: { name: plus_one || 'No' } },
       'Message': { rich_text: [{ text: { content: message || '' } }] },
       'Timestamp': { date: { start: new Date().toISOString() } },
     };
