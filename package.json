@@ -4,7 +4,6 @@
   "private": true,
   "description": "Root package.json to declare Netlify Function dependencies",
   "dependencies": {
-    "nodemailer": "^6.9.8",
     "@notionhq/client": "^4.0.1"
   },
   "engines": {
