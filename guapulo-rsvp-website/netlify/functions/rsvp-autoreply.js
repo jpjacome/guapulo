@@ -5,9 +5,9 @@
 const nodemailer = require('nodemailer');
 let sendgrid;
 try {
+  // optional: only use sendgrid if installed and configured
   sendgrid = require('@sendgrid/mail');
 } catch (e) {
-  // If @sendgrid/mail is not installed, we'll fall back to nodemailer below
   sendgrid = null;
 }
 
@@ -95,7 +95,71 @@ exports.handler = async (event, context) => {
       </div>
     `;
 
-    // Prefer SendGrid if present
+    // Prefer EmailJS REST API when configured (no external package required)
+    if (process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_TEMPLATE_ID && process.env.EMAILJS_USER_ID) {
+      try {
+        const emailjsPayload = {
+          service_id: process.env.EMAILJS_SERVICE_ID,
+          template_id: process.env.EMAILJS_TEMPLATE_ID,
+          user_id: process.env.EMAILJS_USER_ID,
+          template_params: {
+            name: name,
+            email: email,
+            phone: phone,
+            attendance: data.attendance || 'Sí',
+            plus_one: plus_one,
+            guest_name: guest_name,
+            message: message
+          }
+        };
+
+        const resp = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(emailjsPayload)
+        });
+
+        if (!resp.ok) {
+          const bodyText = await resp.text();
+          throw new Error(`EmailJS error ${resp.status}: ${bodyText}`);
+        }
+
+        console.log(`Auto-reply (EmailJS) sent successfully to ${email}`);
+        return { statusCode: 200, body: JSON.stringify({ success: true }) };
+      } catch (err) {
+        console.error('EmailJS send error:', err && err.message ? err.message : err);
+        // fall through to other providers
+      }
+    }
+
+    // Prefer nodemailer (Gmail with app password) when configured
+    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      try {
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        });
+
+        await transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: email,
+          subject: emailSubject,
+          text: textBody,
+          html: htmlBody
+        });
+
+        console.log(`Auto-reply (nodemailer) sent successfully to ${email}`);
+        return { statusCode: 200, body: JSON.stringify({ success: true }) };
+      } catch (err) {
+        console.error('Nodemailer send error:', err && err.message ? err.message : err);
+        // fall through to try SendGrid if available
+      }
+    }
+
+    // If nodemailer wasn't configured or failed, try SendGrid if configured
     if (sendgrid && process.env.SENDGRID_API_KEY && process.env.EMAIL_FROM) {
       try {
         sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
@@ -111,40 +175,13 @@ exports.handler = async (event, context) => {
         return { statusCode: 200, body: JSON.stringify({ success: true }) };
       } catch (err) {
         console.error('SendGrid send error:', err && err.message ? err.message : err);
-        // fall through to nodemailer fallback
       }
     }
 
-    // Nodemailer fallback (EMAIL_USER/EMAIL_PASS)
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.error('Missing EMAIL_USER or EMAIL_PASS environment variables for nodemailer fallback');
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Email service not configured' })
-      };
-    }
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: emailSubject,
-      text: textBody,
-      html: htmlBody
-    });
-
-    console.log(`Auto-reply (nodemailer) sent successfully to ${email}`);
-
+    console.error('No email provider configured: set EMAILJS_SERVICE_ID/TEMPLATE_ID/USER_ID for EmailJS, or EMAIL_USER/EMAIL_PASS for Gmail, or SENDGRID_API_KEY/EMAIL_FROM for SendGrid');
     return {
-      statusCode: 200,
-      body: JSON.stringify({ success: true })
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Email service not configured' })
     };
 
   } catch (error) {

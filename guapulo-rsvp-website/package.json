@@ -27,9 +27,8 @@
     "serve": "^14.2.1"
   },
   "dependencies": {
-    "@notionhq/client": "^4.0.1",
-    "nodemailer": "^6.9.8",
-    "@sendgrid/mail": "^7.9.0"
+  "@notionhq/client": "^4.0.1",
+  "nodemailer": "^6.9.8"
   },
   "repository": {
     "type": "git",
