@@ -285,13 +285,37 @@
         }
     }
 
+    // Expose a safe global fallback for environments where scoping differs
+    try {
+        if (typeof window !== 'undefined') {
+            window.displayEventStarted = displayEventStarted;
+        }
+    } catch (e) {
+        // ignore
+    }
+
     function updateCountdown() {
         const eventDate = new Date(CONFIG.eventDate);
         const now = new Date();
         const timeDifference = eventDate.getTime() - now.getTime();
         
         if (timeDifference <= 0) {
-            displayEventStarted();
+            // Call local or global fallback to avoid ReferenceError in some environments
+            if (typeof displayEventStarted === 'function') {
+                displayEventStarted();
+            } else if (typeof window !== 'undefined' && typeof window.displayEventStarted === 'function') {
+                window.displayEventStarted();
+            } else {
+                // Fallback: clear countdown and show message
+                if (state.countdownTimerId) {
+                    clearInterval(state.countdownTimerId);
+                    state.countdownTimerId = null;
+                }
+                Object.keys(elements.countdownElements).forEach(unit => {
+                    const el = elements.countdownElements[unit];
+                    if (el) el.textContent = '0';
+                });
+            }
             return;
         }
         
