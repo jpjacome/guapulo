@@ -81,6 +81,20 @@ exports.handler = async (event) => {
       emailjsPayload.private_key = privateKey;
     }
 
+    // If debug query flag is passed, return the prepared template_params and env presence
+    const url = event.rawUrl || (event.path || '') + (event.queryStringParameters ? ('?' + Object.keys(event.queryStringParameters).map(k=>`${k}=${event.queryStringParameters[k]}`).join('&')) : '');
+    const debugMode = (event.queryStringParameters && (event.queryStringParameters.debug === '1' || event.queryStringParameters.debug === 'true')) || (url && url.indexOf('?debug=1') !== -1);
+    if (debugMode) {
+      const maskedEnv = {
+        hasService,
+        hasTemplate,
+        hasUser,
+        hasPrivate,
+        maskedPrivatePreview: maskedPreview
+      };
+      return { statusCode: 200, body: JSON.stringify({ template_params: emailjsPayload.template_params, env: maskedEnv }, null, 2) };
+    }
+
     // Diagnostic: log template param keys and a masked sample of the payload (don't print private key)
     try {
       const paramKeys = Object.keys(emailjsPayload.template_params || {});
