@@ -64,6 +64,10 @@ exports.handler = async (event) => {
     };
     // If a private key is provided in env, include it in the payload (EmailJS strict mode)
     const privateKey = process.env.EMAILJS_PRIVATE_KEY || null;
+    const hasPrivate = !!privateKey;
+    // Masked preview: show first 4 and last 4 chars only
+    const maskedPreview = hasPrivate ? `${privateKey.slice(0,4)}...${privateKey.slice(-4)}` : null;
+    console.log('EmailJS private key presence:', { hasPrivate, maskedPreview });
     if (privateKey) {
       emailjsPayload.private_key = privateKey;
     }
