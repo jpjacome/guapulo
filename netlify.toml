@@ -1,0 +1,9 @@
+[build]
+  command = ""
+  publish = "guapulo-rsvp-website"
+  environment = { NODE_VERSION = "18" }
+
+[forms]
+  enabled = true
+
+# Redirects and headers are managed inside the site folder's netlify.toml
