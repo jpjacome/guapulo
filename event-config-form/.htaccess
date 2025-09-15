@@ -1,0 +1,22 @@
+# Deny access to configuration files
+saved_configs/
+*.json
+
+# PHP temporary files
+*.tmp
+*.temp
+
+# Log files
+*.log
+error.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# PHP cache
+opcache/
