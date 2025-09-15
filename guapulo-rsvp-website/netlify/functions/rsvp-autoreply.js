@@ -53,11 +53,13 @@ exports.handler = async (event) => {
       user_id: process.env.EMAILJS_USER_ID,
   // Only include fields that actually exist on the form (name, email, phone, plus_one, message).
       // Map `name` -> `to_name` for the greeting.
-      // Minimal template parameters to match the EmailJS template that only uses {{name}}
-      // and to provide the recipient email if the template's "To" uses {{email}}.
+      // Minimal template parameters: include both `name` and explicit recipient fields
+      // (EmailJS templates sometimes require `to_email`/`to_name` if the template's
+      // To/recipient is parameterized). Keep `name` for template body interpolation.
       template_params: {
         name: name,
-        email: email
+        to_name: name,
+        to_email: email
       }
     };
     // If a private key is provided in env, include it in the payload (EmailJS strict mode)
