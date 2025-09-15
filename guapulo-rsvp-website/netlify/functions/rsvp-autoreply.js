@@ -125,7 +125,31 @@ exports.handler = async (event) => {
     const respText = await resp.text().catch(() => null);
     if (!resp.ok) {
       console.error('EmailJS responded with non-OK:', resp.status, respText);
-      return { statusCode: 502, body: JSON.stringify({ error: 'EmailJS send failed', status: resp.status, details: respText }) };
+      // Try to parse JSON response from EmailJS for more structured error info
+      let parsed = null;
+      try {
+        parsed = respText ? JSON.parse(respText) : null;
+      } catch (e) {
+        parsed = null;
+      }
+      // collect headers
+      const headersObj = {};
+      try {
+        resp.headers && resp.headers.forEach && resp.headers.forEach((v, k) => { headersObj[k] = v; });
+      } catch (hErr) {
+        // ignore header collection errors
+      }
+      return {
+        statusCode: 502,
+        body: JSON.stringify({
+          error: 'EmailJS send failed',
+          status: resp.status,
+          details_raw: respText,
+          details_parsed: parsed,
+          details_length: respText ? respText.length : 0,
+          headers: headersObj
+        }, null, 2)
+      };
     }
 
     console.log('EmailJS response body:', respText);
