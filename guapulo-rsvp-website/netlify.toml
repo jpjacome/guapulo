@@ -4,6 +4,7 @@
 [build]
   command = ""
   publish = "."
+  functions = "netlify/functions"
   environment = { NODE_VERSION = "18" }
 
 [forms]
