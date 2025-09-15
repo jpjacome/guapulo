@@ -62,6 +62,11 @@ exports.handler = async (event) => {
         message
       }
     };
+    // If a private key is provided in env, include it in the payload (EmailJS strict mode)
+    const privateKey = process.env.EMAILJS_PRIVATE_KEY || null;
+    if (privateKey) {
+      emailjsPayload.private_key = privateKey;
+    }
 
     // Attempt request to EmailJS with timeout
     let resp;
@@ -69,7 +74,7 @@ exports.handler = async (event) => {
       resp = await Promise.race([
         fetch('https://api.emailjs.com/api/v1.0/email/send', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: Object.assign({ 'Content-Type': 'application/json' }, privateKey ? { 'Authorization': `Bearer ${privateKey}` } : {}),
           body: JSON.stringify(emailjsPayload)
         }),
         new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 15000))
