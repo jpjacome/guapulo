@@ -493,10 +493,31 @@
                 body: JSON.stringify(jsonData)
             })
             .then(() => {
-                // Clear saved form data
-                clearSavedFormData();
-                // Redirect to success page
-                window.location.href = '/success.html';
+                // Also attempt to trigger the server-side autoreply (EmailJS) so the submitter
+                // receives a confirmation even if Netlify form notifications are not wired.
+                fetch('/.netlify/functions/rsvp-autoreply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(jsonData)
+                })
+                .then(resp => {
+                    if (!resp.ok) {
+                        console.warn('Autoreply function responded with non-OK status', resp.status);
+                    }
+                    return resp.text();
+                })
+                .then(() => {
+                    // Clear saved form data
+                    clearSavedFormData();
+                    // Redirect to success page
+                    window.location.href = '/success.html';
+                })
+                .catch(err => {
+                    console.error('Autoreply function error:', err);
+                    // Proceed to success page regardless of autoreply outcome
+                    clearSavedFormData();
+                    window.location.href = '/success.html';
+                });
             })
             .catch(error => {
                 console.error('Notion integration error:', error);
