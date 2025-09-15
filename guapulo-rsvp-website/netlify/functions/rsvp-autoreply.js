@@ -81,6 +81,17 @@ exports.handler = async (event) => {
       emailjsPayload.private_key = privateKey;
     }
 
+    // Diagnostic: log template param keys and a masked sample of the payload (don't print private key)
+    try {
+      const paramKeys = Object.keys(emailjsPayload.template_params || {});
+      const samplePayload = Object.assign({}, emailjsPayload.template_params || {});
+      if (samplePayload.email) samplePayload.email = samplePayload.email.replace(/(.{2}).+(@.+)/, '$1***$2');
+      console.log('EmailJS will send template_params keys:', paramKeys);
+      console.log('EmailJS sample template_params (masked):', samplePayload);
+    } catch (diagErr) {
+      console.warn('Failed to log EmailJS payload diagnostic:', diagErr && diagErr.message);
+    }
+
     // Attempt request to EmailJS with timeout
     let resp;
     try {
