@@ -88,10 +88,10 @@ exports.handler = async (event) => {
     const maskedPreview = hasPrivate ? `${privateKey.slice(0,4)}...${privateKey.slice(-4)}` : null;
     console.log('EmailJS private key presence:', { hasPrivate, maskedPreview });
     
-    // TEMPORARILY DISABLE PRIVATE KEY TO TEST - some EmailJS services work better without it
-    // if (privateKey) {
-    //   emailjsPayload.private_key = privateKey;
-    // }
+    // EmailJS service is in strict mode and requires private key
+    if (privateKey) {
+      emailjsPayload.private_key = privateKey;
+    }
     
     // Add detailed logging of the exact payload being sent (mask sensitive data)
     const logPayload = {
