@@ -3,7 +3,7 @@
   opacity: 0;
 }
 /* Responsive hero columns from index.html */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .hero-content.hero-flex-content {
     flex-direction: column;
     height: auto;
@@ -11,7 +11,7 @@
   .hero-left, .hero-right {
     min-width: 0;
     width: 100%;
-    padding: 2rem 0;
+    padding: 0;
   }
 }
 @media (max-width: 768px) {
@@ -214,6 +214,8 @@ a {
 }
 .hero-left {
   position: relative;
+  min-height: fit-content;
+  min-height: 500px;
   color: white;
   text-align: left;
   align-items: center;
@@ -248,7 +250,6 @@ a {
 
 @media (max-width: 768px) {
   .hero-video {
-    max-height: 40vh;
     width: 100%;
     object-fit: cover;
   }
@@ -275,20 +276,17 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid var(--color-1);
   transform: translateY(100px);
   transition: 1s ease-in!important;
 }
 
 .detail-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-weight: 500;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-weight: 500;
     padding: 8px 0 0;
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255,255,255,0.2);
 }
 
 .detail-icon {
@@ -309,6 +307,8 @@ a {
   text-align: center;
   color: white;
   margin: 0 2rem 6rem;
+    margin-top: auto;
+    margin-bottom: 4rem;
   align-self: flex-start;
   transform: translateX(-100px);
   z-index: 2;
@@ -478,7 +478,7 @@ a {
 
 
 /* Responsive Design */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .about-content {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
@@ -487,9 +487,16 @@ a {
     width: 250px;
     height: 250px;
   }
+  .hero-left{
+    justify-content: flex-start;
+  }
   .hero-right {
     margin: 0;
     margin-left: 0;
+  }
+  
+  .countdown-container {    
+    margin: 0 2rem 2rem;    
   }
 }
 
@@ -504,8 +511,6 @@ a {
   
   .hero-details {
     align-items: center;
-    position: relative;
-    margin-bottom: 2rem;
   }
   
   .hero-cta {
