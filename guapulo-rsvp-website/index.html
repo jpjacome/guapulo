@@ -45,10 +45,19 @@
                 <h1 class="hero-title fade1">
                     <span data-event="name">PARRILLAZO GUAPULENSE</span>
                 </h1>
-                    <video class="hero-video fade1" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="./assets/imgs/bg1.png" id="hero-bg-video" controls x-webkit-airplay="allow">
+                    <video class="hero-video fade1" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="./assets/imgs/bg1.png" id="hero-bg-video" x-webkit-airplay="allow">
                     <source src="./assets/vid2.mp4" type="video/mp4">
                     <img src="./assets/imgs/bg1.png" alt="Evento Parrillazo Guapulense" style="width:100%;height:auto;object-fit:cover;" />
                 </video>
+                <!-- Custom Play Button Overlay -->
+                <button class="video-play-button" id="video-play-btn" aria-label="Play/Pause Video">
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
                 <!-- Countdown Timer -->
                 <div class="countdown-container fade2">
                     <h3 class="fade2">Countdown</h3>

@@ -6,12 +6,12 @@
 
     // Configuration
     const CONFIG = {
-    eventDate: '2025-09-19T18:00:00-05:00',
-    timeZone: 'America/Bogota',
+        eventDate: '2025-07-18T18:00:00',
+        timeZone: 'America/Bogota',
         animationDuration: 300,
         countdownInterval: 1000,
         scrollOffset: 80,
-    formEndpoint: '/success.html'
+        formEndpoint: '/thank-you.html'
     };
 
     // State Management
@@ -19,8 +19,6 @@
         isLoading: true,
         formData: {}
     };
-    // Track timers
-    state.countdownTimerId = null;
 
     // DOM Elements
     const elements = {
@@ -40,25 +38,6 @@
         } else {
             initializeApp();
         }
-    
-    // Add fade-in classes to elements with fade1, fade2, fade3 with JS delay
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            document.querySelectorAll('.fade1').forEach(function(el) {
-                el.classList.add('fade-in-1');
-            });
-        },1000);
-        setTimeout(function() {
-            document.querySelectorAll('.fade2').forEach(function(el) {
-                el.classList.add('fade-in-2');
-            });
-        }, 2000);
-        setTimeout(function() {
-            document.querySelectorAll('.fade3').forEach(function(el) {
-                el.classList.add('fade-in-3');
-            });
-        }, 3000);
-    });
     }
 
     function initializeApp() {
@@ -72,33 +51,13 @@
         initializeLoadingScreen();
         initializeNavigation();
         initializeCountdown();
-    initializeRSVPForm();
-    // Ensure background/hero videos attempt to autoplay on mobile
-    initializeVideoAutoplay();
-        // Initialize components
-        initializeNavigation();
-        initializeCountdown();
         initializeRSVPForm();
-        // All animation-related JS except fade-in logic has been removed
-
-        // Fade-in sequence for hero elements
-        setTimeout(() => {
-            const heroTitle = document.querySelector('.hero-title');
-            if (heroTitle) heroTitle.classList.add('fade-in-1');
-        }, 400);
-        setTimeout(() => {
-            const heroDetails = document.querySelector('.hero-details');
-            if (heroDetails) heroDetails.classList.add('fade-in-2');
-            const countdown = document.querySelector('.countdown-container');
-            if (countdown) countdown.classList.add('fade-in-2');
-        }, 1200);
-        setTimeout(() => {
-            const rsvpForm = document.querySelector('.rsvp-form');
-            if (rsvpForm) rsvpForm.classList.add('fade-in-3');
-        }, 2000);
-
+        initializeAnimations();
+        initializePixelEffects();
+        initializeVideoPlayButton();
+        
         // Hide loading screen after everything is ready
-        setTimeout(hideLoadingScreen, 2200);
+        setTimeout(hideLoadingScreen, 2000);
         
         console.log('✅ Website initialization complete!');
     }
@@ -119,6 +78,8 @@
 
     function setupEventListeners() {
         // Window events
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', handleResize);
         
         // Navigation events
         document.addEventListener('click', handleNavClick);
@@ -126,26 +87,20 @@
         // Form events
         if (elements.rsvpForm) {
             console.log('✅ RSVP Form found, attaching event listeners');
-            elements.rsvpForm.addEventListener('submit', handleFormSubmit);
-            elements.rsvpForm.addEventListener('input', function(event) {
-                if (event.target.name !== 'phone') {
-                    handleFormInput(event);
-                }
-            });
-            elements.rsvpForm.addEventListener('change', function(event) {
-                if (event.target.name !== 'phone') {
-                    handleFormInput(event);
-                }
-            });
-            // Validate all fields on blur for best UX except phone
-            elements.rsvpForm.querySelectorAll('input, textarea, select').forEach(function(input) {
-                if (input.name !== 'phone') {
-                    input.addEventListener('blur', function(e) {
-                        validateField(e.target);
-                    });
-                }
+        elements.rsvpForm.addEventListener('submit', handleFormSubmit);
+        elements.rsvpForm.addEventListener('input', handleFormInput);
+
+        // Only validate email on blur
+        const emailInput = elements.rsvpForm.querySelector('input[type="email"]');
+        if (emailInput) {
+            emailInput.addEventListener('blur', function(e) {
+                validateField(e.target);
             });
         }
+        } else {
+            console.error('❌ RSVP Form not found!');
+        }
+
         // Keyboard navigation
         document.addEventListener('keydown', handleKeyDown);
     }
@@ -256,44 +211,7 @@
         }
         
         updateCountdown();
-        // store interval id so it can be cleared when event starts
-        state.countdownTimerId = setInterval(updateCountdown, CONFIG.countdownInterval);
-    }
-
-    // Called when the event start time has passed
-    function displayEventStarted() {
-        // Stop the countdown timer if running
-        if (state.countdownTimerId) {
-            clearInterval(state.countdownTimerId);
-            state.countdownTimerId = null;
-        }
-
-        // Set all countdown numbers to zero
-        Object.keys(elements.countdownElements).forEach(unit => {
-            const el = elements.countdownElements[unit];
-            if (el) el.textContent = '0';
-        });
-
-        // Optionally show a friendly message in the countdown container
-        const container = document.querySelector('.countdown-container');
-        if (container && !container.querySelector('.event-started-message')) {
-            const msg = document.createElement('div');
-            msg.className = 'event-started-message';
-            msg.textContent = 'El evento ha comenzado';
-            msg.style.color = 'var(--color-1)';
-            msg.style.fontWeight = '700';
-            msg.style.marginTop = '1rem';
-            container.appendChild(msg);
-        }
-    }
-
-    // Expose a safe global fallback for environments where scoping differs
-    try {
-        if (typeof window !== 'undefined') {
-            window.displayEventStarted = displayEventStarted;
-        }
-    } catch (e) {
-        // ignore
+        setInterval(updateCountdown, CONFIG.countdownInterval);
     }
 
     function updateCountdown() {
@@ -302,22 +220,7 @@
         const timeDifference = eventDate.getTime() - now.getTime();
         
         if (timeDifference <= 0) {
-            // Call local or global fallback to avoid ReferenceError in some environments
-            if (typeof displayEventStarted === 'function') {
-                displayEventStarted();
-            } else if (typeof window !== 'undefined' && typeof window.displayEventStarted === 'function') {
-                window.displayEventStarted();
-            } else {
-                // Fallback: clear countdown and show message
-                if (state.countdownTimerId) {
-                    clearInterval(state.countdownTimerId);
-                    state.countdownTimerId = null;
-                }
-                Object.keys(elements.countdownElements).forEach(unit => {
-                    const el = elements.countdownElements[unit];
-                    if (el) el.textContent = '0';
-                });
-            }
+            displayEventStarted();
             return;
         }
         
@@ -338,10 +241,35 @@
         Object.keys(timeUnits).forEach(unit => {
             const element = elements.countdownElements[unit];
             if (element) {
-                element.textContent = timeUnits[unit];
+                const newValue = String(timeUnits[unit]).padStart(2, '0');
+                if (element.textContent !== newValue) {
+                    element.textContent = newValue;
+                    animateCountdownChange(element);
+                }
             }
         });
     }
+
+    function animateCountdownChange(element) {
+        element.style.transform = 'scale(1.1)';
+        element.style.transition = 'transform 0.2s ease';
+        
+        setTimeout(() => {
+            element.style.transform = 'scale(1)';
+        }, 200);
+    }
+
+    function displayEventStarted() {
+        const countdownContainer = document.querySelector('.countdown-container');
+        if (countdownContainer) {
+            countdownContainer.innerHTML = `
+                <h3>🎉 ¡El evento ha comenzado!</h3>
+                <p>¡Esperamos que estés disfrutando del Parrillazo Guapulense!</p>
+            `;
+        }
+    }
+
+    // RSVP Form Management
     function initializeRSVPForm() {
         if (!elements.rsvpForm) return;
         
@@ -351,145 +279,6 @@
         // Initialize form validation
         initializeFormValidation();
         
-    }
-
-    // Mobile-optimized video autoplay based on WebKit/Chrome policies
-    function initializeVideoAutoplay() {
-        const video = document.getElementById('hero-bg-video');
-        
-        if (!video) {
-            console.warn('Hero video element not found');
-            return;
-        }
-        
-        // Track autoplay state
-        let autoplayAttempted = false;
-        let isVisible = false;
-        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        console.log('📱 Mobile device detected:', isMobile);
-        console.log('🎥 Video attributes:', {
-            muted: video.muted,
-            playsinline: video.hasAttribute('playsinline'),
-            controls: video.hasAttribute('controls'),
-            autoplay: video.hasAttribute('autoplay')
-        });
-        
-        // Enhanced autoplay attempt with multiple strategies
-        function attemptAutoplay() {
-            if (autoplayAttempted) return;
-            
-            autoplayAttempted = true;
-            console.log('🎬 Attempting video autoplay...');
-            
-            // Ensure video is properly configured for mobile
-            video.muted = true;
-            video.setAttribute('playsinline', '');
-            video.setAttribute('webkit-playsinline', '');
-            
-            const playPromise = video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log('✅ Video autoplay successful');
-                    // Video is playing, hide poster to show video content
-                    if (video.poster) {
-                        setTimeout(() => {
-                            video.removeAttribute('poster');
-                        }, 500);
-                    }
-                }).catch(error => {
-                    console.log('🚫 Autoplay blocked:', error.message);
-                    console.log('📋 Native controls available for manual play');
-                    // Reset for potential retry
-                    autoplayAttempted = false;
-                    
-                    // On mobile, try again on any user interaction
-                    if (isMobile) {
-                        console.log('📱 Setting up mobile interaction handler...');
-                        const mobilePlayHandler = () => {
-                            if (video.paused) {
-                                console.log('🎬 Retrying autoplay after user interaction...');
-                                video.play().catch(e => console.log('Still blocked:', e.message));
-                            }
-                            // Remove handler after first attempt
-                            document.removeEventListener('touchstart', mobilePlayHandler);
-                            document.removeEventListener('click', mobilePlayHandler);
-                        };
-                        
-                        document.addEventListener('touchstart', mobilePlayHandler, { once: true });
-                        document.addEventListener('click', mobilePlayHandler, { once: true });
-                    }
-                });
-            }
-        }
-        
-        // iOS requires video to be visible on screen for autoplay
-        // Use Intersection Observer to detect visibility
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const wasVisible = isVisible;
-                    isVisible = entry.isIntersecting;
-                    
-                    console.log('👁️ Video visibility changed:', isVisible);
-                    
-                    if (isVisible && !wasVisible) {
-                        // Video became visible - try autoplay
-                        autoplayAttempted = false; // Reset for new visibility
-                        setTimeout(attemptAutoplay, isMobile ? 300 : 100);
-                    } else if (!isVisible && !video.paused) {
-                        // iOS policy: pause video when scrolled out of view
-                        console.log('📜 Video scrolled out of view, pausing for iOS compatibility');
-                        video.pause();
-                    }
-                });
-            }, {
-                threshold: isMobile ? 0.3 : 0.5, // Lower threshold for mobile
-                rootMargin: '0px'
-            });
-            
-            observer.observe(video);
-        } else {
-            // Fallback for older browsers - assume visible
-            isVisible = true;
-            setTimeout(attemptAutoplay, 100);
-        }
-        
-        // Enhanced event handling
-        video.addEventListener('play', () => {
-            console.log('▶️ Video playing (manual or auto)');
-        });
-        
-        video.addEventListener('pause', () => {
-            console.log('⏸️ Video paused');
-        });
-        
-        video.addEventListener('loadeddata', () => {
-            console.log('📺 Video data loaded');
-            if (isVisible && !autoplayAttempted) {
-                setTimeout(attemptAutoplay, 100);
-            }
-        });
-        
-        // Mobile-specific: try autoplay on first touch anywhere on page
-        if (isMobile) {
-            const firstTouchHandler = () => {
-                if (video.paused && isVisible) {
-                    console.log('📱 First touch detected, attempting autoplay...');
-                    video.play().catch(e => console.log('Touch autoplay failed:', e.message));
-                }
-                document.removeEventListener('touchstart', firstTouchHandler);
-            };
-            document.addEventListener('touchstart', firstTouchHandler, { once: true });
-        }
-        
-        // Immediate autoplay attempt if video is ready
-        if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-            console.log('🎬 Video ready immediately, attempting autoplay...');
-            isVisible = true;
-            setTimeout(attemptAutoplay, 100);
-        }
     }
 
     function handleFormInput(event) {
@@ -505,8 +294,8 @@
         // Auto-save form data
         saveFormData();
         
-        // Real-time validation for non-email fields except phone
-        if (type !== 'email' && name !== 'phone') {
+        // Real-time validation for non-email fields only
+        if (type !== 'email') {
             validateField(event.target);
         }
     }
@@ -538,15 +327,16 @@
         const value = field.value.trim();
         const fieldName = field.name;
         const fieldType = field.type;
+        
         let isValid = true;
         let errorMessage = '';
-
+        
         // Required field validation
         if (field.hasAttribute('required') && !value) {
             isValid = false;
             errorMessage = 'Este campo es requerido.';
         }
-
+        
         // Email validation
         if (fieldType === 'email' && value) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -555,22 +345,9 @@
                 errorMessage = 'Por favor ingresa un email válido.';
             }
         }
-
-        // No phone validation, phone is optional and never shows error messages
-
-        // Name validation (required, min length 2, only letters and spaces)
-        if (fieldName === 'name' && value) {
-            if (value.length < 2) {
-                isValid = false;
-                errorMessage = 'El nombre debe tener al menos 2 caracteres.';
-            } else if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(value)) {
-                isValid = false;
-                errorMessage = 'El nombre solo puede contener letras y espacios.';
-            }
-        }
-
         // Display validation result
         displayFieldValidation(field, isValid, errorMessage);
+        
         return isValid;
     }
 
@@ -578,11 +355,12 @@
         const formGroup = field.closest('.form-group');
         if (!formGroup) return;
         
-        // Remove all previous error messages for this field
-        formGroup.querySelectorAll('.field-error-message').forEach(function(el) {
-            el.remove();
-        });
-
+        // Remove existing error elements
+        const existingError = formGroup.querySelector('.field-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        
         // Remove any custom error styling from the field itself
         field.classList.remove('field-valid');
         // Only show error message below the field
@@ -611,41 +389,17 @@
         // Add additional data
         formData.append('timestamp', new Date().toISOString());
         formData.append('event', 'Parrillazo Guapulense');
-        // Submit to Netlify (for notifications)
+        // Submit to Netlify
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(formData).toString()
         })
         .then(() => {
-            // Also send RSVP data to Netlify function for Notion
-            const jsonData = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                plus_one: formData.get('plus_one'),
-                message: formData.get('message'),
-                timestamp: formData.get('timestamp')
-            };
-            fetch('/.netlify/functions/rsvp-to-notion', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(jsonData)
-            })
-            .then(() => {
-                // Clear saved form data
-                clearSavedFormData();
-                console.log('✅ Notion integration successful');
-                console.log('✅ Auto-reply will be sent via Netlify webhook');
-
-                // Redirect to success page
-                window.location.href = CONFIG.formEndpoint;
-            })
-            .catch(error => {
-                console.error('Notion integration error:', error);
-                // Still redirect, but optionally show a warning
-                window.location.href = CONFIG.formEndpoint;
-            });
+            // Clear saved form data
+            clearSavedFormData();
+            // Redirect to success page
+            window.location.href = '/success.html';
         })
         .catch(error => {
             console.error('Form submission error:', error);
@@ -758,7 +512,115 @@
     // RSVP Statistics
 
 
-    // All animation-related JS except fade-in logic has been removed
+    // Animation Management
+    function initializeAnimations() {
+        // Intersection Observer for scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(handleIntersection, observerOptions);
+        
+        // Observe animatable elements
+        document.querySelectorAll('.detail-card, .highlight-item, .section-header').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    }
+
+    function handleIntersection(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+
+    function animateOnLoad() {
+        // Animate hero elements
+        const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .hero-details, .hero-cta');
+        heroElements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.2}s`;
+        });
+    }
+
+    function handleScrollAnimations() {
+        // Add scroll-based animations here if needed
+        const scrolled = window.scrollY;
+        const rate = scrolled * -0.5;
+        
+        // Parallax effect for hero background
+        const heroBackground = document.querySelector('.pixel-background');
+        if (heroBackground) {
+            heroBackground.style.transform = `translateY(${rate}px)`;
+        }
+    }
+
+    // Pixel Art Effects
+    function initializePixelEffects() {
+        createFloatingPixels();
+        animatePixelElements();
+    }
+
+    function createFloatingPixels() {
+        const pixelContainer = document.querySelector('.pixel-background');
+        if (!pixelContainer) return;
+        
+        // Add additional floating pixel elements
+        for (let i = 0; i < 20; i++) {
+            const pixel = document.createElement('div');
+            pixel.style.cssText = `
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 1px;
+                animation: pixelFloat ${10 + Math.random() * 20}s linear infinite;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation-delay: ${Math.random() * 10}s;
+            `;
+            pixelContainer.appendChild(pixel);
+        }
+    }
+
+    function animatePixelElements() {
+        // Animate pixel art elements in the about section
+        const pixelElements = document.querySelectorAll('.pixel-robot, .pixel-cat, .pixel-grill');
+        
+        pixelElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                element.style.transform = 'scale(1.1)';
+                element.style.transition = 'transform 0.3s ease';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = 'scale(1)';
+            });
+        });
+    }
+
+    // Utility Functions
+    function handleResize() {
+        // Handle responsive adjustments
+        updateCountdownLayout();
+    }
+
+    function updateCountdownLayout() {
+        const countdown = document.querySelector('.countdown');
+        if (!countdown) return;
+        
+        if (window.innerWidth < 480) {
+            countdown.style.flexWrap = 'wrap';
+        } else {
+            countdown.style.flexWrap = 'nowrap';
+        }
+    }
 
     function handleKeyDown(event) {
         // Keyboard accessibility
@@ -790,6 +652,89 @@
             console.log(`🚀 Page loaded in ${loadTime}ms`);
         }
     });
+
+    // Custom Video Play Button
+    function initializeVideoPlayButton() {
+        const video = document.getElementById('hero-bg-video');
+        const playButton = document.getElementById('video-play-btn');
+        const playIcon = playButton?.querySelector('.play-icon');
+        const pauseIcon = playButton?.querySelector('.pause-icon');
+        
+        if (!video || !playButton) {
+            console.warn('Video or play button not found');
+            return;
+        }
+
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // Update button state based on video state
+        function updateButtonState() {
+            if (video.paused) {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                playButton.classList.remove('hidden');
+            } else {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                // Hide button after a short delay when playing
+                setTimeout(() => {
+                    if (!video.paused) {
+                        playButton.classList.add('hidden');
+                    }
+                }, 2000);
+            }
+        }
+
+        // Handle play button click
+        playButton.addEventListener('click', () => {
+            if (video.paused) {
+                // Ensure video is muted for autoplay policies
+                video.muted = true;
+                video.play().then(() => {
+                    console.log('✅ Video started playing');
+                    updateButtonState();
+                }).catch(error => {
+                    console.log('🚫 Video play failed:', error.message);
+                });
+            } else {
+                video.pause();
+                console.log('⏸️ Video paused');
+                updateButtonState();
+            }
+        });
+
+        // Show button when video is paused
+        video.addEventListener('pause', () => {
+            updateButtonState();
+        });
+
+        // Hide button when playing
+        video.addEventListener('play', () => {
+            updateButtonState();
+        });
+
+        // Try autoplay on mobile after user interaction
+        if (isMobile) {
+            const enableAutoplayOnInteraction = () => {
+                if (video.paused) {
+                    video.muted = true;
+                    video.play().catch(() => {
+                        console.log('Mobile autoplay still blocked');
+                    });
+                }
+                document.removeEventListener('touchstart', enableAutoplayOnInteraction);
+                document.removeEventListener('click', enableAutoplayOnInteraction);
+            };
+            
+            document.addEventListener('touchstart', enableAutoplayOnInteraction, { once: true });
+            document.addEventListener('click', enableAutoplayOnInteraction, { once: true });
+        }
+
+        // Initial state
+        updateButtonState();
+        
+        console.log('🎬 Custom video play button initialized');
+    }
 
     // Initialize the application
     init();
