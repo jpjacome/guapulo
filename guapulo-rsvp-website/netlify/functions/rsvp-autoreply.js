@@ -88,7 +88,16 @@ exports.handler = async (event) => {
       };
     }
 
-    return { statusCode: 200, body: JSON.stringify({ success: true, recipient: email }) };
+    // Return detailed success response
+    return { 
+      statusCode: 200, 
+      body: JSON.stringify({ 
+        success: true, 
+        recipient: email,
+        emailjs_response: responseText,
+        status: response.status
+      }) 
+    };
 
   } catch (error) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Server error', details: error.message }) };
