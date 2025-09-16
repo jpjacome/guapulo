@@ -87,9 +87,21 @@ exports.handler = async (event) => {
     // Masked preview: show first 4 and last 4 chars only
     const maskedPreview = hasPrivate ? `${privateKey.slice(0,4)}...${privateKey.slice(-4)}` : null;
     console.log('EmailJS private key presence:', { hasPrivate, maskedPreview });
-    if (privateKey) {
-      emailjsPayload.private_key = privateKey;
-    }
+    
+    // TEMPORARILY DISABLE PRIVATE KEY TO TEST - some EmailJS services work better without it
+    // if (privateKey) {
+    //   emailjsPayload.private_key = privateKey;
+    // }
+    
+    // Add detailed logging of the exact payload being sent (mask sensitive data)
+    const logPayload = {
+      service_id: emailjsPayload.service_id ? `${emailjsPayload.service_id.slice(0,8)}...` : 'missing',
+      template_id: emailjsPayload.template_id ? `${emailjsPayload.template_id.slice(0,8)}...` : 'missing', 
+      user_id: emailjsPayload.user_id ? `${emailjsPayload.user_id.slice(0,8)}...` : 'missing',
+      template_params_keys: Object.keys(emailjsPayload.template_params || {}),
+      has_private_key: !!emailjsPayload.private_key
+    };
+    console.log('EmailJS payload being sent (masked):', logPayload);
 
     // If debug query flag is passed, return the prepared template_params and env presence
     const url = event.rawUrl || (event.path || '') + (event.queryStringParameters ? ('?' + Object.keys(event.queryStringParameters).map(k=>`${k}=${event.queryStringParameters[k]}`).join('&')) : '');
