@@ -271,6 +271,25 @@ a {
   animation: heroSlideUp 1s ease-out;
 }
 
+/* Play overlay for mobile autoplay fallback */
+.video-play-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: var(--color-1);
+  border: none;
+  font-size: 2rem;
+  display: none; /* shown via JS when needed */
+  align-items: center;
+  justify-content: center;
+}
+
 .hero-details {
   position: absolute;
   bottom: 0;
