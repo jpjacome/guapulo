@@ -125,26 +125,6 @@
 
     
 
-        <!-- EmailJS SDK (client-side email sending) -->
-        <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-        <script>
-            // Guarded EmailJS init: read public user id from a data attribute on <body>
-            // Do NOT commit your actual user id into source. To enable client-side EmailJS,
-            // add `data-emailjs-user="user_yourPublicId"` to the <body> tag on deployment.
-            (function(){
-                try {
-                    var body = document && document.body;
-                    var userId = body && body.getAttribute && body.getAttribute('data-emailjs-user');
-                    if (userId && window.emailjs && emailjs.init) {
-                        emailjs.init(userId);
-                    } else if (userId) {
-                        console.warn('EmailJS SDK missing; cannot initialize');
-                    }
-                } catch(e) {
-                    console.warn('EmailJS init error', e);
-                }
-            })();
-        </script>
         <!-- Site scripts -->
         <script src="script.js"></script>
     <script>

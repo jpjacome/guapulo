@@ -494,73 +494,15 @@
             .then(() => {
                 // Clear saved form data
                 clearSavedFormData();
+                console.log('✅ Notion integration successful');
 
-                // Also call server-side auto-reply function so EmailJS can send from backend
-                try {
-                    const serverPayload = {
-                        name: jsonData.name || '',
-                        email: jsonData.email || '',
-                        phone: jsonData.phone || '',
-                        plus_one: jsonData.plus_one || '',
-                        message: jsonData.message || '',
-                        // Provide event metadata pulled from site as defaults
-                        event_name: 'Parrillazo Guapulense',
-                        event_date: '19 de septiembre',
-                        event_time: '6:00 pm',
-                        event_location: 'Guapulo'
-                    };
-                    fetch('/.netlify/functions/rsvp-autoreply', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(serverPayload)
-                    }).then(resp => resp.text().then(t => console.log('Server autoreply response:', resp.status, t))).catch(err => console.warn('Server autoreply error:', err));
-                } catch (err) {
-                    console.error('Error while calling server-side autoreply:', err);
-                }
-
-                // Attempt client-side EmailJS send (browser) as a fallback/primary
-                try {
-                    if (typeof emailjs !== 'undefined' && emailjs.send) {
-                        const emailParams = {
-                            name: jsonData.name || '',
-                            email: jsonData.email || '',
-                            phone: jsonData.phone || '',
-                            plus_one: jsonData.plus_one || '',
-                            message: jsonData.message || ''
-                        };
-                        // Client-side EmailJS send will only run if data attributes are set on <body>:
-                        // data-emailjs-service and data-emailjs-template. This avoids committing IDs.
-                        try {
-                            const body = document && document.body;
-                            const serviceId = body && body.getAttribute && body.getAttribute('data-emailjs-service');
-                            const templateId = body && body.getAttribute && body.getAttribute('data-emailjs-template');
-                            if (serviceId && templateId && window.emailjs && emailjs.send) {
-                                emailjs.send(serviceId, templateId, emailParams)
-                                .then(function(response) {
-                                    console.log('EmailJS client send success', response);
-                                }, function(error) {
-                                    console.warn('EmailJS client send failed', error);
-                                });
-                            } else {
-                                console.warn('EmailJS client-side send not configured (service/template missing)');
-                            }
-                        } catch (e) {
-                            console.warn('EmailJS client send error', e);
-                        }
-                    } else {
-                        console.warn('emailjs is not available in the browser');
-                    }
-                } catch (err) {
-                    console.error('Error while attempting client-side EmailJS send:', err);
-                }
-
-                // Redirect to success page regardless
-                window.location.href = '/success.html';
+                // Redirect to success page
+                window.location.href = CONFIG.formEndpoint;
             })
             .catch(error => {
                 console.error('Notion integration error:', error);
                 // Still redirect, but optionally show a warning
-                window.location.href = '/success.html';
+                window.location.href = CONFIG.formEndpoint;
             });
         })
         .catch(error => {
