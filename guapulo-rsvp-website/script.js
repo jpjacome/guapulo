@@ -365,22 +365,61 @@
         // Track autoplay state
         let autoplayAttempted = false;
         let isVisible = false;
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        // Attempt autoplay with proper error handling (Chrome/WebKit requirement)
+        console.log('📱 Mobile device detected:', isMobile);
+        console.log('🎥 Video attributes:', {
+            muted: video.muted,
+            playsinline: video.hasAttribute('playsinline'),
+            controls: video.hasAttribute('controls'),
+            autoplay: video.hasAttribute('autoplay')
+        });
+        
+        // Enhanced autoplay attempt with multiple strategies
         function attemptAutoplay() {
-            if (autoplayAttempted || !isVisible) return;
+            if (autoplayAttempted) return;
             
             autoplayAttempted = true;
-            console.log('Attempting video autoplay...');
+            console.log('🎬 Attempting video autoplay...');
+            
+            // Ensure video is properly configured for mobile
+            video.muted = true;
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
             
             const playPromise = video.play();
             
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     console.log('✅ Video autoplay successful');
+                    // Video is playing, hide poster to show video content
+                    if (video.poster) {
+                        setTimeout(() => {
+                            video.removeAttribute('poster');
+                        }, 500);
+                    }
                 }).catch(error => {
                     console.log('🚫 Autoplay blocked:', error.message);
-                    console.log('User can start playback with native controls');
+                    console.log('📋 Native controls available for manual play');
+                    // Reset for potential retry
+                    autoplayAttempted = false;
+                    
+                    // On mobile, try again on any user interaction
+                    if (isMobile) {
+                        console.log('📱 Setting up mobile interaction handler...');
+                        const mobilePlayHandler = () => {
+                            if (video.paused) {
+                                console.log('🎬 Retrying autoplay after user interaction...');
+                                video.play().catch(e => console.log('Still blocked:', e.message));
+                            }
+                            // Remove handler after first attempt
+                            document.removeEventListener('touchstart', mobilePlayHandler);
+                            document.removeEventListener('click', mobilePlayHandler);
+                        };
+                        
+                        document.addEventListener('touchstart', mobilePlayHandler, { once: true });
+                        document.addEventListener('click', mobilePlayHandler, { once: true });
+                    }
                 });
             }
         }
@@ -390,19 +429,23 @@
         if ('IntersectionObserver' in window) {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    const wasVisible = isVisible;
                     isVisible = entry.isIntersecting;
-                    if (isVisible && !autoplayAttempted) {
-                        // Small delay to ensure video is fully visible
-                        setTimeout(attemptAutoplay, 100);
+                    
+                    console.log('👁️ Video visibility changed:', isVisible);
+                    
+                    if (isVisible && !wasVisible) {
+                        // Video became visible - try autoplay
+                        autoplayAttempted = false; // Reset for new visibility
+                        setTimeout(attemptAutoplay, isMobile ? 300 : 100);
                     } else if (!isVisible && !video.paused) {
                         // iOS policy: pause video when scrolled out of view
-                        console.log('Video scrolled out of view, pausing for iOS compatibility');
+                        console.log('📜 Video scrolled out of view, pausing for iOS compatibility');
                         video.pause();
-                        autoplayAttempted = false; // Allow retry when back in view
                     }
                 });
             }, {
-                threshold: 0.5, // Video must be at least 50% visible
+                threshold: isMobile ? 0.3 : 0.5, // Lower threshold for mobile
                 rootMargin: '0px'
             });
             
@@ -410,28 +453,42 @@
         } else {
             // Fallback for older browsers - assume visible
             isVisible = true;
-            attemptAutoplay();
+            setTimeout(attemptAutoplay, 100);
         }
         
-        // Handle manual play attempts
+        // Enhanced event handling
         video.addEventListener('play', () => {
-            console.log('Video playing (manual or auto)');
+            console.log('▶️ Video playing (manual or auto)');
         });
         
         video.addEventListener('pause', () => {
-            console.log('Video paused');
+            console.log('⏸️ Video paused');
         });
         
-        // Immediate autoplay attempt if video loads quickly and is visible
-        if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-            isVisible = true;
-            attemptAutoplay();
-        } else {
-            video.addEventListener('canplay', () => {
-                if (isVisible && !autoplayAttempted) {
-                    attemptAutoplay();
+        video.addEventListener('loadeddata', () => {
+            console.log('📺 Video data loaded');
+            if (isVisible && !autoplayAttempted) {
+                setTimeout(attemptAutoplay, 100);
+            }
+        });
+        
+        // Mobile-specific: try autoplay on first touch anywhere on page
+        if (isMobile) {
+            const firstTouchHandler = () => {
+                if (video.paused && isVisible) {
+                    console.log('📱 First touch detected, attempting autoplay...');
+                    video.play().catch(e => console.log('Touch autoplay failed:', e.message));
                 }
-            });
+                document.removeEventListener('touchstart', firstTouchHandler);
+            };
+            document.addEventListener('touchstart', firstTouchHandler, { once: true });
+        }
+        
+        // Immediate autoplay attempt if video is ready
+        if (video.readyState >= 3) { // HAVE_FUTURE_DATA
+            console.log('🎬 Video ready immediately, attempting autoplay...');
+            isVisible = true;
+            setTimeout(attemptAutoplay, 100);
         }
     }
 
