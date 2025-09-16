@@ -353,112 +353,86 @@
         
     }
 
-    // Simple, reliable mobile video autoplay with overlay
+    // Mobile-optimized video autoplay based on WebKit/Chrome policies
     function initializeVideoAutoplay() {
         const video = document.getElementById('hero-bg-video');
-        const overlay = document.getElementById('video-play-overlay');
         
-        if (!video || !overlay) {
-            console.warn('Video or overlay element not found');
+        if (!video) {
+            console.warn('Hero video element not found');
             return;
         }
-
-        let videoHasPlayed = false;
         
-        // Hide overlay when video starts playing
-        function hideOverlay() {
-            overlay.classList.add('hidden');
-            console.log('✅ Video playing - hiding overlay');
-        }
+        // Track autoplay state
+        let autoplayAttempted = false;
+        let isVisible = false;
         
-        // Show overlay when video needs user interaction
-        function showOverlay() {
-            overlay.classList.remove('hidden');
-            console.log('📱 Video needs user interaction - showing overlay');
-        }
-        
-        // Handle overlay click
-        overlay.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('🎥 User clicked play button');
+        // Attempt autoplay with proper error handling (Chrome/WebKit requirement)
+        function attemptAutoplay() {
+            if (autoplayAttempted || !isVisible) return;
             
-            // Unmute video for user-initiated playback
-            video.muted = false;
+            autoplayAttempted = true;
+            console.log('Attempting video autoplay...');
             
-            // Play video
             const playPromise = video.play();
+            
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    videoHasPlayed = true;
-                    hideOverlay();
-                    console.log('🎥 Video started successfully');
-                }).catch((error) => {
-                    console.error('❌ Failed to play video:', error);
-                    // Keep overlay visible if play fails
+                    console.log('✅ Video autoplay successful');
+                }).catch(error => {
+                    console.log('🚫 Autoplay blocked:', error.message);
+                    console.log('User can start playback with native controls');
                 });
-            } else {
-                // Older browser support
-                videoHasPlayed = true;
-                hideOverlay();
             }
-        });
+        }
         
-        // Try initial autoplay
-        function tryAutoplay() {
-            const playPromise = video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    // Autoplay succeeded
-                    videoHasPlayed = true;
-                    hideOverlay();
-                    console.log('🎥 Autoplay successful');
-                }).catch(() => {
-                    // Autoplay failed - keep overlay visible
-                    showOverlay();
-                    console.log('🚫 Autoplay blocked - overlay visible');
-                });
-            } else {
-                // Check if video is playing after a short delay
-                setTimeout(() => {
-                    if (video.paused) {
-                        showOverlay();
-                    } else {
-                        videoHasPlayed = true;
-                        hideOverlay();
+        // iOS requires video to be visible on screen for autoplay
+        // Use Intersection Observer to detect visibility
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isVisible = entry.isIntersecting;
+                    if (isVisible && !autoplayAttempted) {
+                        // Small delay to ensure video is fully visible
+                        setTimeout(attemptAutoplay, 100);
+                    } else if (!isVisible && !video.paused) {
+                        // iOS policy: pause video when scrolled out of view
+                        console.log('Video scrolled out of view, pausing for iOS compatibility');
+                        video.pause();
+                        autoplayAttempted = false; // Allow retry when back in view
                     }
-                }, 500);
-            }
+                });
+            }, {
+                threshold: 0.5, // Video must be at least 50% visible
+                rootMargin: '0px'
+            });
+            
+            observer.observe(video);
+        } else {
+            // Fallback for older browsers - assume visible
+            isVisible = true;
+            attemptAutoplay();
         }
         
-        // Handle video events
-        video.addEventListener('play', function() {
-            if (videoHasPlayed) {
-                hideOverlay();
-            }
+        // Handle manual play attempts
+        video.addEventListener('play', () => {
+            console.log('Video playing (manual or auto)');
         });
         
-        video.addEventListener('pause', function() {
-            if (videoHasPlayed) {
-                showOverlay();
-            }
+        video.addEventListener('pause', () => {
+            console.log('Video paused');
         });
         
-        // Handle page visibility changes
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && video.paused && videoHasPlayed) {
-                video.play().catch(e => console.log('Failed to resume on visibility change:', e));
-            }
-        });
-        
-        // Ensure video loops properly
-        video.addEventListener('ended', function() {
-            video.currentTime = 0;
-            video.play().catch(e => console.log('Failed to loop video:', e));
-        });
-        
-        // Start initial autoplay attempt
-        setTimeout(tryAutoplay, 500); // Small delay to ensure video is ready
+        // Immediate autoplay attempt if video loads quickly and is visible
+        if (video.readyState >= 3) { // HAVE_FUTURE_DATA
+            isVisible = true;
+            attemptAutoplay();
+        } else {
+            video.addEventListener('canplay', () => {
+                if (isVisible && !autoplayAttempted) {
+                    attemptAutoplay();
+                }
+            });
+        }
     }
 
     function handleFormInput(event) {
