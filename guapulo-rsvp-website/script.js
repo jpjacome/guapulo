@@ -353,45 +353,102 @@
         
     }
 
-    // Force video playback on mobile devices and add robust fallbacks
+    // Mobile video autoplay with proven fallback pattern
     function initializeVideoAutoplay() {
-        try {
-            // Select common video locations: explicit wrapper, hero video id/class
-            const selector = '.wrapper-1 video, #hero-bg-video, .hero-video';
-            const videos = document.querySelectorAll(selector);
-            if (!videos || videos.length === 0) return;
-
-            videos.forEach(video => {
-                // Try to play immediately
-                const playPromise = video.play();
-
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        // Autoplay was prevented (most likely on mobile). We'll log and rely on user gesture or overlay.
-                        console.log('Auto-play was prevented for video:', error);
-                    });
-                }
-
-                // When the page becomes visible again, try to resume playback
-                document.addEventListener('visibilitychange', function() {
-                    if (!document.hidden && video.paused) {
-                        video.play().catch(e => console.log('Play on visibilitychange failed:', e));
-                    }
-                });
-
-                // Ensure the video loops reliably on mobile by rewinding on ended
-                video.addEventListener('ended', function() {
-                    try {
-                        video.currentTime = 0;
-                        video.play().catch(e => console.log('Loop play failed:', e));
-                    } catch (e) {
-                        console.log('Error while looping video:', e);
-                    }
-                });
-            });
-        } catch (e) {
-            console.warn('initializeVideoAutoplay error:', e);
+        const video = document.getElementById('hero-bg-video');
+        const overlay = document.getElementById('video-play-overlay');
+        
+        if (!video) {
+            console.warn('Hero video element not found');
+            return;
         }
+
+        let hasUserInteracted = false;
+        
+        // Helper functions for overlay management
+        function showOverlay() {
+            if (overlay) {
+                overlay.style.display = 'flex';
+                console.log('📱 Autoplay blocked - showing play overlay');
+            }
+        }
+        
+        function hideOverlay() {
+            if (overlay) {
+                overlay.style.display = 'none';
+                console.log('✅ Video playing - hiding overlay');
+            }
+        }
+        
+        // Attempt autoplay using the promise-based approach
+        function attemptAutoplay() {
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Autoplay succeeded
+                    hideOverlay();
+                    console.log('🎥 Video autoplay successful');
+                }).catch((error) => {
+                    // Autoplay was prevented
+                    if (error.name === 'NotAllowedError') {
+                        showOverlay();
+                        console.log('🚫 Autoplay not allowed, waiting for user interaction');
+                    } else {
+                        console.warn('Video play error:', error);
+                        showOverlay();
+                    }
+                });
+            } else {
+                // Older browser - check if playing after a short delay
+                setTimeout(() => {
+                    if (video.paused) {
+                        showOverlay();
+                    } else {
+                        hideOverlay();
+                    }
+                }, 100);
+            }
+        }
+        
+        // Handle user click on overlay
+        if (overlay) {
+            overlay.addEventListener('click', function(e) {
+                e.preventDefault();
+                hasUserInteracted = true;
+                
+                // Allow audio after user interaction
+                video.muted = false;
+                
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        hideOverlay();
+                        console.log('🎥 Video started by user interaction');
+                    }).catch((error) => {
+                        console.error('Failed to play video after user interaction:', error);
+                    });
+                } else {
+                    hideOverlay();
+                }
+            });
+        }
+        
+        // Handle page visibility changes (tab switching)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && video.paused && hasUserInteracted) {
+                video.play().catch(e => console.log('Failed to resume on visibility change:', e));
+            }
+        });
+        
+        // Ensure reliable looping on mobile
+        video.addEventListener('ended', function() {
+            video.currentTime = 0;
+            video.play().catch(e => console.log('Failed to loop video:', e));
+        });
+        
+        // Initial autoplay attempt
+        attemptAutoplay();
     }
 
     function handleFormInput(event) {

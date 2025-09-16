@@ -49,8 +49,8 @@
                     <source src="./assets/vid2.mp4" type="video/mp4">
                     <img src="./assets/imgs/bg1.png" alt="Evento Parrillazo Guapulense" style="width:100%;height:auto;object-fit:cover;" />
                 </video>
-                    <!-- Mobile autoplay fallback: shown when autoplay is blocked -->
-                    <button id="video-play-overlay" class="video-play-overlay" aria-label="Play video">▶</button>
+                    <!-- Single autoplay fallback overlay: managed by JavaScript -->
+                    <button id="video-play-overlay" class="video-play-overlay" aria-label="Reproducir video" style="display: none;">▶</button>
                 <!-- Countdown Timer -->
                 <div class="countdown-container fade2">
                     <h3 class="fade2">Countdown</h3>
@@ -138,40 +138,5 @@
         }
     });
     </script>
-        <script>
-        // Attempt autoplay and provide a tap-to-play overlay for mobile browsers that block autoplay
-        (function(){
-            var video = document.getElementById('hero-bg-video');
-            var overlay = document.getElementById('video-play-overlay');
-            if (!video) return;
-
-            function showOverlay(){
-                if (overlay) overlay.style.display = 'flex';
-            }
-
-            function hideOverlay(){
-                if (overlay) overlay.style.display = 'none';
-            }
-
-            // Try to play programmatically
-            var playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.then(function(){
-                    hideOverlay();
-                }).catch(function(){
-                    // Autoplay failed (likely mobile). Show overlay to allow manual play.
-                    showOverlay();
-                });
-            }
-
-            if (overlay) {
-                overlay.addEventListener('click', function(){
-                    video.muted = false; // allow sound if user explicitly taps
-                    video.play();
-                    hideOverlay();
-                });
-            }
-        })();
-        </script>
 </body>
 </html>
