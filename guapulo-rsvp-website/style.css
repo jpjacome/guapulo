@@ -290,6 +290,7 @@ a {
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  opacity: 0;
 }
 
 .video-play-overlay:hover {
