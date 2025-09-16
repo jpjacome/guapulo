@@ -145,6 +145,10 @@
             var overlay = document.getElementById('video-play-overlay');
             if (!video) return;
 
+            // Force remove any controls attributes and ensure no native controls
+            video.removeAttribute('controls');
+            video.controls = false;
+            
             function showOverlay(){
                 if (overlay) overlay.style.display = 'flex';
             }

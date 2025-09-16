@@ -306,6 +306,33 @@ a {
   display: none !important;
 }
 
+.hero-video::-webkit-media-controls-panel {
+  display: none !important;
+}
+
+.hero-video::-webkit-media-controls-play-button {
+  display: none !important;
+}
+
+.hero-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+/* Firefox */
+.hero-video::-moz-media-controls {
+  display: none !important;
+}
+
+/* General video control hiding */
+.hero-video {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-video:focus {
+  outline: none;
+}
+
 .hero-details {
   position: absolute;
   bottom: 0;
