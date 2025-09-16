@@ -99,9 +99,50 @@ exports.handler = async (event) => {
       template_id: emailjsPayload.template_id ? `${emailjsPayload.template_id.slice(0,8)}...` : 'missing', 
       user_id: emailjsPayload.user_id ? `${emailjsPayload.user_id.slice(0,8)}...` : 'missing',
       template_params_keys: Object.keys(emailjsPayload.template_params || {}),
-      has_private_key: !!emailjsPayload.private_key
+      has_private_key: !!emailjsPayload.private_key,
+      private_key_length: emailjsPayload.private_key ? emailjsPayload.private_key.length : 0
     };
     console.log('EmailJS payload being sent (masked):', logPayload);
+    
+    // Enhanced diagnostics: test different authentication modes if debug=auth
+    const authDebugMode = (event.queryStringParameters && event.queryStringParameters.debug === 'auth');
+    if (authDebugMode) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          diagnostics: {
+            env_vars: {
+              service_id_present: !!process.env.EMAILJS_SERVICE_ID,
+              service_id_length: process.env.EMAILJS_SERVICE_ID ? process.env.EMAILJS_SERVICE_ID.length : 0,
+              service_id_preview: process.env.EMAILJS_SERVICE_ID ? `${process.env.EMAILJS_SERVICE_ID.slice(0,8)}...` : 'missing',
+              template_id_present: !!process.env.EMAILJS_TEMPLATE_ID,
+              template_id_length: process.env.EMAILJS_TEMPLATE_ID ? process.env.EMAILJS_TEMPLATE_ID.length : 0,
+              template_id_preview: process.env.EMAILJS_TEMPLATE_ID ? `${process.env.EMAILJS_TEMPLATE_ID.slice(0,8)}...` : 'missing',
+              user_id_present: !!process.env.EMAILJS_USER_ID,
+              user_id_length: process.env.EMAILJS_USER_ID ? process.env.EMAILJS_USER_ID.length : 0,
+              user_id_preview: process.env.EMAILJS_USER_ID ? `${process.env.EMAILJS_USER_ID.slice(0,8)}...` : 'missing',
+              private_key_present: !!process.env.EMAILJS_PRIVATE_KEY,
+              private_key_length: process.env.EMAILJS_PRIVATE_KEY ? process.env.EMAILJS_PRIVATE_KEY.length : 0,
+              private_key_preview: process.env.EMAILJS_PRIVATE_KEY ? `${process.env.EMAILJS_PRIVATE_KEY.slice(0,4)}...${process.env.EMAILJS_PRIVATE_KEY.slice(-4)}` : 'missing'
+            },
+            payload_structure: {
+              service_id: typeof emailjsPayload.service_id,
+              template_id: typeof emailjsPayload.template_id,
+              user_id: typeof emailjsPayload.user_id,
+              private_key: typeof emailjsPayload.private_key,
+              template_params_count: Object.keys(emailjsPayload.template_params || {}).length,
+              template_params_keys: Object.keys(emailjsPayload.template_params || {})
+            },
+            request_info: {
+              emailjs_endpoint: 'https://api.emailjs.com/api/v1.0/email/send',
+              content_type: 'application/json',
+              auth_header_included: !!emailjsPayload.private_key,
+              payload_size_estimate: JSON.stringify(emailjsPayload).length
+            }
+          }
+        }, null, 2)
+      };
+    }
 
     // If debug query flag is passed, return the prepared template_params and env presence
     const url = event.rawUrl || (event.path || '') + (event.queryStringParameters ? ('?' + Object.keys(event.queryStringParameters).map(k=>`${k}=${event.queryStringParameters[k]}`).join('&')) : '');
@@ -161,6 +202,29 @@ exports.handler = async (event) => {
       } catch (hErr) {
         // ignore header collection errors
       }
+      
+      // Enhanced error diagnostics
+      const errorDiagnostics = {
+        request_details: {
+          url: 'https://api.emailjs.com/api/v1.0/email/send',
+          method: 'POST',
+          content_type: 'application/json',
+          payload_keys: Object.keys(emailjsPayload),
+          template_params_keys: Object.keys(emailjsPayload.template_params || {}),
+          has_private_key: !!emailjsPayload.private_key,
+          service_id_type: typeof emailjsPayload.service_id,
+          template_id_type: typeof emailjsPayload.template_id,
+          user_id_type: typeof emailjsPayload.user_id
+        },
+        response_analysis: {
+          status_code: resp.status,
+          status_text: resp.statusText || 'unknown',
+          response_length: respText ? respText.length : 0,
+          response_type: respText ? (respText.startsWith('{') ? 'json' : 'text') : 'empty',
+          parsed_response: parsed
+        }
+      };
+      
       return {
         statusCode: 502,
         body: JSON.stringify({
@@ -169,7 +233,8 @@ exports.handler = async (event) => {
           details_raw: respText,
           details_parsed: parsed,
           details_length: respText ? respText.length : 0,
-          headers: headersObj
+          headers: headersObj,
+          diagnostics: errorDiagnostics
         }, null, 2)
       };
     }
