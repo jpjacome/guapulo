@@ -288,6 +288,22 @@ a {
   display: none; /* shown via JS when needed */
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.video-play-overlay:hover {
+  background: rgba(0,0,0,0.8);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Ensure video doesn't show native controls */
+.hero-video::-webkit-media-controls {
+  display: none !important;
+}
+
+.hero-video::-webkit-media-controls-enclosure {
+  display: none !important;
 }
 
 .hero-details {
