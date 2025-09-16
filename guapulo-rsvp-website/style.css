@@ -252,6 +252,12 @@ a {
   .hero-video {
     width: 100%;
     object-fit: cover;
+    /* Keep the video visible on mobile; mobile autoplay requires muted & playsinline (already present).
+       Some devices may still throttle playback — preload helps the browser start fetching. */
+    display: block;
+    position: absolute;
+    inset: 0;
+    height: 100%;
   }
 }
 .hero-title {
