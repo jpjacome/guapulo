@@ -494,10 +494,6 @@ a {
     margin: 0;
     margin-left: 0;
   }
-  
-  .countdown-container {    
-    margin: 0 2rem 2rem;    
-  }
 }
 
 @media (max-width: 768px) {
