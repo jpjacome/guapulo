@@ -57,9 +57,28 @@ exports.handler = async (event) => {
       // (EmailJS templates sometimes require `to_email`/`to_name` if the template's
       // To/recipient is parameterized). Keep `name` for template body interpolation.
       template_params: {
-        name: name,
+        // Recipient fields (required by template)
         to_name: name,
-        to_email: email
+        to_email: email,
+        
+        // Form data fields (all form fields for template use)  
+        name: name,
+        email: email,
+        phone: phone,
+        plus_one: plus_one,
+        message: message,
+        
+        // Common EmailJS template fields
+        subject: `RSVP Confirmation - ${name}`,
+        reply_to: email,
+        from_name: 'Parrillazo Guapulense',
+        from_email: 'noreply@guapuliza.netlify.app',
+        
+        // Event details (in case template references them)
+        event_name: 'Parrillazo Guapulense',
+        event_date: '19 de septiembre', 
+        event_time: '6:00 pm',
+        event_location: 'Lugar por confirmar'
       }
     };
     // If a private key is provided in env, include it in the payload (EmailJS strict mode)
