@@ -59,7 +59,7 @@ exports.handler = async (event) => {
     };
 
     if (privateKey) {
-      emailjsPayload.private_key = privateKey;
+      emailjsPayload.accessToken = privateKey;
     }
 
     const isDebug = event.queryStringParameters?.debug === '1';
