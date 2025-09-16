@@ -72,7 +72,9 @@
         initializeLoadingScreen();
         initializeNavigation();
         initializeCountdown();
-        initializeRSVPForm();
+    initializeRSVPForm();
+    // Ensure background/hero videos attempt to autoplay on mobile
+    initializeVideoAutoplay();
         // Initialize components
         initializeNavigation();
         initializeCountdown();
@@ -349,6 +351,47 @@
         // Initialize form validation
         initializeFormValidation();
         
+    }
+
+    // Force video playback on mobile devices and add robust fallbacks
+    function initializeVideoAutoplay() {
+        try {
+            // Select common video locations: explicit wrapper, hero video id/class
+            const selector = '.wrapper-1 video, #hero-bg-video, .hero-video';
+            const videos = document.querySelectorAll(selector);
+            if (!videos || videos.length === 0) return;
+
+            videos.forEach(video => {
+                // Try to play immediately
+                const playPromise = video.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        // Autoplay was prevented (most likely on mobile). We'll log and rely on user gesture or overlay.
+                        console.log('Auto-play was prevented for video:', error);
+                    });
+                }
+
+                // When the page becomes visible again, try to resume playback
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden && video.paused) {
+                        video.play().catch(e => console.log('Play on visibilitychange failed:', e));
+                    }
+                });
+
+                // Ensure the video loops reliably on mobile by rewinding on ended
+                video.addEventListener('ended', function() {
+                    try {
+                        video.currentTime = 0;
+                        video.play().catch(e => console.log('Loop play failed:', e));
+                    } catch (e) {
+                        console.log('Error while looping video:', e);
+                    }
+                });
+            });
+        } catch (e) {
+            console.warn('initializeVideoAutoplay error:', e);
+        }
     }
 
     function handleFormInput(event) {
