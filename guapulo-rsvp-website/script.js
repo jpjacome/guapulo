@@ -495,32 +495,7 @@
                 // Clear saved form data
                 clearSavedFormData();
                 console.log('✅ Notion integration successful');
-
-                // Send auto-reply email
-                const autoReplyData = {
-                    name: jsonData.name || '',
-                    email: jsonData.email || '',
-                    phone: jsonData.phone || '',
-                    plus_one: jsonData.plus_one || '',
-                    message: jsonData.message || ''
-                };
-
-                fetch('/.netlify/functions/rsvp-autoreply', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(autoReplyData)
-                })
-                .then(response => response.json().then(data => ({status: response.status, data})))
-                .then(({status, data}) => {
-                    if (status === 200) {
-                        console.log('✅ Auto-reply sent successfully');
-                    } else {
-                        console.warn('⚠️ Auto-reply failed:', data.error);
-                    }
-                })
-                .catch(error => {
-                    console.warn('⚠️ Auto-reply error:', error);
-                });
+                console.log('✅ Auto-reply will be sent via Netlify webhook');
 
                 // Redirect to success page
                 window.location.href = CONFIG.formEndpoint;
