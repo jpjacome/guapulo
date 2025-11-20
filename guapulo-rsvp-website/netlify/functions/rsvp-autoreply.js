@@ -52,8 +52,8 @@ exports.handler = async (event) => {
         subject: 'Confirmación RSVP - Parrillazo Guapulense',
         reply_to: email,
         event_name: 'Parrillazo Guapulense',
-        event_date: '13 de diciembre, 2025',
-        event_time: '6:00 PM',
+        event_date: 'sábado 13 de diciembre',
+        event_time: '5:00 pm',
         event_location: 'Guápulo, Quito'
       }
     };
