@@ -6,7 +6,7 @@
 
     // Configuration
     const CONFIG = {
-    eventDate: '2025-09-19T18:00:00-05:00',
+    eventDate: '2025-12-13T18:00:00-05:00',
     timeZone: 'America/Bogota',
         animationDuration: 300,
         countdownInterval: 1000,

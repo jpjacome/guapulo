@@ -2,9 +2,9 @@
   "welcome_message": "¡Bienvenidos al Parrillazo Guapulense 2025!",
   "event_description": "Únete a nosotros para una parrillada especial en el hermoso barrio de Guápulo. Disfrutaremos de buena comida, música y compañía en un ambiente relajado y festivo.",
   "gift_info": "BYOB (Trae tu propia bebida) - Nosotros ponemos la parrilla y la buena vibra",
-  "special_instructions": "Por favor confirma tu asistencia antes del 16 de julio. El evento será al aire libre, trae ropa cómoda.",
+  "special_instructions": "Por favor confirma tu asistencia antes del 11 de diciembre. El evento será al aire libre, trae ropa cómoda.",
   "seo_title": "Parrillazo Guapulense 2025",
-  "seo_description": "Únete al Parrillazo Guapulense - una parrillada especial en Guápulo el 18 de julio de 2025. ¡Confirma tu asistencia antes del 16 de julio!",
+  "seo_description": "Únete al Parrillazo Guapulense - una parrillada especial en Guápulo el 13 de diciembre de 2025. ¡Confirma tu asistencia antes del 11 de diciembre!",
   "form_settings": {
     "dietary_restrictions": false,
     "plus_one_allowed": true,
@@ -26,8 +26,8 @@
       "confirmation_message": "¡Genial! Tu confirmación para el Parrillazo Guapulense 2025 ha sido recibida exitosamente.",
       "event_details": {
         "title": "📅 DETALLES DEL EVENTO:",
-        "date": "• Fecha: Viernes, 18 de julio de 2025",
-        "time": "• Hora: 7:00 PM",
+        "date": "• Fecha: Sábado, 13 de diciembre de 2025",
+        "time": "• Hora: 6:00 PM",
         "location": "• Lugar: Barrio Guápulo, Quito",
         "reminder": "• Recordatorio: BYOB (Trae tu propia bebida)"
       },
@@ -36,7 +36,7 @@
         "attendance": "• Asistencia: {{attendance}}",
   "plus_one": "{{#plus_one}}• Acompañante: {{plus_one}}{{/plus_one}}"
       },
-      "closing_message": "¡Te esperamos para una noche increíble de parrilla, buena música y excelente compañía!",
+      "closing_message": "¡Te esperamos!",
       "contact_info": {
         "message": "Si tienes alguna pregunta, no dudes en contactar a JP directamente:",
         "email": "📧 jpjacome@yahoo.com"
