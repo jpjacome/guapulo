@@ -118,8 +118,8 @@ guapulo-rsvp-website/
 
 ### Service Configuration
 - **Service**: Gmail API
-- **Service ID**: service_i6sqe7o
-- **Template ID**: template_5mp33rb
+- **Service ID**: [your-emailjs-service-id]
+- **Template ID**: [your-emailjs-template-id]
 - **User ID**: Configured via environment variable
 
 ### Email Template Structure
@@ -187,8 +187,8 @@ UI theme settings, color schemes, and feature toggles.
 
 ### Required Variables
 ```
-EMAILJS_SERVICE_ID=service_i6sqe7o
-EMAILJS_TEMPLATE_ID=template_5mp33rb
+EMAILJS_SERVICE_ID=[your-emailjs-service-id]
+EMAILJS_TEMPLATE_ID=[your-emailjs-template-id]
 EMAILJS_USER_ID=[configured in EmailJS dashboard]
 EMAILJS_PRIVATE_KEY=[access token from EmailJS]
 NOTION_API_KEY=[Notion integration token]
