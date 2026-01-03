@@ -513,6 +513,8 @@
         // Add additional data
         formData.append('timestamp', new Date().toISOString());
         formData.append('event', 'Parrillazo Guapulense');
+        // Include Netlify form name for AJAX submissions so Netlify recognizes the form
+        formData.append('form-name', elements.rsvpForm.getAttribute('name') || 'rsvp');
         // Submit to Netlify (for notifications)
         fetch('/', {
             method: 'POST',
