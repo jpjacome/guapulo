@@ -39,7 +39,7 @@
 }
 /* CSS Custom Properties - Professional Corporate Theme */
 :root {
-  --color-1: #D0FF00;
+  --color-1: #c756e4;
   --color-2: black;
   --color-3: #343A40;
   
@@ -276,7 +276,7 @@ a {
   font-size: clamp(20px, 2rem, 4vw);
   font-weight: 700;
   margin: 0rem;
-  color: #2eff00;
+  color: #ffb300;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
   transform: translateY(20px);
   animation: heroSlideUp 1s ease-out;
