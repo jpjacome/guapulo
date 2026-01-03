@@ -540,7 +540,20 @@
                 // Clear saved form data
                 clearSavedFormData();
                 console.log('✅ Notion integration successful');
-                console.log('✅ Auto-reply will be sent via Netlify webhook');
+
+                // Client-side fallback: trigger auto-reply function directly
+                // This helps when Netlify Form outgoing webhook isn't firing.
+                try {
+                    fetch('/.netlify/functions/rsvp-autoreply', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(formData).toString()
+                    })
+                    .then(resp => resp.text().then(txt => console.log('rsvp-autoreply (client) response:', resp.status, txt)))
+                    .catch(err => console.warn('rsvp-autoreply (client) call failed:', err));
+                } catch (e) {
+                    console.warn('Failed to invoke rsvp-autoreply from client:', e);
+                }
 
                 // Redirect to success page
                 window.location.href = CONFIG.formEndpoint;
