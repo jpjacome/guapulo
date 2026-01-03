@@ -8,3 +8,6 @@ Thumbs.db
 
 # Node modules
 node_modules/
+
+# Copilot instructions (contains secrets)
+.github/instructions/copilot-instructions.instructions.md
