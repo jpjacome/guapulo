@@ -1,30 +1,139 @@
-<div style="background-color: black; font-family: Courier New, sans-serif; max-width: 100%; margin: 0px; color: white;">
-  <img src="https://guapuliza.netlify.app/assets/imgs/bg4.png" alt="" style="width: 100%;">
-
-<div style="margin: 2rem">  
-  <h2 style="color: #c756e4; margin-bottom: 2rem;">🎉 ¡Confirmación - Parrillazo Guapulense - VERO'S BDAY EDITION!</h2>
-  
-  <p style="margin-bottom: 2rem">¡Hola {{to_name}}!</p>
-  <p>¡Gracias por confirmar tu asistencia al <strong>Parrillazo Guapulense</strong>!</p>
-
-  <p style="font-size: 18px; line-height: 2rem">🤖 <strong>¡Nos vemos pronto!<br> Te esperamos el {{event_date}} desde las {{event_time}}</strong></p>
-
-  <p style="border: 1px solid #c756e4; padding: 1rem"><strong>BYOB</strong> (Bring Your Own Beer 🍻 o booze 🥃)</p>
-
-  <h3 style="color: #c756e4; margin-top: 2rem">🚘 Si vienes en auto</h3>
-  <p>El ingreso es por la <strong>Av. de los Conquistadores</strong>.</p>
-  <p>Recomendaciones: sube con viada (el primer tramo es sin miedo), sigue todo el camino por la derecha hasta pasar los tres rompe velocidades y continúa hasta el final de la calle.</p>
-  <p><a href="https://maps.app.goo.gl/itHgPxDoDTRuH93v6?g_st=ipc" style="color: #007bff;">📍 Ver ubicación en Google Maps</a></p>
-
-  <h3 style="color: #c756e4;">👣 Si vienes a pie</h3>
-  <p>El ingreso es por la <strong>puerta metálica junto al Ananké</strong>.</p>
-  <p><a href="https://maps.app.goo.gl/CigdSuXcNm4jqZg77?g_st=ipc" style="color: #007bff;">📍 Ver ubicación en Google Maps</a></p>
-
-  <p style="margin-top: 2rem">Si tienes preguntas, contacta a JP: 
-    <a href="mailto:verordonez3@gmail.com" style="color: #007bff;">verordonez3@gmail.com</a>, 
-    <a href="tel:+593990649181" style="color: #007bff;">+593 99 064 9181</a>
-  </p>
-
-  <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
-</div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación - Parrillazo Guapulense</title>
+</head>
+<body style="margin:0; padding:0; background-color:#000000;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000000;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000000;">
+          
+          <!-- Header Image (Full Width - No Padding) -->
+          <tr>
+            <td style="padding:0;">
+              <img src="https://guapuliza.netlify.app/assets/imgs/bg4.png" alt="" style="width:100%; max-width:100%; display:block; border:0; margin:0;">
+            </td>
+          </tr>
+          
+          <!-- Main Content (With Side Padding) -->
+          <tr>
+            <td style="padding:0 32px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                
+                <!-- Title -->
+                <tr>
+                  <td style="padding-top:32px; padding-bottom:32px; font-family:'Courier New',Courier,monospace; color:#D0FF00; font-size:20px; font-weight:bold;">
+                    🎉 ¡Confirmación - Parrillazo Guapulense - VERO'S BDAY EDITION!
+                  </td>
+                </tr>
+                
+                <!-- Greeting -->
+                <tr>
+                  <td style="padding-bottom:32px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    ¡Hola {{to_name}}!
+                  </td>
+                </tr>
+                
+                <!-- Thank you message -->
+                <tr>
+                  <td style="padding-bottom:16px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    ¡Gracias por confirmar tu asistencia al <strong>Parrillazo Guapulense</strong>!
+                  </td>
+                </tr>
+                
+                <!-- Event details -->
+                <tr>
+                  <td style="padding-bottom:16px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:18px; line-height:32px;">
+                    🤖 <strong>¡Nos vemos pronto!<br> Te esperamos el {{event_date}} desde las {{event_time}}</strong>
+                  </td>
+                </tr>
+                
+                <!-- BYOB Notice -->
+                <tr>
+                  <td style="padding:16px; border:1px solid #D0FF00; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    <strong>BYOB</strong> (Bring Your Own Beer 🍻 o booze 🥃)
+                  </td>
+                </tr>
+                
+                <!-- Spacer -->
+                <tr>
+                  <td style="height:32px; font-size:0; line-height:0;">&nbsp;</td>
+                </tr>
+                
+                <!-- Section: Si vienes en auto -->
+                <tr>
+                  <td style="padding-bottom:16px; font-family:'Courier New',Courier,monospace; color:#D0FF00; font-size:18px; font-weight:bold;">
+                    🚘 Si vienes en auto
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td style="padding-bottom:16px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    El ingreso es por la <strong>Av. de los Conquistadores</strong>.
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td style="padding-bottom:16px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    Recomendaciones: sube con viada (el primer tramo es sin miedo), sigue todo el camino por la derecha hasta pasar los tres rompe velocidades y continúa hasta el final de la calle.
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td style="padding-bottom:32px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    <a href="https://maps.app.goo.gl/itHgPxDoDTRuH93v6?g_st=ipc" style="color:#007bff; text-decoration:underline;">📍 Ver ubicación en Google Maps</a>
+                  </td>
+                </tr>
+                
+                <!-- Section: Si vienes a pie -->
+                <tr>
+                  <td style="padding-bottom:16px; font-family:'Courier New',Courier,monospace; color:#D0FF00; font-size:18px; font-weight:bold;">
+                    👣 Si vienes a pie
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td style="padding-bottom:16px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    El ingreso es por la <strong>puerta metálica junto al Ananké</strong>.
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td style="padding-bottom:32px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    <a href="https://maps.app.goo.gl/CigdSuXcNm4jqZg77?g_st=ipc" style="color:#007bff; text-decoration:underline;">📍 Ver ubicación en Google Maps</a>
+                  </td>
+                </tr>
+                
+                <!-- Contact Info -->
+                <tr>
+                  <td style="padding-bottom:32px; font-family:'Courier New',Courier,monospace; color:#ffffff; font-size:16px;">
+                    Si tienes preguntas, contacta a Vero: 
+                    <a href="mailto:verordonez3@gmail.com" style="color:#007bff; text-decoration:underline;">verordonez3@gmail.com</a>, 
+                    <a href="tel:+593990649181" style="color:#007bff; text-decoration:underline;">+593 99 064 9181</a>
+                  </td>
+                </tr>
+                
+                <!-- Divider -->
+                <tr>
+                  <td style="padding-bottom:30px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="border-top:1px solid #444444; font-size:0; line-height:0;">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+              </table>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
