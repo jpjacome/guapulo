@@ -38,5 +38,10 @@
     "contact_text": "Si tienes preguntas, contacta a JP:",
     "contact_email": "jpjacome@yahoo.com",
     "contact_phone": "+593983438641"
+  },
+  "invite": {
+    "subject": "Estás invitado - Parrillazo Guapulense 🔥",
+    "message": "Prepárate para una parrillada en el corazón de Guápulo: buena comida, música y la mejor compañía.\nConfirma tu asistencia en el link de abajo.",
+    "cta_label": "CONFIRMA TU ASISTENCIA"
   }
 }

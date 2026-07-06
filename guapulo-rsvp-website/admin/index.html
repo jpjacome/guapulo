@@ -191,6 +191,72 @@
                 </div>
             </section>
 
+            <!-- Invitation email content -->
+            <section class="card card-wide">
+                <h2>Email de invitación</h2>
+                <p class="hint">La invitación usa la imagen, fecha, hora y color del evento automáticamente, con un botón que lleva al sitio para confirmar. Publica los cambios de estos textos antes de enviar.</p>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="f-inv-subject">ASUNTO DE LA INVITACIÓN</label>
+                        <input type="text" id="f-inv-subject" maxlength="120">
+                    </div>
+                    <div class="field">
+                        <label for="f-inv-cta">TEXTO DEL BOTÓN</label>
+                        <input type="text" id="f-inv-cta" maxlength="60">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="f-inv-message">MENSAJE DE LA INVITACIÓN</label>
+                    <textarea id="f-inv-message" rows="3"></textarea>
+                </div>
+            </section>
+
+            <!-- Guest list -->
+            <section class="card card-wide" id="guests-card">
+                <h2>Invitados</h2>
+                <div class="guest-add">
+                    <div class="field">
+                        <label for="g-name">NOMBRE</label>
+                        <input type="text" id="g-name" maxlength="80">
+                    </div>
+                    <div class="field">
+                        <label for="g-email">EMAIL</label>
+                        <input type="text" id="g-email" maxlength="120" inputmode="email" autocomplete="off">
+                    </div>
+                    <button type="button" class="btn btn-ghost btn-add" id="g-add-btn">+ Agregar</button>
+                </div>
+                <p class="field-error" id="g-add-error" role="alert" hidden></p>
+
+                <div class="guest-toolbar">
+                    <label class="check-label"><input type="checkbox" id="g-select-all" checked> Seleccionar todos</label>
+                    <span class="guest-count" id="g-count" aria-live="polite"></span>
+                </div>
+
+                <div class="guest-table-wrap">
+                    <table class="guest-table" id="guest-table">
+                        <thead>
+                            <tr><th></th><th>NOMBRE</th><th>EMAIL</th><th>ESTADO</th><th></th></tr>
+                        </thead>
+                        <tbody id="guest-rows"></tbody>
+                    </table>
+                    <p class="hint" id="g-empty" hidden>No hay invitados todavía. Agrega el primero arriba.</p>
+                </div>
+
+                <div class="guest-pager" id="guest-pager" hidden>
+                    <button type="button" class="btn btn-ghost" id="g-prev" aria-label="Página anterior">‹ Anterior</button>
+                    <span class="guest-page-label" id="g-page-label"></span>
+                    <button type="button" class="btn btn-ghost" id="g-next" aria-label="Página siguiente">Siguiente ›</button>
+                </div>
+
+                <div class="guest-send">
+                    <div class="publish-status" id="invite-status" aria-live="polite"></div>
+                    <button type="button" class="btn btn-primary" id="g-send-btn">
+                        <span class="btn-label">ENVIAR INVITACIONES</span>
+                        <span class="btn-spinner" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </section>
+
             <!-- Publish bar -->
             <section class="publish-bar card-wide">
                 <div class="publish-status" id="publish-status" aria-live="polite"></div>

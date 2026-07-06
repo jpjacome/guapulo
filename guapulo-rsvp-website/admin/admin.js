@@ -13,8 +13,12 @@
     config: null,
     assets: { videos: [], images: [] },
     pendingVideo: null, // File
-    pendingImage: null  // File
+    pendingImage: null, // File
+    guests: [],
+    unchecked: new Set(), // guest emails excluded from sending (checked by default)
+    guestPage: 0
   };
+  const GUESTS_PER_PAGE = 10;
 
   const $ = (id) => document.getElementById(id);
 
@@ -158,6 +162,10 @@
     $('f-email-contact-text').value = c.email.contact_text || '';
     $('f-email-contact-email').value = c.email.contact_email || '';
     $('f-email-contact-phone').value = c.email.contact_phone || '';
+    const inv = c.invite || {};
+    $('f-inv-subject').value = inv.subject || '';
+    $('f-inv-message').value = inv.message || '';
+    $('f-inv-cta').value = inv.cta_label || '';
     fillSelect($('f-video'), state.assets.videos, c.hero.video);
     fillSelect($('f-image'), state.assets.images, c.hero.image);
     toggleHeroType();
@@ -249,6 +257,10 @@
     c.email.contact_text = $('f-email-contact-text').value.trim();
     c.email.contact_email = $('f-email-contact-email').value.trim();
     c.email.contact_phone = $('f-email-contact-phone').value.trim();
+    c.invite = c.invite || {};
+    c.invite.subject = $('f-inv-subject').value.trim();
+    c.invite.message = $('f-inv-message').value.trim();
+    c.invite.cta_label = $('f-inv-cta').value.trim();
     return c;
   }
 
@@ -323,6 +335,167 @@
   }
 
   // ---------------------------------------------------------------------
+  // Guest list
+  // ---------------------------------------------------------------------
+  function selectedGuests() {
+    return state.guests.filter((g) => !state.unchecked.has(g.email));
+  }
+
+  function renderGuests() {
+    const rows = $('guest-rows');
+    const totalPages = Math.max(1, Math.ceil(state.guests.length / GUESTS_PER_PAGE));
+    state.guestPage = Math.min(state.guestPage, totalPages - 1);
+    const start = state.guestPage * GUESTS_PER_PAGE;
+    const pageGuests = state.guests.slice(start, start + GUESTS_PER_PAGE);
+
+    rows.innerHTML = '';
+    for (const guest of pageGuests) {
+      const tr = document.createElement('tr');
+
+      const tdCheck = document.createElement('td');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !state.unchecked.has(guest.email);
+      cb.setAttribute('aria-label', `Incluir a ${guest.name}`);
+      cb.addEventListener('change', () => {
+        if (cb.checked) state.unchecked.delete(guest.email);
+        else state.unchecked.add(guest.email);
+        updateGuestCount();
+      });
+      tdCheck.appendChild(cb);
+
+      const tdName = document.createElement('td');
+      tdName.textContent = guest.name;
+      const tdEmail = document.createElement('td');
+      tdEmail.textContent = guest.email;
+
+      const tdStatus = document.createElement('td');
+      if (guest.send_error) {
+        tdStatus.textContent = '✕ error';
+        tdStatus.className = 'guest-status-error';
+        tdStatus.title = guest.send_error;
+      } else if (guest.invited_at) {
+        tdStatus.textContent = `✓ invitado ${guest.invited_at.slice(0, 10)}`;
+        tdStatus.className = 'guest-status-sent';
+      } else {
+        tdStatus.textContent = 'pendiente';
+        tdStatus.className = 'guest-status-pending';
+      }
+
+      const tdDel = document.createElement('td');
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'guest-del';
+      del.textContent = '✕';
+      del.setAttribute('aria-label', `Eliminar a ${guest.name}`);
+      del.addEventListener('click', () => removeGuest(guest));
+      tdDel.appendChild(del);
+
+      tr.append(tdCheck, tdName, tdEmail, tdStatus, tdDel);
+      rows.appendChild(tr);
+    }
+
+    $('g-empty').hidden = state.guests.length > 0;
+    $('guest-pager').hidden = totalPages <= 1;
+    $('g-page-label').textContent = `Página ${state.guestPage + 1} / ${totalPages}`;
+    $('g-prev').disabled = state.guestPage === 0;
+    $('g-next').disabled = state.guestPage >= totalPages - 1;
+    updateGuestCount();
+  }
+
+  function updateGuestCount() {
+    const selected = selectedGuests().length;
+    $('g-count').textContent = state.guests.length
+      ? `${selected} de ${state.guests.length} seleccionados`
+      : '';
+    $('g-send-btn').disabled = selected === 0;
+    const label = $('g-send-btn').querySelector('.btn-label');
+    label.textContent = selected ? `ENVIAR INVITACIONES (${selected})` : 'ENVIAR INVITACIONES';
+    const all = state.guests.length > 0 && state.unchecked.size === 0;
+    $('g-select-all').checked = all;
+  }
+
+  async function loadGuests() {
+    const data = await api('admin-guests');
+    state.guests = data.guests;
+    renderGuests();
+  }
+
+  async function addGuest() {
+    const name = $('g-name').value.trim();
+    const email = $('g-email').value.trim();
+    const errorEl = $('g-add-error');
+    errorEl.hidden = true;
+    try {
+      const data = await api('admin-guests', { method: 'POST', body: JSON.stringify({ name, email }) });
+      state.guests = data.guests;
+      $('g-name').value = '';
+      $('g-email').value = '';
+      $('g-name').focus();
+      renderGuests();
+    } catch (error) {
+      errorEl.textContent = error.message;
+      errorEl.hidden = false;
+    }
+  }
+
+  async function removeGuest(guest) {
+    if (!window.confirm(`¿Eliminar a ${guest.name} (${guest.email}) de la lista?`)) return;
+    const data = await api('admin-guests', { method: 'DELETE', body: JSON.stringify({ email: guest.email }) });
+    state.guests = data.guests;
+    state.unchecked.delete(guest.email);
+    renderGuests();
+  }
+
+  function setInviteStatus(html, cls) {
+    $('invite-status').innerHTML = cls ? `<span class="${cls}">${html}</span>` : html;
+  }
+
+  async function sendInvites() {
+    const targets = selectedGuests();
+    if (!targets.length) return;
+    if (!window.confirm(`Se enviará la invitación a ${targets.length} invitado(s). ¿Continuar?`)) return;
+
+    const btn = $('g-send-btn');
+    btn.disabled = true;
+    btn.classList.add('is-loading');
+
+    const overrides = {
+      subject: $('f-inv-subject').value.trim(),
+      message: $('f-inv-message').value.trim(),
+      cta_label: $('f-inv-cta').value.trim()
+    };
+
+    let sent = 0;
+    let failed = 0;
+    for (let i = 0; i < targets.length; i++) {
+      const guest = targets[i];
+      setInviteStatus(`Enviando ${i + 1} de ${targets.length} — ${guest.name}…`, 'status-busy');
+      try {
+        const res = await api('admin-send-invite', {
+          method: 'POST',
+          body: JSON.stringify({ email: guest.email, overrides })
+        });
+        guest.invited_at = res.invited_at;
+        delete guest.send_error;
+        sent++;
+      } catch (error) {
+        guest.send_error = error.message;
+        failed++;
+      }
+      renderGuests();
+    }
+
+    if (failed === 0) {
+      setInviteStatus(`${sent} invitación(es) enviadas correctamente.`, 'status-ok');
+    } else {
+      setInviteStatus(`${sent} enviadas, ${failed} fallaron (marcadas con ✕ en la lista).`, 'status-error');
+    }
+    btn.classList.remove('is-loading');
+    updateGuestCount();
+  }
+
+  // ---------------------------------------------------------------------
   // Load + wire up
   // ---------------------------------------------------------------------
   async function loadConfig(showLoader = true) {
@@ -336,6 +509,8 @@
     populateForm();
     $('dash-loading').hidden = true;
     $('event-form').hidden = false;
+    // Guest list loads separately so a Blobs hiccup can't block the event editor
+    loadGuests().catch((error) => setInviteStatus(`No se pudo cargar la lista: ${error.message}`, 'status-error'));
   }
 
   async function handleLogin(event) {
@@ -392,6 +567,21 @@
         setFieldError($('f-color-hex'), 'Usa formato #RRGGBB, ej. #D0FF00.');
       }
     });
+
+    // Guest list
+    $('g-add-btn').addEventListener('click', addGuest);
+    for (const id of ['g-name', 'g-email']) {
+      $(id).addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); addGuest(); }
+      });
+    }
+    $('g-select-all').addEventListener('change', (e) => {
+      state.unchecked = e.target.checked ? new Set() : new Set(state.guests.map((g) => g.email));
+      renderGuests();
+    });
+    $('g-prev').addEventListener('click', () => { state.guestPage--; renderGuests(); });
+    $('g-next').addEventListener('click', () => { state.guestPage++; renderGuests(); });
+    $('g-send-btn').addEventListener('click', sendInvites);
 
     $('f-hero-type').addEventListener('change', toggleHeroType);
     $('f-image').addEventListener('change', () => {
