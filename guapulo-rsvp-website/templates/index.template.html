@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-content="seo-title">Parrillazo Guapulense</title>
-    <meta name="description" content="25 de abril, 5pm">
+    <title data-content="seo-title">{{SEO_TITLE}}</title>
+    <meta name="description" content="{{SEO_DESCRIPTION}}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="event">
-    <meta property="og:title" content="Parrillazo Guapulense">
-    <meta property="og:description" content="25 de abril, 5pm">
-    <meta property="og:image" content="https://guapuliza.netlify.app/assets/imgs/bg7.png">
+    <meta property="og:title" content="{{SEO_TITLE}}">
+    <meta property="og:description" content="{{SEO_DESCRIPTION}}">
+    <meta property="og:image" content="{{OG_IMAGE_URL}}">
     <meta property="og:image:width" content="1024">
     <meta property="og:image:height" content="1024">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Parrillazo Guapulense">
-    <meta property="twitter:description" content="25 de abril, 5pm">
-    <meta property="twitter:image" content="https://guapuliza.netlify.app/assets/imgs/bg7.png">
+    <meta property="twitter:title" content="{{SEO_TITLE}}">
+    <meta property="twitter:description" content="{{SEO_DESCRIPTION}}">
+    <meta property="twitter:image" content="{{OG_IMAGE_URL}}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="./assets/imgs/bg7.png">
-    <link rel="apple-touch-icon" href="./assets/imgs/bg7.png">
+    <link rel="icon" type="image/png" href="./{{HERO_IMAGE}}">
+    <link rel="apple-touch-icon" href="./{{HERO_IMAGE}}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +31,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
-    <style>/* Generated theme override (from _data/event-config.json) */:root { --color-1: #D0FF00; }</style>
+    <style>/* Generated theme override (from _data/event-config.json) */:root { --color-1: {{ACCENT_COLOR}}; }</style>
 </head>
 <body>
 
@@ -41,14 +41,9 @@
         <div class="hero-content hero-flex-content">
             <div class="hero-left">
                 <h1 class="hero-title fade1">
-                    <span data-event="name">PARRILLAZO GUAPULENSE</span>
+                    <span data-event="name">{{EVENT_NAME_UPPER}}</span>
                 </h1>
-                    <video class="hero-video fade1" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="./assets/imgs/bg7.png" id="hero-bg-video" controlslist="nodownload nofullscreen noremoteplayback" disablepictureinpicture>
-                    <source src="./assets/vid7.mp4" type="video/mp4">
-                    <img src="./assets/imgs/bg7.png" alt="Evento Parrillazo Guapulense" style="width:100%;height:auto;object-fit:cover;" />
-                </video>
-                    <!-- Mobile autoplay fallback: shown when autoplay is blocked -->
-                    <button id="video-play-overlay" class="video-play-overlay" aria-label="Play video">▶</button>
+{{SUBTITLE_HTML}}{{HERO_MEDIA_HTML}}
                 <!-- Countdown Timer -->
                 <div class="countdown-container fade2">
                     <h3 class="fade2">Countdown</h3>
@@ -73,17 +68,17 @@
                 </div>
                 <div class="hero-details fade2">
                     <div class="detail-item">
-                        <span data-event="formatted-date">SABADO 25/04</span>
+                        <span data-event="formatted-date">{{SHORT_DATE}}</span>
                     </div>
                     <div class="detail-item">
-                        <span data-event="time">5:00 pm</span>
+                        <span data-event="time">{{DISPLAY_TIME}}</span>
                     </div>
                 </div>
             </div>
             <div class="hero-right">
                 <form class="rsvp-form fade3" id="rsvp-form" name="rsvp" method="POST" action="success.html" data-netlify="true" data-netlify-honeypot="bot-field">
                     <!-- Hidden subject field for better email handling -->
-                    <input type="hidden" name="subject" value="Nueva RSVP - Parrillazo Guapulense" />
+                    <input type="hidden" name="subject" value="Nueva RSVP - {{EVENT_NAME}}" />
                     <!-- Honeypot field for spam protection -->
                     <p style="display: none;">
                         <label>Don't fill this out if you're human: <input name="bot-field" /></label>

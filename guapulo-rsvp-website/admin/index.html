@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin — Parrillazo Guapulense</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- ============ LOGIN VIEW ============ -->
+    <main id="login-view" class="login-wrap" hidden>
+        <form id="login-form" class="login-card" novalidate>
+            <h1 class="brand">PARRILLAZO<br>GUAPULENSE</h1>
+            <p class="brand-sub">Panel de administración</p>
+            <div class="field">
+                <label for="login-password">CONTRASEÑA</label>
+                <input type="password" id="login-password" name="password" autocomplete="current-password" required autofocus>
+                <p class="field-error" id="login-error" role="alert" hidden></p>
+            </div>
+            <button type="submit" class="btn btn-primary" id="login-btn">
+                <span class="btn-label">ENTRAR</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+        </form>
+    </main>
+
+    <!-- ============ DASHBOARD VIEW ============ -->
+    <main id="dashboard-view" class="dash" hidden>
+        <header class="dash-header">
+            <div>
+                <h1 class="brand brand-small">PARRILLAZO GUAPULENSE</h1>
+                <p class="brand-sub">Editor del evento</p>
+            </div>
+            <div class="header-actions">
+                <a href="/" target="_blank" rel="noopener" class="btn btn-ghost">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Ver sitio
+                </a>
+                <button type="button" class="btn btn-ghost" id="logout-btn">Salir</button>
+            </div>
+        </header>
+
+        <div id="dash-loading" class="dash-loading">
+            <span class="btn-spinner spinner-accent" aria-hidden="true"></span> Cargando configuración…
+        </div>
+
+        <form id="event-form" class="dash-grid" hidden novalidate>
+
+            <!-- Evento -->
+            <section class="card">
+                <h2>Evento</h2>
+                <div class="field">
+                    <label for="f-name">NOMBRE DEL EVENTO *</label>
+                    <input type="text" id="f-name" required maxlength="80">
+                    <p class="field-error" hidden></p>
+                </div>
+                <div class="field">
+                    <label for="f-subtitle">SUBTÍTULO <span class="hint-inline">(opcional, ej. "VERO'S BDAY EDITION")</span></label>
+                    <input type="text" id="f-subtitle" maxlength="80">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="f-date">FECHA *</label>
+                        <input type="date" id="f-date" required>
+                        <p class="field-error" hidden></p>
+                    </div>
+                    <div class="field">
+                        <label for="f-time">HORA *</label>
+                        <input type="time" id="f-time" required>
+                        <p class="field-error" hidden></p>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="f-location">LUGAR</label>
+                    <input type="text" id="f-location" maxlength="120">
+                </div>
+                <div class="derived" id="derived-preview" aria-live="polite">
+                    <span class="derived-label">SE MOSTRARÁ COMO:</span>
+                    <span class="derived-chip" id="d-short">—</span>
+                    <span class="derived-chip" id="d-time">—</span>
+                    <span class="derived-chip" id="d-long">—</span>
+                </div>
+            </section>
+
+            <!-- Apariencia -->
+            <section class="card">
+                <h2>Apariencia</h2>
+                <div class="field">
+                    <label for="f-color">COLOR DE ACENTO</label>
+                    <div class="color-row">
+                        <input type="color" id="f-color" value="#D0FF00" aria-label="Selector de color">
+                        <input type="text" id="f-color-hex" value="#D0FF00" pattern="^#[0-9a-fA-F]{6}$" maxlength="7" spellcheck="false" aria-label="Color en formato hex">
+                    </div>
+                    <p class="field-error" hidden></p>
+                    <p class="hint">Se usa en títulos, botones y detalles del sitio.</p>
+                </div>
+            </section>
+
+            <!-- Hero media -->
+            <section class="card card-wide">
+                <h2>Video / Imagen principal</h2>
+                <div class="field">
+                    <label for="f-hero-type">TIPO DE HERO</label>
+                    <select id="f-hero-type">
+                        <option value="video">Video (con imagen de respaldo)</option>
+                        <option value="image">Solo imagen</option>
+                    </select>
+                </div>
+                <div class="media-grid">
+                    <div class="field" id="video-field">
+                        <label for="f-video">VIDEO</label>
+                        <select id="f-video"></select>
+                        <label class="upload-drop" for="f-video-upload">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <span id="video-upload-label">Subir video nuevo (.mp4)</span>
+                        </label>
+                        <input type="file" id="f-video-upload" accept="video/mp4,video/webm" hidden>
+                        <p class="hint">Recomendado: menos de 15&nbsp;MB para que cargue rápido.</p>
+                    </div>
+                    <div class="field" id="image-field">
+                        <label for="f-image">IMAGEN (portada, favicon y vista previa en WhatsApp)</label>
+                        <select id="f-image"></select>
+                        <label class="upload-drop" for="f-image-upload">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <span id="image-upload-label">Subir imagen nueva</span>
+                        </label>
+                        <input type="file" id="f-image-upload" accept="image/png,image/jpeg,image/webp" hidden>
+                        <img id="image-preview" class="image-preview" alt="Vista previa de la imagen del evento" hidden>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Email -->
+            <section class="card card-wide">
+                <h2>Email de confirmación</h2>
+                <p class="hint">Estos textos se usan en el correo automático que recibe cada invitado al confirmar. La fecha y hora se actualizan solas.</p>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="f-email-subject">ASUNTO DEL CORREO *</label>
+                        <input type="text" id="f-email-subject" required maxlength="120">
+                        <p class="field-error" hidden></p>
+                    </div>
+                    <div class="field">
+                        <label for="f-email-location">LUGAR (texto en el correo)</label>
+                        <input type="text" id="f-email-location" maxlength="120">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Publish bar -->
+            <section class="publish-bar card-wide">
+                <div class="publish-status" id="publish-status" aria-live="polite"></div>
+                <button type="submit" class="btn btn-primary btn-publish" id="publish-btn">
+                    <span class="btn-label">PUBLICAR CAMBIOS</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+            </section>
+        </form>
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+</html>

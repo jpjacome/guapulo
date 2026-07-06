@@ -5,8 +5,10 @@
     'use strict';
 
     // Configuration
+    // Event values come from generated-config.js (built from _data/event-config.json).
+    const EVENT = (typeof window !== 'undefined' && window.EVENT_CONFIG) || {};
     const CONFIG = {
-    eventDate: '2026-04-25T17:00:00-05:00',
+    eventDate: EVENT.eventDateTime || '2026-04-25T17:00:00-05:00',
     timeZone: 'America/Bogota',
         animationDuration: 300,
         countdownInterval: 1000,

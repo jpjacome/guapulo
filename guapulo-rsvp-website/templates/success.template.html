@@ -4,33 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmación enviada - Parrillazo Guapulense</title>
-    <meta name="description" content="Confirmación enviada para el Parrillazo Guapulense">
+    <title>Confirmación enviada - {{EVENT_NAME}}</title>
+    <meta name="description" content="Confirmación enviada para el {{EVENT_NAME}}">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Confirmación enviada - Parrillazo Guapulense">
+    <meta property="og:title" content="Confirmación enviada - {{EVENT_NAME}}">
     <meta property="og:description" content="Tu confirmación ha sido enviada exitosamente">
-    <meta property="og:image" content="https://guapuliza.netlify.app/assets/imgs/bg7.png">
+    <meta property="og:image" content="{{OG_IMAGE_URL}}">
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Confirmación enviada - Parrillazo Guapulense">
+    <meta property="twitter:title" content="Confirmación enviada - {{EVENT_NAME}}">
     <meta property="twitter:description" content="Tu confirmación ha sido enviada exitosamente">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="./assets/imgs/bg7.png">
-    <link rel="apple-touch-icon" href="./assets/imgs/bg7.png">
+    <link rel="icon" type="image/png" href="./{{HERO_IMAGE}}">
+    <link rel="apple-touch-icon" href="./{{HERO_IMAGE}}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
-    <style>/* Generated theme override (from _data/event-config.json) */:root { --color-1: #D0FF00; }</style>
+    <style>/* Generated theme override (from _data/event-config.json) */:root { --color-1: {{ACCENT_COLOR}}; }</style>
 </head>
 <body style="margin:0;">
     <div style="min-height:100vh;background:black;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;">
         <div style="max-width:600px;width:100%;margin:auto;text-align:center;padding:2.5rem 1.5rem;">
             <h1 class="success-title" style="margin-bottom:1rem;">
-                <span data-event="name">PARRILLAZO GUAPULENSE</span>
+                <span data-event="name">{{EVENT_NAME_UPPER}}</span>
             </h1>
             <div style="font-size:3rem;margin-bottom:2rem;color:var(--color-1);">✅</div>
             <h1 style="color:var(--color-1);font-size:2rem;font-weight:700;margin-bottom:1.5rem;">¡Confirmación enviada!</h1>

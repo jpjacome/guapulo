@@ -1,4 +1,8 @@
 ﻿// Clean EmailJS Auto-Reply Function
+// Event details come from _data/event-config.json (bundled at deploy time).
+const eventConfig = require('../../_data/event-config.json');
+const { deriveEventInfo } = require('../../lib/event-derive');
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
@@ -37,6 +41,8 @@ exports.handler = async (event) => {
       return { statusCode: 500, body: JSON.stringify({ error: 'EmailJS not configured' }) };
     }
 
+    const derived = deriveEventInfo(eventConfig);
+
     const emailjsPayload = {
       service_id: serviceId,
       template_id: templateId,
@@ -49,12 +55,12 @@ exports.handler = async (event) => {
         phone: phone || 'No proporcionado',
         plus_one: plus_one || 'No',
         message: message || 'Sin mensaje',
-        subject: 'Confirmación RSVP - Parrillazo Guapulense',
+        subject: eventConfig.email.subject,
         reply_to: email,
-        event_name: 'Parrillazo Guapulense',
-        event_date: 'sábado 25 de abril',
-        event_time: '5:00 pm',
-        event_location: 'Guápulo, Quito'
+        event_name: eventConfig.email.event_name,
+        event_date: derived.longDateEs,
+        event_time: derived.displayTime,
+        event_location: eventConfig.email.location
       }
     };
 

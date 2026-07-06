@@ -4,7 +4,11 @@
   "private": true,
   "description": "Root package.json to declare Netlify Function dependencies",
   "dependencies": {
+    "@netlify/blobs": "^8.1.0",
     "@notionhq/client": "^4.0.1"
+  },
+  "scripts": {
+    "build": "node guapulo-rsvp-website/build.js"
   },
   "engines": {
     "node": ">=18.0.0"
