@@ -1,9 +1,9 @@
 {
   "site_url": "https://guapuliza.netlify.app",
   "event": {
-    "name": "Parrillazo Guapulense test",
-    "subtitle": "siempre",
-    "date": "2026-04-25",
+    "name": "Parrillazo Guapulense",
+    "subtitle": "",
+    "date": "2026-05-09",
     "time": "17:00",
     "timezone_offset": "-05:00",
     "location": "Guápulo, Quito",
@@ -25,7 +25,7 @@
   },
   "email": {
     "subject": "Confirmación RSVP - Parrillazo Guapulense",
-    "event_name": "Parrillazo Guapulense test",
+    "event_name": "Parrillazo Guapulense",
     "location": "Guápulo, Quito",
     "notification_email": "jpjacome@yahoo.com"
   }
