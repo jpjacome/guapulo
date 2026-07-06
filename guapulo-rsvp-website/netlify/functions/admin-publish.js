@@ -26,8 +26,9 @@ function validateConfig(config) {
   deriveEventInfo(config); // throws if the date/time combination is invalid
 }
 
-async function loadChunkedMedia(uploadId, totalChunks) {
-  const { getStore } = require('@netlify/blobs');
+async function loadChunkedMedia(event, uploadId, totalChunks) {
+  const { getStore, connectLambda } = require('@netlify/blobs');
+  connectLambda(event); // classic functions need the Blobs context wired manually
   const store = getStore('admin-uploads');
   const parts = [];
   for (let i = 0; i < totalChunks; i++) {
@@ -69,7 +70,7 @@ exports.handler = async (event) => {
       if (typeof item.inline === 'string') {
         buffer = Buffer.from(item.inline, 'base64');
       } else if (item.uploadId) {
-        buffer = await loadChunkedMedia(item.uploadId, item.totalChunks);
+        buffer = await loadChunkedMedia(event, item.uploadId, item.totalChunks);
       } else {
         throw new Error(`Media item ${item.path} has no content`);
       }

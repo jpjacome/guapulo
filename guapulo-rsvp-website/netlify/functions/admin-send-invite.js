@@ -4,7 +4,7 @@
 // Renders lib/invite-template.js from event-config.json and delivers it
 // through the same EmailJS shell template used by rsvp-autoreply
 // ({{subject}} + {{{html_content}}}).
-const { getStore } = require('@netlify/blobs');
+const { getStore, connectLambda } = require('@netlify/blobs');
 const { requireAuth, unauthorized } = require('./lib/auth');
 const eventConfig = require('../../_data/event-config.json');
 const { renderInvite } = require('../../lib/render-email');
@@ -28,6 +28,7 @@ exports.handler = async (event) => {
       return { statusCode: 500, body: JSON.stringify({ error: 'EmailJS no está configurado' }) };
     }
 
+    connectLambda(event); // classic functions need the Blobs context wired manually
     const store = getStore('admin-data');
     const raw = await store.get(KEY);
     const guests = raw ? JSON.parse(raw) : [];

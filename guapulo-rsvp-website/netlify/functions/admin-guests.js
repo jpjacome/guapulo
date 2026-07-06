@@ -3,7 +3,7 @@
 //   POST   { name, email }          -> adds a guest (email is the unique key)
 //   PUT    { email, name? }         -> updates a guest's name
 //   DELETE { email }                -> removes a guest
-const { getStore } = require('@netlify/blobs');
+const { getStore, connectLambda } = require('@netlify/blobs');
 const { requireAuth, unauthorized } = require('./lib/auth');
 
 const KEY = 'guests.json';
@@ -18,6 +18,7 @@ exports.handler = async (event) => {
   if (!requireAuth(event)) return unauthorized();
 
   try {
+    connectLambda(event); // classic functions need the Blobs context wired manually
     const store = getStore('admin-data');
     const guests = await loadGuests(store);
 

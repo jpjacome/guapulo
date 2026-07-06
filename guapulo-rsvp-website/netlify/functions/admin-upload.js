@@ -1,7 +1,7 @@
 // POST { uploadId, chunkIndex, totalChunks, data } -> stages one base64 chunk in Netlify Blobs.
 // Large media (videos > ~3.5MB) can't fit in a single function request (6MB limit),
 // so the dashboard slices files into chunks; admin-publish reassembles them.
-const { getStore } = require('@netlify/blobs');
+const { getStore, connectLambda } = require('@netlify/blobs');
 const { requireAuth, unauthorized } = require('./lib/auth');
 
 const UPLOAD_ID_RE = /^[a-zA-Z0-9-]{8,64}$/;
@@ -29,6 +29,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: JSON.stringify({ error: 'Missing chunk data' }) };
     }
 
+    connectLambda(event); // classic functions need the Blobs context wired manually
     const store = getStore('admin-uploads');
     await store.set(`${uploadId}/${chunkIndex}`, data);
 
