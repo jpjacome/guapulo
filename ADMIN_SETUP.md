@@ -74,6 +74,23 @@ Edit `templates/index.template.html` / `templates/success.template.html` instead
 To preview a config change locally: edit `_data/event-config.json`, run
 `node guapulo-rsvp-website/build.js`, and open the site.
 
+## Confirmation email (EmailJS as a "dumb pipe")
+
+The full email HTML is rendered by the site from `event-config.json`
+(`lib/email-template.js` + `lib/render-email.js`). EmailJS only delivers it.
+All email texts are editable in `/admin/` → "Email de confirmación"; date, time,
+hero image and accent color follow the event automatically.
+
+**One-time EmailJS template change** (never needed again after this):
+
+1. Go to <https://dashboard.emailjs.com> → **Email Templates** → open the template
+   whose ID is in your `EMAILJS_TEMPLATE_ID` env var
+2. **Subject:** replace with exactly: `{{subject}}`
+3. **Content:** switch to code/HTML view (`</>` icon) and replace the ENTIRE body with exactly:
+   `{{{html_content}}}`  ← triple braces, required so the HTML isn't escaped
+4. **To Email** field: `{{to_email}}` (probably already set)
+5. Save.
+
 ### Legacy files (no longer used, safe to delete later)
 
 - `guapulo-rsvp-website/_data/event.json`, `content.json`, `settings.json` — replaced by `event-config.json`

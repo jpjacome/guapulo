@@ -148,6 +148,16 @@
     $('f-hero-type').value = c.hero.type || 'video';
     $('f-email-subject').value = c.email.subject || '';
     $('f-email-location').value = c.email.location || '';
+    $('f-email-title').value = c.email.title_line || '';
+    $('f-email-intro').value = c.email.intro || '';
+    $('f-email-note').value = c.email.note_box || '';
+    $('f-email-car').value = c.email.car_directions || '';
+    $('f-email-car-url').value = c.email.car_maps_url || '';
+    $('f-email-walk').value = c.email.walk_directions || '';
+    $('f-email-walk-url').value = c.email.walk_maps_url || '';
+    $('f-email-contact-text').value = c.email.contact_text || '';
+    $('f-email-contact-email').value = c.email.contact_email || '';
+    $('f-email-contact-phone').value = c.email.contact_phone || '';
     fillSelect($('f-video'), state.assets.videos, c.hero.video);
     fillSelect($('f-image'), state.assets.images, c.hero.image);
     toggleHeroType();
@@ -229,6 +239,16 @@
     c.email.subject = $('f-email-subject').value.trim();
     c.email.event_name = c.event.name;
     c.email.location = $('f-email-location').value.trim();
+    c.email.title_line = $('f-email-title').value.trim();
+    c.email.intro = $('f-email-intro').value.trim();
+    c.email.note_box = $('f-email-note').value.trim();
+    c.email.car_directions = $('f-email-car').value.trim();
+    c.email.car_maps_url = $('f-email-car-url').value.trim();
+    c.email.walk_directions = $('f-email-walk').value.trim();
+    c.email.walk_maps_url = $('f-email-walk-url').value.trim();
+    c.email.contact_text = $('f-email-contact-text').value.trim();
+    c.email.contact_email = $('f-email-contact-email').value.trim();
+    c.email.contact_phone = $('f-email-contact-phone').value.trim();
     return c;
   }
 

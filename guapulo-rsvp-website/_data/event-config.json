@@ -27,6 +27,16 @@
     "subject": "Confirmación RSVP - Parrillazo Guapulense",
     "event_name": "Parrillazo Guapulense",
     "location": "Guápulo, Quito",
-    "notification_email": "jpjacome@yahoo.com"
+    "notification_email": "jpjacome@yahoo.com",
+    "title_line": "🎉 ¡Confirmación - Parrillazo Guapulense!",
+    "intro": "¡Gracias por confirmar tu asistencia al Parrillazo Guapulense!",
+    "note_box": "BYOB (Bring Your Own Beer 🍻 o booze 🥃)",
+    "car_directions": "El ingreso es por la Av. de los Conquistadores.\nRecomendaciones: sube con viada (el primer tramo es sin miedo), sigue todo el camino por la derecha hasta pasar los tres rompe velocidades y continúa hasta el final de la calle.",
+    "car_maps_url": "https://maps.app.goo.gl/itHgPxDoDTRuH93v6?g_st=ipc",
+    "walk_directions": "El ingreso es por la puerta metálica junto al Ananké.",
+    "walk_maps_url": "https://maps.app.goo.gl/CigdSuXcNm4jqZg77?g_st=ipc",
+    "contact_text": "Si tienes preguntas, contacta a JP:",
+    "contact_email": "jpjacome@yahoo.com",
+    "contact_phone": ""
   }
 }

@@ -1,7 +1,8 @@
 ﻿// Clean EmailJS Auto-Reply Function
-// Event details come from _data/event-config.json (bundled at deploy time).
+// The full email HTML is rendered here from _data/event-config.json —
+// the EmailJS template is just a shell containing {{{html_content}}}.
 const eventConfig = require('../../_data/event-config.json');
-const { deriveEventInfo } = require('../../lib/event-derive');
+const { renderEmail } = require('../../lib/render-email');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -41,7 +42,7 @@ exports.handler = async (event) => {
       return { statusCode: 500, body: JSON.stringify({ error: 'EmailJS not configured' }) };
     }
 
-    const derived = deriveEventInfo(eventConfig);
+    const rendered = renderEmail(eventConfig, { name });
 
     const emailjsPayload = {
       service_id: serviceId,
@@ -50,17 +51,9 @@ exports.handler = async (event) => {
       template_params: {
         to_name: name,
         to_email: email,
-        name: name,
-        email: email,
-        phone: phone || 'No proporcionado',
-        plus_one: plus_one || 'No',
-        message: message || 'Sin mensaje',
-        subject: eventConfig.email.subject,
         reply_to: email,
-        event_name: eventConfig.email.event_name,
-        event_date: derived.longDateEs,
-        event_time: derived.displayTime,
-        event_location: eventConfig.email.location
+        subject: rendered.subject,
+        html_content: rendered.html
       }
     };
 

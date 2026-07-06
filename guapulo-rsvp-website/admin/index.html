@@ -135,12 +135,54 @@
             <!-- Email -->
             <section class="card card-wide">
                 <h2>Email de confirmación</h2>
-                <p class="hint">Estos textos se usan en el correo automático que recibe cada invitado al confirmar. La fecha y hora se actualizan solas.</p>
+                <p class="hint">Este correo lo recibe cada invitado al confirmar. La fecha, hora, imagen y color se actualizan solos. Las secciones con campos vacíos no aparecen en el correo.</p>
                 <div class="field-row">
                     <div class="field">
                         <label for="f-email-subject">ASUNTO DEL CORREO *</label>
                         <input type="text" id="f-email-subject" required maxlength="120">
                         <p class="field-error" hidden></p>
+                    </div>
+                    <div class="field">
+                        <label for="f-email-title">TÍTULO DENTRO DEL CORREO</label>
+                        <input type="text" id="f-email-title" maxlength="120">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="f-email-intro">MENSAJE DE BIENVENIDA</label>
+                    <input type="text" id="f-email-intro" maxlength="300">
+                </div>
+                <div class="field">
+                    <label for="f-email-note">CAJA DESTACADA <span class="hint-inline">(ej. BYOB — vacío = no aparece)</span></label>
+                    <input type="text" id="f-email-note" maxlength="200">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="f-email-car">INDICACIONES EN AUTO <span class="hint-inline">(vacío = no aparece)</span></label>
+                        <textarea id="f-email-car" rows="4"></textarea>
+                        <label for="f-email-car-url" class="sub-label">LINK GOOGLE MAPS (AUTO)</label>
+                        <input type="url" id="f-email-car-url" placeholder="https://maps.app.goo.gl/…">
+                    </div>
+                    <div class="field">
+                        <label for="f-email-walk">INDICACIONES A PIE <span class="hint-inline">(vacío = no aparece)</span></label>
+                        <textarea id="f-email-walk" rows="4"></textarea>
+                        <label for="f-email-walk-url" class="sub-label">LINK GOOGLE MAPS (A PIE)</label>
+                        <input type="url" id="f-email-walk-url" placeholder="https://maps.app.goo.gl/…">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="f-email-contact-text">TEXTO DE CONTACTO <span class="hint-inline">(vacío = no aparece)</span></label>
+                        <input type="text" id="f-email-contact-text" maxlength="200">
+                    </div>
+                    <div class="field">
+                        <label for="f-email-contact-email">EMAIL DE CONTACTO</label>
+                        <input type="text" id="f-email-contact-email" maxlength="120">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="f-email-contact-phone">TELÉFONO DE CONTACTO <span class="hint-inline">(opcional)</span></label>
+                        <input type="text" id="f-email-contact-phone" maxlength="30" placeholder="+593 …">
                     </div>
                     <div class="field">
                         <label for="f-email-location">LUGAR (texto en el correo)</label>
