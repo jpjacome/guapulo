@@ -19,7 +19,8 @@ exports.handler = async (event) => {
 
   try {
     connectLambda(event); // classic functions need the Blobs context wired manually
-    const store = getStore('admin-data');
+    // strong consistency: read-modify-write on the list must never see stale data
+    const store = getStore({ name: 'admin-data', consistency: 'strong' });
     const guests = await loadGuests(store);
 
     if (event.httpMethod === 'GET') {

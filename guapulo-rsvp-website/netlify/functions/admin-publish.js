@@ -29,7 +29,8 @@ function validateConfig(config) {
 async function loadChunkedMedia(event, uploadId, totalChunks) {
   const { getStore, connectLambda } = require('@netlify/blobs');
   connectLambda(event); // classic functions need the Blobs context wired manually
-  const store = getStore('admin-uploads');
+  // strong consistency: chunks are read back immediately after being uploaded
+  const store = getStore({ name: 'admin-uploads', consistency: 'strong' });
   const parts = [];
   for (let i = 0; i < totalChunks; i++) {
     const chunk = await store.get(`${uploadId}/${i}`);
