@@ -9,7 +9,7 @@ const { requireAuth, unauthorized } = require('./lib/auth');
 const eventConfig = require('../../_data/event-config.json');
 const { renderInvite } = require('../../lib/render-email');
 
-const KEY = 'guests.json';
+const PREFIX = 'guest:'; // one blob per guest, keyed by email
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -29,14 +29,13 @@ exports.handler = async (event) => {
     }
 
     connectLambda(event); // classic functions need the Blobs context wired manually
-    // strong consistency: read-modify-write on the list must never see stale data
-    const store = getStore({ name: 'admin-data', consistency: 'strong' });
-    const raw = await store.get(KEY);
-    const guests = raw ? JSON.parse(raw) : [];
-    const guest = guests.find((g) => g.email === String(email || '').trim().toLowerCase());
-    if (!guest) {
+    const store = getStore('admin-data');
+    const key = PREFIX + String(email || '').trim().toLowerCase();
+    const raw = await store.get(key);
+    if (!raw) {
       return { statusCode: 404, body: JSON.stringify({ error: 'Invitado no encontrado' }) };
     }
+    const guest = JSON.parse(raw);
 
     // Only allow the whitelisted override fields (all plain text, escaped on render)
     const safeOverrides = {};
@@ -76,9 +75,9 @@ exports.handler = async (event) => {
       };
     }
 
-    // Mark as invited
+    // Mark as invited (only this guest's own blob is touched)
     guest.invited_at = new Date().toISOString();
-    await store.set(KEY, JSON.stringify(guests));
+    await store.set(key, JSON.stringify(guest));
 
     return { statusCode: 200, body: JSON.stringify({ ok: true, email: guest.email, invited_at: guest.invited_at }) };
   } catch (error) {
