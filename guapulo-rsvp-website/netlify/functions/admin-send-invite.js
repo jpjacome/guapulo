@@ -54,6 +54,9 @@ exports.handler = async (event) => {
       template_params: {
         to_name: guest.name,
         to_email: guest.email,
+        // legacy aliases — the EmailJS template's "To Email" field may use {{email}}
+        name: guest.name,
+        email: guest.email,
         reply_to: eventConfig.email.notification_email || '',
         subject: rendered.subject,
         html_content: rendered.html
