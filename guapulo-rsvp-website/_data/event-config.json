@@ -3,7 +3,7 @@
   "event": {
     "name": "Parrillazo Guapulense",
     "subtitle": "",
-    "date": "2026-07-17",
+    "date": "2026-07-25",
     "time": "17:00",
     "timezone_offset": "-05:00",
     "location": "Guápulo, Quito",
@@ -12,8 +12,8 @@
   },
   "hero": {
     "type": "video",
-    "video": "assets/vid7.mp4",
-    "image": "assets/imgs/bg7.png"
+    "video": "assets/1.mp4",
+    "image": "assets/imgs/0_3.png"
   },
   "appearance": {
     "accent_color": "#CB00E6"
