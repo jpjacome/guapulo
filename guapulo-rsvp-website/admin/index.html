@@ -234,6 +234,10 @@
                         <label for="g-email">EMAIL</label>
                         <input type="text" id="g-email" maxlength="120" inputmode="email" autocomplete="off">
                     </div>
+                    <div class="field">
+                        <label for="g-phone">TELÉFONO</label>
+                        <input type="text" id="g-phone" maxlength="30" inputmode="tel" autocomplete="off">
+                    </div>
                     <button type="button" class="btn btn-ghost btn-add" id="g-add-btn">+ Agregar</button>
                 </div>
                 <p class="field-error" id="g-add-error" role="alert" hidden></p>
@@ -246,7 +250,7 @@
                 <div class="guest-table-wrap">
                     <table class="guest-table" id="guest-table">
                         <thead>
-                            <tr><th></th><th>NOMBRE</th><th>EMAIL</th><th>ESTADO</th><th></th></tr>
+                            <tr><th></th><th>NOMBRE</th><th>EMAIL</th><th>TELÉFONO</th><th>ESTADO</th><th></th></tr>
                         </thead>
                         <tbody id="guest-rows"></tbody>
                     </table>

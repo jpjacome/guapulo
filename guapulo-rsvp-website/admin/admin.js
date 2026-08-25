@@ -377,6 +377,8 @@
       tdName.textContent = guest.name;
       const tdEmail = document.createElement('td');
       tdEmail.textContent = guest.email;
+      const tdPhone = document.createElement('td');
+      tdPhone.textContent = guest.phone || '—';
 
       const tdStatus = document.createElement('td');
       if (guest.send_error) {
@@ -400,7 +402,7 @@
       del.addEventListener('click', () => removeGuest(guest));
       tdDel.appendChild(del);
 
-      tr.append(tdCheck, tdName, tdEmail, tdStatus, tdDel);
+      tr.append(tdCheck, tdName, tdEmail, tdPhone, tdStatus, tdDel);
       rows.appendChild(tr);
     }
 
@@ -433,13 +435,15 @@
   async function addGuest() {
     const name = $('g-name').value.trim();
     const email = $('g-email').value.trim();
+    const phone = $('g-phone').value.trim();
     const errorEl = $('g-add-error');
     errorEl.hidden = true;
     try {
-      const data = await api('admin-guests', { method: 'POST', body: JSON.stringify({ name, email }) });
+      const data = await api('admin-guests', { method: 'POST', body: JSON.stringify({ name, email, phone }) });
       state.guests = data.guests;
       $('g-name').value = '';
       $('g-email').value = '';
+      $('g-phone').value = '';
       $('g-name').focus();
       renderGuests();
     } catch (error) {
@@ -579,7 +583,7 @@
 
     // Guest list
     $('g-add-btn').addEventListener('click', addGuest);
-    for (const id of ['g-name', 'g-email']) {
+    for (const id of ['g-name', 'g-email', 'g-phone']) {
       $(id).addEventListener('keydown', (e) => {
         if (e.key === 'Enter') { e.preventDefault(); addGuest(); }
       });

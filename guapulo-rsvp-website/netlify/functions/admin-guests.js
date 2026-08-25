@@ -5,9 +5,9 @@
 // which matters because this environment only supports eventually-consistent
 // reads (strong consistency is unavailable in classic functions).
 //
-//   GET              -> { guests: [{ name, email, invited_at }] }
-//   POST   { name, email }  -> adds a guest (email is the unique key)
-//   PUT    { email, name? } -> updates a guest's name
+//   GET              -> { guests: [{ name, email, phone, invited_at }] }
+//   POST   { name, email, phone? }  -> adds a guest (email is the unique key)
+//   PUT    { email, name?, phone? } -> updates a guest's name/phone
 //   DELETE { email }        -> removes a guest
 const { getStore, connectLambda } = require('@netlify/blobs');
 const { requireAuth, unauthorized } = require('./lib/auth');
@@ -59,17 +59,19 @@ exports.handler = async (event) => {
 
     if (event.httpMethod === 'POST') {
       const name = String(body.name || '').trim();
+      const phone = String(body.phone || '').trim();
       if (!name) return { statusCode: 400, body: JSON.stringify({ error: 'El nombre es obligatorio' }) };
       if (await store.get(key)) {
         return { statusCode: 409, body: JSON.stringify({ error: 'Ese email ya está en la lista' }) };
       }
-      changed = { name, email, invited_at: null };
+      changed = { name, email, phone, invited_at: null };
       await store.set(key, JSON.stringify(changed));
     } else if (event.httpMethod === 'PUT') {
       const raw = await store.get(key);
       if (!raw) return { statusCode: 404, body: JSON.stringify({ error: 'Invitado no encontrado' }) };
       changed = JSON.parse(raw);
       if (body.name) changed.name = String(body.name).trim();
+      if (typeof body.phone === 'string') changed.phone = body.phone.trim();
       await store.set(key, JSON.stringify(changed));
     } else if (event.httpMethod === 'DELETE') {
       await store.delete(key);

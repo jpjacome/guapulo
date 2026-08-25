@@ -3,6 +3,7 @@
 const template = require('./email-template');
 const inviteTemplate = require('./invite-template');
 const { deriveEventInfo } = require('./event-derive');
+const { createGuestToken } = require('./guest-token');
 
 function escapeHtml(str) {
   return String(str)
@@ -63,6 +64,10 @@ function renderInvite(config, guest, overrides = {}) {
   const siteUrl = (config.site_url || '').replace(/\/+$/, '');
   const subject = invite.subject || `Estás invitado - ${config.event.name}`;
 
+  // Personalized link: carries a signed token so the homepage can prefill
+  // this guest's known name/email/phone and skip straight to plus-one + message.
+  const rsvpUrl = guest.email ? `${siteUrl}/?g=${createGuestToken(guest.email)}` : siteUrl;
+
   const values = {
     SUBJECT: escapeHtml(subject),
     EVENT_NAME: escapeHtml(config.event.name),
@@ -77,7 +82,8 @@ function renderInvite(config, guest, overrides = {}) {
     MESSAGE: text(invite.message),
     CTA_LABEL: escapeHtml(invite.cta_label || 'CONFIRMA TU ASISTENCIA'),
     SITE_URL: escapeHtml(siteUrl),
-    SITE_HOST: escapeHtml(siteUrl.replace(/^https?:\/\//, ''))
+    SITE_HOST: escapeHtml(siteUrl.replace(/^https?:\/\//, '')),
+    RSVP_URL: escapeHtml(rsvpUrl)
   };
 
   return { subject, html: renderTemplate(inviteTemplate, values) };

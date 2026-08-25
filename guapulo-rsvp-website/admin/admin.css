@@ -401,7 +401,7 @@ input[aria-invalid="true"] { border-color: var(--error); }
 /* ---------- Guest list ---------- */
 .guest-add {
   display: grid;
-  grid-template-columns: 1fr 1.4fr auto;
+  grid-template-columns: 1fr 1.4fr 1fr auto;
   gap: 0.8rem;
   align-items: end;
 }

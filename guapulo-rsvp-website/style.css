@@ -554,6 +554,17 @@ a {
   min-height: 100px;
 }
 
+.guest-known-banner {
+  margin: 0 0 1.2rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--color-1);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--color-1);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 
 
 

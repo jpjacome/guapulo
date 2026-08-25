@@ -346,13 +346,65 @@
     }
     function initializeRSVPForm() {
         if (!elements.rsvpForm) return;
-        
+
         // Load saved form data
         loadSavedFormData();
-        
+
         // Initialize form validation
         initializeFormValidation();
-        
+
+        // Personalized invite link (?g=<token>) -> skip straight to plus-one + message
+        applyGuestPrefill();
+    }
+
+    // If this visit came from a personalized invite link, look up the guest's
+    // known data and prefill the form so they don't have to retype it.
+    function applyGuestPrefill() {
+        if (state.guestPrefillRequested) return; // initializeRSVPForm can run more than once
+        var token = new URLSearchParams(window.location.search).get('g');
+        if (!token) return;
+        state.guestPrefillRequested = true;
+
+        fetch('/.netlify/functions/rsvp-guest-lookup?t=' + encodeURIComponent(token))
+            .then(function(res) { return res.ok ? res.json() : { found: false }; })
+            .then(function(data) {
+                if (data && data.found) fillKnownGuestData(data);
+            })
+            .catch(function(error) {
+                console.log('No se pudo cargar los datos del invitado:', error);
+            });
+    }
+
+    function fillKnownGuestData(guest) {
+        if (!elements.rsvpForm) return;
+
+        var nameField = elements.rsvpForm.querySelector('#name');
+        var emailField = elements.rsvpForm.querySelector('#email');
+        var phoneField = elements.rsvpForm.querySelector('#phone');
+
+        if (nameField && guest.name) {
+            nameField.value = guest.name;
+            state.formData.name = guest.name;
+            var nameGroup = nameField.closest('.form-group');
+            if (nameGroup) nameGroup.hidden = true;
+        }
+        if (emailField && guest.email) {
+            emailField.value = guest.email;
+            state.formData.email = guest.email;
+            var emailGroup = emailField.closest('.form-group');
+            if (emailGroup) emailGroup.hidden = true;
+        }
+        // Phone: prefill only if we already have it on file; otherwise leave
+        // it empty and visible so the guest can fill it in.
+        if (phoneField && guest.phone) {
+            phoneField.value = guest.phone;
+            state.formData.phone = guest.phone;
+        }
+
+        var banner = document.createElement('p');
+        banner.className = 'guest-known-banner';
+        banner.textContent = '¡Hola ' + guest.name + '! Ya tenemos tus datos — solo confirma con quién vienes y déjanos un mensaje si quieres.';
+        elements.rsvpForm.insertBefore(banner, elements.rsvpForm.firstChild);
     }
 
     // Force video playback on mobile devices and add robust fallbacks

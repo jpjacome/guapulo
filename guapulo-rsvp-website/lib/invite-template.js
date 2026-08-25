@@ -78,7 +78,7 @@ module.exports = `<!DOCTYPE html>
                 <!-- CTA button -->
                 <tr>
                   <td align="center" style="padding-top:36px; padding-bottom:40px;">
-                    <a href="{{SITE_URL}}" style="display:inline-block; padding:16px 36px; background-color:{{ACCENT_COLOR}}; color:#000000; font-family:'Courier New',Courier,monospace; font-size:17px; font-weight:bold; text-decoration:none; letter-spacing:1px;">
+                    <a href="{{RSVP_URL}}" style="display:inline-block; padding:16px 36px; background-color:{{ACCENT_COLOR}}; color:#000000; font-family:'Courier New',Courier,monospace; font-size:17px; font-weight:bold; text-decoration:none; letter-spacing:1px;">
                       {{CTA_LABEL}} →
                     </a>
                   </td>
