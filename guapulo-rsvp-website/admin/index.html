@@ -5,9 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Admin — Parrillazo Guapulense</title>
+    <script>
+        // Applied before first paint so the page never flashes the wrong theme.
+        (function () {
+            try {
+                if (localStorage.getItem('admin_theme') === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            } catch (e) { /* localStorage unavailable — default to dark */ }
+        })();
+    </script>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Cambiar a tema claro">☀️</button>
+
 
     <!-- ============ LOGIN VIEW ============ -->
     <main id="login-view" class="login-wrap" hidden>

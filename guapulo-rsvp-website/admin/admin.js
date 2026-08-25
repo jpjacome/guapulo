@@ -23,6 +23,32 @@
   const $ = (id) => document.getElementById(id);
 
   // ---------------------------------------------------------------------
+  // Theme (light/dark switcher — actual attribute is set ASAP in index.html
+  // to avoid a flash; this just wires up the toggle button)
+  // ---------------------------------------------------------------------
+  const THEME_KEY = 'admin_theme';
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    const btn = $('theme-toggle');
+    if (btn) {
+      btn.textContent = theme === 'light' ? '🌙' : '☀️';
+      btn.setAttribute('aria-label', theme === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro');
+    }
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    try { localStorage.setItem(THEME_KEY, next); } catch { /* ignore */ }
+    applyTheme(next);
+  }
+
+  // ---------------------------------------------------------------------
   // Auth helpers
   // ---------------------------------------------------------------------
   const getToken = () => sessionStorage.getItem(TOKEN_KEY);
@@ -561,6 +587,8 @@
       sessionStorage.removeItem(TOKEN_KEY);
       showLogin();
     });
+    $('theme-toggle').addEventListener('click', toggleTheme);
+    applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
 
     // Derived preview
     $('f-date').addEventListener('input', updateDerivedPreview);
