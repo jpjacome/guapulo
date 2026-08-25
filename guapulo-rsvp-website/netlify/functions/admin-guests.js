@@ -7,7 +7,8 @@
 //
 //   GET              -> { guests: [{ name, email, phone, invited_at }] }
 //   POST   { name, email, phone? }  -> adds a guest (email is the unique key)
-//   PUT    { email, name?, phone? } -> updates a guest's name/phone
+//   PUT    { email, name?, phone?, new_email? } -> updates a guest's name/phone,
+//           or moves them to a new email (new_email becomes the new key)
 //   DELETE { email }        -> removes a guest
 const { getStore, connectLambda } = require('@netlify/blobs');
 const { requireAuth, unauthorized } = require('./lib/auth');
@@ -72,7 +73,21 @@ exports.handler = async (event) => {
       changed = JSON.parse(raw);
       if (body.name) changed.name = String(body.name).trim();
       if (typeof body.phone === 'string') changed.phone = body.phone.trim();
-      await store.set(key, JSON.stringify(changed));
+
+      const newEmail = String(body.new_email || '').trim().toLowerCase();
+      if (newEmail && newEmail !== email) {
+        if (!EMAIL_RE.test(newEmail)) {
+          return { statusCode: 400, body: JSON.stringify({ error: 'Email inválido' }) };
+        }
+        if (await store.get(PREFIX + newEmail)) {
+          return { statusCode: 409, body: JSON.stringify({ error: 'Ese email ya está en la lista' }) };
+        }
+        changed.email = newEmail;
+        await store.set(PREFIX + newEmail, JSON.stringify(changed));
+        await store.delete(key);
+      } else {
+        await store.set(key, JSON.stringify(changed));
+      }
     } else if (event.httpMethod === 'DELETE') {
       await store.delete(key);
     } else {

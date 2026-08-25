@@ -16,7 +16,8 @@
     pendingImage: null, // File
     guests: [],
     unchecked: new Set(), // guest emails excluded from sending (checked by default)
-    guestPage: 0
+    guestPage: 0,
+    editingEmail: null // email of the guest row currently in edit mode, if any
   };
   const GUESTS_PER_PAGE = 10;
 
@@ -376,6 +377,15 @@
     return state.guests.filter((g) => !state.unchecked.has(g.email));
   }
 
+  function makeEditInput(value, label) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'guest-edit-input';
+    input.value = value;
+    input.setAttribute('aria-label', label);
+    return input;
+  }
+
   function renderGuests() {
     const rows = $('guest-rows');
     const totalPages = Math.max(1, Math.ceil(state.guests.length / GUESTS_PER_PAGE));
@@ -386,6 +396,7 @@
     rows.innerHTML = '';
     for (const guest of pageGuests) {
       const tr = document.createElement('tr');
+      const editing = state.editingEmail === guest.email;
 
       const tdCheck = document.createElement('td');
       const cb = document.createElement('input');
@@ -400,11 +411,62 @@
       tdCheck.appendChild(cb);
 
       const tdName = document.createElement('td');
-      tdName.textContent = guest.name;
       const tdEmail = document.createElement('td');
-      tdEmail.textContent = guest.email;
       const tdPhone = document.createElement('td');
-      tdPhone.textContent = guest.phone || '—';
+      const tdActions = document.createElement('td');
+      tdActions.className = 'guest-actions';
+
+      if (editing) {
+        const nameInput = makeEditInput(guest.name, 'Nombre');
+        const emailInput = makeEditInput(guest.email, 'Email');
+        const phoneInput = makeEditInput(guest.phone || '', 'Teléfono');
+        tdName.appendChild(nameInput);
+        tdEmail.appendChild(emailInput);
+        tdPhone.appendChild(phoneInput);
+
+        const errorEl = document.createElement('p');
+        errorEl.className = 'field-error guest-edit-error';
+        errorEl.hidden = true;
+        tdEmail.appendChild(errorEl);
+
+        const save = document.createElement('button');
+        save.type = 'button';
+        save.className = 'btn btn-ghost guest-save';
+        save.textContent = 'Guardar';
+        save.addEventListener('click', () => saveGuestEdit(guest, {
+          name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+          phone: phoneInput.value.trim()
+        }, errorEl));
+
+        const cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.className = 'btn btn-ghost guest-cancel';
+        cancel.textContent = 'Cancelar';
+        cancel.addEventListener('click', () => { state.editingEmail = null; renderGuests(); });
+
+        tdActions.append(save, cancel);
+      } else {
+        tdName.textContent = guest.name;
+        tdEmail.textContent = guest.email;
+        tdPhone.textContent = guest.phone || '—';
+
+        const edit = document.createElement('button');
+        edit.type = 'button';
+        edit.className = 'guest-edit';
+        edit.textContent = '✎';
+        edit.setAttribute('aria-label', `Editar a ${guest.name}`);
+        edit.addEventListener('click', () => { state.editingEmail = guest.email; renderGuests(); });
+
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'guest-del';
+        del.textContent = '✕';
+        del.setAttribute('aria-label', `Eliminar a ${guest.name}`);
+        del.addEventListener('click', () => removeGuest(guest));
+
+        tdActions.append(edit, del);
+      }
 
       const tdStatus = document.createElement('td');
       if (guest.send_error) {
@@ -419,16 +481,7 @@
         tdStatus.className = 'guest-status-pending';
       }
 
-      const tdDel = document.createElement('td');
-      const del = document.createElement('button');
-      del.type = 'button';
-      del.className = 'guest-del';
-      del.textContent = '✕';
-      del.setAttribute('aria-label', `Eliminar a ${guest.name}`);
-      del.addEventListener('click', () => removeGuest(guest));
-      tdDel.appendChild(del);
-
-      tr.append(tdCheck, tdName, tdEmail, tdPhone, tdStatus, tdDel);
+      tr.append(tdCheck, tdName, tdEmail, tdPhone, tdStatus, tdActions);
       rows.appendChild(tr);
     }
 
@@ -484,6 +537,36 @@
     state.guests = data.guests;
     state.unchecked.delete(guest.email);
     renderGuests();
+  }
+
+  async function saveGuestEdit(guest, edits, errorEl) {
+    errorEl.hidden = true;
+    if (!edits.name) {
+      errorEl.textContent = 'El nombre es obligatorio';
+      errorEl.hidden = false;
+      return;
+    }
+    try {
+      const data = await api('admin-guests', {
+        method: 'PUT',
+        body: JSON.stringify({
+          email: guest.email,
+          name: edits.name,
+          phone: edits.phone,
+          new_email: edits.email !== guest.email ? edits.email : undefined
+        })
+      });
+      state.guests = data.guests;
+      if (state.unchecked.has(guest.email)) {
+        state.unchecked.delete(guest.email);
+        state.unchecked.add(edits.email);
+      }
+      state.editingEmail = null;
+      renderGuests();
+    } catch (error) {
+      errorEl.textContent = error.message;
+      errorEl.hidden = false;
+    }
   }
 
   function setInviteStatus(html, cls) {

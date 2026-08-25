@@ -1,0 +1,10 @@
+# The admin dashboard and deploy-status file must never be cached — the
+# equivalent netlify.toml [[headers]] rules aren't being honored on this
+# site (verified: /build-info.json still comes back max-age=31536000
+# despite its own no-store rule there), so this is the belt-and-braces fix.
+/admin/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
+
+/build-info.json
+  Cache-Control: no-store

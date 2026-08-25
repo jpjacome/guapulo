@@ -522,10 +522,17 @@ input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
 }
-.guest-table tr:hover td { background: rgba(208, 255, 0, 0.03); }
+.guest-table tr:hover td { background: var(--accent-glow); }
 .guest-status-pending { color: var(--text-dim); font-size: 0.8rem; }
 .guest-status-sent { color: var(--ok); font-size: 0.8rem; }
 .guest-status-error { color: var(--error); font-size: 0.8rem; }
+.guest-actions {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  white-space: nowrap;
+}
+.guest-edit,
 .guest-del {
   background: none;
   border: 2px solid transparent;
@@ -536,7 +543,25 @@ input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline
   min-width: 40px;
   min-height: 40px;
 }
+.guest-edit:hover { color: var(--accent); border-color: var(--accent); }
 .guest-del:hover { color: var(--error); border-color: var(--error); }
+
+.guest-edit-input {
+  width: 100%;
+  min-height: 38px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.88rem;
+}
+.guest-edit-error {
+  margin: 0.3rem 0 0;
+  min-width: 160px;
+}
+.guest-save,
+.guest-cancel {
+  min-height: 38px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.72rem;
+}
 
 .guest-pager {
   display: flex;
