@@ -10,6 +10,26 @@
 [forms]
   enabled = true
 
+# Baseline security headers, site-wide. No blanket long-lived caching here:
+# uploaded media and the admin/config files can change under the same
+# filename (the admin panel re-publishes event-config.json, admin.js, and
+# assets in place), so "immutable" caching would serve stale content
+# indefinitely — the exact bug this replaces.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Cache-Control = "public, max-age=600, must-revalidate"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=600, must-revalidate"
+
 # The admin dashboard and deploy-status file must never be cached
 [[headers]]
   for = "/admin/*"
@@ -21,3 +41,33 @@
   for = "/build-info.json"
   [headers.values]
     Cache-Control = "no-store"
+
+[[redirects]]
+  from = "/rsvp"
+  to = "/#rsvp"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/#about"
+  status = 301
+
+[[redirects]]
+  from = "/details"
+  to = "/#details"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/#rsvp"
+  status = 301
+
+[[redirects]]
+  from = "/404"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/success"
+  to = "/thank-you.html"
+  status = 200
