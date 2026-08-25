@@ -5,10 +5,12 @@
     'use strict';
 
     // Configuration
-    // Event values come from generated-config.js (built from _data/event-config.json).
-    const EVENT = (typeof window !== 'undefined' && window.EVENT_CONFIG) || {};
+    // Event date/time is embedded directly in the page (data-event-datetime
+    // on .countdown-container, built from _data/event-config.json) rather
+    // than a separate script file, so there's nothing else to fetch/cache.
+    const countdownContainer = document.querySelector('.countdown-container');
     const CONFIG = {
-    eventDate: EVENT.eventDateTime || '2026-04-25T17:00:00-05:00',
+    eventDate: (countdownContainer && countdownContainer.dataset.eventDatetime) || '2026-04-25T17:00:00-05:00',
     timeZone: 'America/Bogota',
         animationDuration: 300,
         countdownInterval: 1000,
