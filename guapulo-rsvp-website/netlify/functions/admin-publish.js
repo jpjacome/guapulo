@@ -23,6 +23,8 @@ function validateConfig(config) {
   need(config.hero.type === 'image' || MEDIA_PATH_RE.test(config.hero.video || ''), 'hero.video must be a valid assets path');
   need(/^#[0-9a-fA-F]{6}$/.test((config.appearance || {}).accent_color || ''), 'appearance.accent_color must be a hex color');
   need(config.email && typeof config.email.subject === 'string', 'email.subject is required');
+  const notionDbId = ((config.notion || {}).database_id || '').trim();
+  need(notionDbId === '' || /^[0-9a-fA-F]{32}$/.test(notionDbId), 'notion.database_id must be a 32-character Notion database ID');
   deriveEventInfo(config); // throws if the date/time combination is invalid
 }
 

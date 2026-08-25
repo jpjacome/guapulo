@@ -1,7 +1,11 @@
 const { Client } = require('@notionhq/client');
+const eventConfig = require('../../_data/event-config.json');
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
-const databaseId = process.env.NOTION_DATABASE_ID;
+// Admin panel can override which database RSVPs go to (event-config.json,
+// committed via admin-publish). Falls back to the env var for sites that
+// haven't set it through the dashboard yet.
+const databaseId = (eventConfig.notion && eventConfig.notion.database_id) || process.env.NOTION_DATABASE_ID;
 
 exports.handler = async function(event, context) {
   if (event.httpMethod !== 'POST') {

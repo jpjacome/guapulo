@@ -113,6 +113,12 @@
     setFieldError(hex, hexOk ? '' : 'Usa formato #RRGGBB, ej. #D0FF00.');
     if (!hexOk && !firstInvalid) firstInvalid = hex;
 
+    const notionDb = $('f-notion-db');
+    const notionVal = notionDb.value.trim().replace(/-/g, '');
+    const notionOk = notionVal === '' || /^[0-9a-fA-F]{32}$/.test(notionVal);
+    setFieldError(notionDb, notionOk ? '' : 'El ID debe tener 32 caracteres (con o sin guiones).');
+    if (!notionOk && !firstInvalid) firstInvalid = notionDb;
+
     if (firstInvalid) firstInvalid.focus();
     return !firstInvalid;
   }
@@ -150,6 +156,7 @@
     $('f-color').value = c.appearance.accent_color || '#D0FF00';
     $('f-color-hex').value = c.appearance.accent_color || '#D0FF00';
     $('f-hero-type').value = c.hero.type || 'video';
+    $('f-notion-db').value = (c.notion && c.notion.database_id) || '';
     $('f-email-subject').value = c.email.subject || '';
     $('f-email-location').value = c.email.location || '';
     $('f-email-title').value = c.email.title_line || '';
@@ -244,6 +251,8 @@
     c.hero.type = $('f-hero-type').value;
     c.hero.video = videoPath;
     c.hero.image = imagePath;
+    c.notion = c.notion || {};
+    c.notion.database_id = $('f-notion-db').value.trim().replace(/-/g, '');
     c.email.subject = $('f-email-subject').value.trim();
     c.email.event_name = c.event.name;
     c.email.location = $('f-email-location').value.trim();

@@ -18,6 +18,9 @@
   "appearance": {
     "accent_color": "#E69D00"
   },
+  "notion": {
+    "database_id": ""
+  },
   "content": {
     "welcome_message": "¡Bienvenidos al Parrillazo Guapulense!",
     "event_description": "Únete a nosotros para una parrillada especial en el hermoso barrio de Guápulo. Disfrutaremos de buena comida, música y compañía en un ambiente relajado y festivo.",
