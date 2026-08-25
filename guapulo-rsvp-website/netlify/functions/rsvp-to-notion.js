@@ -51,8 +51,11 @@ exports.handler = async function(event, context) {
     };
   } catch (error) {
     // A Notion failure here otherwise vanishes silently — the guest still
-    // gets a "success" page and confirmation email regardless (see script.js),
-    // so this is the only signal anyone gets that a real RSVP didn't land.
+    // gets a "success" page and confirmation email regardless (see script.js).
+    // The Notion SDK only auto-logs its own HTTP-level API errors, so without
+    // this the function log stays silent for any other failure mode too
+    // (validation errors, timeouts, etc.) — log unconditionally here.
+    console.error('rsvp-to-notion failed for', email, '—', error.message, error);
     await notifyAdminOfFailure({ name, email, phone, plus_one, message }, error).catch(() => {});
     return {
       statusCode: 500,
