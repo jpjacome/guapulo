@@ -2,8 +2,8 @@
   "site_url": "https://guapuliza.netlify.app",
   "event": {
     "name": "Parrillazo Guapulense",
-    "subtitle": "Bhai's Bday",
-    "date": "2026-08-28",
+    "subtitle": "",
+    "date": "2026-09-28",
     "time": "18:00",
     "timezone_offset": "-05:00",
     "location": "Guápulo, Quito",
@@ -12,11 +12,11 @@
   },
   "hero": {
     "type": "video",
-    "video": "assets/1.mp4",
-    "image": "assets/imgs/0_3.png"
+    "video": "assets/3.webm",
+    "image": "assets/imgs/asdf.png"
   },
   "appearance": {
-    "accent_color": "#E69D00"
+    "accent_color": "#00FFFB"
   },
   "notion": {
     "database_id": "3c79fee529928074a4f1d2c3d4ede1c2"
@@ -33,7 +33,7 @@
     "notification_email": "jpjacome@yahoo.com",
     "title_line": "🎉 ¡Confirmación - Parrillazo Guapulense!",
     "intro": "¡Gracias por confirmar tu asistencia al Parrillazo Guapulense!",
-    "note_box": "BYOB (Bring Your Own Beer 🍻 o booze 🥃)",
+    "note_box": "BYOB (Bring Your Own Beer 🍻 or booze 🥃)",
     "car_directions": "El ingreso es por la Av. de los Conquistadores.\nRecomendaciones: sube con viada (el primer tramo es sin miedo), sigue todo el camino por la derecha hasta pasar los tres rompe velocidades y continúa hasta el final de la calle.",
     "car_maps_url": "https://maps.app.goo.gl/itHgPxDoDTRuH93v6?g_st=ipc",
     "walk_directions": "El ingreso es por la puerta metálica junto al Ananké.",
